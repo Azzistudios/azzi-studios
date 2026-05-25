@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Azzi Studios</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.c-nav { background: var(--bg); }
+
+/* ── SERVICES PAGE ──────────────────────────── */
+.services-header {
+  padding: calc(var(--nav-h) + 3.5rem) var(--margin) 3rem;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+}
+
+.services-header__title {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.services-header__intro {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+/* ── SERVICE BLOCKS ─────────────────────────── */
+.service-block {
+  padding: 3rem var(--margin);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.service-block__num-label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.service-block__title {
+  font-size: clamp(1.125rem, 2vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+.service-block__body {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  max-width: 540px;
+}
+
+.service-block__tagline {
+  font-size: 0.8125rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-light);
+  border-left: 2px solid var(--border);
+  padding-left: 1rem;
+}
+
+/* ── CLOSING ────────────────────────────────── */
+.services-closing {
+  padding: 4rem var(--margin);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.services-closing__text {
+  font-size: clamp(1.25rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.services-closing__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--text);
+  padding-bottom: 2px;
+  white-space: nowrap;
+  transition: gap 0.25s var(--ease-out);
+}
+
+.services-closing__cta:hover { gap: 1rem; }
+
+@media (max-width: 768px) {
+  .services-header { grid-template-columns: 1fr; }
+  .service-block   { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="c-nav" id="nav">
+  <a href="index.html" class="c-nav__logo">azzi studios.</a>
+  <ul class="c-nav__links">
+    <li><a href="work.html">Work</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="c-nav__right">
+    <a href="contact.html" class="c-nav__cta">Start a project</a>
+  </div>
+  <button class="c-nav__hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span>
+  </button>
+</nav>
+
+<div class="c-layout">
+
+  <!-- HEADER -->
+  <div class="services-header">
+    <h1 class="services-header__title reveal">What we do.</h1>
+    <p class="services-header__intro reveal reveal-delay-1">
+      We work with brands who need their campaigns to look exactly the way they imagined. We handle everything — creative direction, set design, team, and production.
+    </p>
+  </div>
+
+  <!-- SERVICE 01 -->
+  <div class="service-block reveal" id="campaign">
+    <div>
+      <p class="service-block__num-label">Service 01</p>
+      <h2 class="service-block__title">Campaign<br>Production</h2>
+    </div>
+    <div>
+      <p class="service-block__body">
+        We produce your campaign from brief to final delivery. Creative direction, set design, art direction, photography, and video — one studio, full creative ownership.
+      </p>
+      <p class="service-block__tagline">You brief us. We deliver.</p>
+    </div>
+  </div>
+
+  <!-- SERVICE 02 -->
+  <div class="service-block reveal" id="visual">
+    <div>
+      <p class="service-block__num-label">Service 02</p>
+      <h2 class="service-block__title">Visual<br>Content</h2>
+    </div>
+    <div>
+      <p class="service-block__body">
+        Elevated brand imagery for product launches, lookbooks, and seasonal campaigns. Shot properly, art directed, and delivered ready to use.
+      </p>
+      <p class="service-block__tagline">Every frame considered.</p>
+    </div>
+  </div>
+
+  <!-- SERVICE 03 -->
+  <div class="service-block reveal" id="vm">
+    <div>
+      <p class="service-block__num-label">Service 03</p>
+      <h2 class="service-block__title">VM &amp; Window<br>Display</h2>
+    </div>
+    <div>
+      <p class="service-block__body">
+        We design and install retail environments and seasonal windows. Concept, props, spatial direction, and on-site supervision across multiple locations.
+      </p>
+      <p class="service-block__tagline">The first thing a customer sees — we make it count.</p>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="services-closing reveal">
+    <p class="services-closing__text">We craft images worth keeping.</p>
+    <a href="contact.html" class="services-closing__cta">Start a project →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="c-footer">
+    <div class="c-footer__top">
+      <span class="c-footer__logo">azzi studios.</span>
+      <div class="c-footer__contact">
+        <a href="mailto:hello@azzistudios.com">hello@azzistudios.com</a>
+        <span>·</span>
+        <a href="tel:+96178902628">+961 78 90 26 28</a>
+        <span>·</span>
+        <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">@azzistudios</a>
+      </div>
+    </div>
+    <div class="c-footer__bottom">
+      <span>Beirut — and wherever the work demands.</span>
+      <span>© 2026 Azzi Studios</span>
+    </div>
+  </footer>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

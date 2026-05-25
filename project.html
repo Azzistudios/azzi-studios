@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Project — Azzi Studios</title>
+<style>
+/* =============================================
+   AZZI STUDIOS — Single project page
+   ============================================= */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;outline:none;-webkit-tap-highlight-color:transparent}
+html{
+  font-size:16px;scrollbar-width:none;-ms-overflow-style:none;
+  scroll-behavior:smooth;background:#fff;
+  /* Scroll-snap removed — it was acting like a magnet pulling
+     the page back to each section's start. Scroll is now free
+     and flowy. */
+}
+html::-webkit-scrollbar{display:none}
+body{
+  background:#fff;color:#111;
+  font-family:'Space Mono',monospace;font-weight:400;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;width:100%;height:auto;object-fit:cover}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ───────────────────────────────────────
+   Same header as index.html so the experience is consistent
+   across the site. Fades on cursor idle (see main.js). */
+.nav{
+  position:fixed;top:1rem;left:0;right:0;
+  height:48px;padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:8600;pointer-events:none;
+  transition:opacity 0.45s ease;
+}
+.nav.nav--idle{opacity:0;pointer-events:none}
+.nav.nav--idle *{pointer-events:none}
+.nav *{pointer-events:all}
+
+.nav-logo{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1;color:#111;
+}
+
+/* Centered project title — pinned on the SAME horizontal line
+   as the logo and the right-side buttons. */
+.nav-center{
+  /* Positioned dead-centre of the 48px nav band. Flex centering
+     was causing a sub-pixel reflow when scroll triggered the fade,
+     so we use a transform-based centre that the browser won't shift. */
+  position:fixed;
+  top:calc(1rem + 24px);
+  left:50%;
+  transform:translate(-50%, -50%);
+  z-index:8600;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
+  text-transform:uppercase;color:#111;
+  white-space:nowrap;line-height:1;
+  will-change:opacity;          /* keep on its own paint layer */
+}
+/* Info button — sits just under the centered title, no border, no
+   background. Lives inside <nav> so the scroll-aware fade catches
+   it together with the title. */
+.info-btn-float{
+  position:fixed;
+  top:calc(1rem + 48px);            /* sits just below the title */
+  left:50%;transform:translateX(-50%);
+  z-index:8700;
+  background:none;border:none;padding:0;margin:0;cursor:pointer;
+  font-family:'Space Mono',monospace;
+  font-size:0.55rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:#111;line-height:1;
+  transition:opacity 0.2s;
+}
+.info-btn-float:hover{opacity:0.4}
+.info-btn-float.is-open{text-decoration:underline;text-underline-offset:5px}
+
+/* When the info panel is open, keep the header (nav) visible —
+   even if the scroll-aware fade had hidden it — and hide the
+   floating Info button: the nav-center now reads "Info", so the
+   duplicate trigger is redundant. */
+body.info-open .nav{opacity:1 !important;visibility:visible !important}
+body.info-open .nav,
+body.info-open .nav *{pointer-events:auto !important}
+body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
+
+.nav-right{
+  display:flex;gap:1.75rem;align-items:center;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:#111;line-height:1;
+}
+.nav-right a,
+.nav-right button.nav-link{
+  background:none;border:none;padding:0;margin:0;cursor:pointer;
+  color:#111;font:inherit;letter-spacing:inherit;text-transform:inherit;line-height:1;
+  transition:opacity 0.2s;
+}
+.nav-right a:hover,
+.nav-right button.nav-link:hover{opacity:0.4}
+
+/* Mobile hamburger */
+.nav-ham{
+  display:none;background:none;border:none;cursor:pointer;
+  flex-direction:column;gap:5px;padding:6px;
+  position:relative;z-index:9001;
+}
+.nav-ham span{display:block;width:22px;height:1.5px;background:#111;transition:transform 0.3s}
+
+@media(max-width:768px){
+  .nav-right{display:none}
+  .nav-center{display:none}
+  .nav-ham{display:flex}
+}
+
+/* Mobile full-screen menu */
+.mob-menu{
+  position:fixed;inset:0;background:#fff;z-index:9000;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.3s ease;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:1.75rem;
+  font-family:'Space Mono',monospace;
+  font-size:1.1rem;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;color:#111;
+}
+.mob-menu.open{opacity:1;pointer-events:auto}
+.mob-menu a,
+.mob-menu button{
+  background:none;border:none;cursor:pointer;padding:0;
+  font:inherit;letter-spacing:inherit;text-transform:inherit;color:#111;
+  transition:opacity 0.2s;
+}
+.mob-menu a:hover,
+.mob-menu button:hover{opacity:0.45}
+
+/* ── PROJECT PAGE — editorial sections ──
+   Sections vary by what they contain:
+   • --video   : a single 16:9 video, no letterbox (full-bleed of the
+                 16:9 frame itself, surrounded by white space)
+   • --pair    : 2 pictures, identical 4:5 frames, cropped to fit
+   • --grid    : 4 pictures in a 2×2, identical 4:5 frames
+   • --solo-pic: a single picture (used as a fallback for stragglers)
+   Every section has the same lift-fade transition, so swiping
+   between them feels like turning a magazine page. */
+.proj{padding:0;margin:0;background:#fff}
+
+.proj-section{
+  min-height:100vh;
+  min-height:100dvh;
+  width:100%;
+  background:#fff;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateY(2.5rem) scale(0.985);
+  transition:
+    opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+    transform 0.85s cubic-bezier(0.16,1,0.3,1);
+}
+.proj-section.in-view{opacity:1;transform:none}
+
+.proj-cell{
+  position:relative;overflow:hidden;
+  background:transparent;
+}
+.proj-cell img,
+.proj-cell video{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.proj-cell iframe{
+  width:100%;height:100%;border:0;display:block;background:#000;
+}
+
+/* Pair — two cells side by side. Pictures sit in a 4:5 frame and
+   videos in their native 9:16 reel frame, so neither shows black
+   bars. Gap is wide enough for the nav title + Info button to
+   live in the corridor between them, but tightened compared to
+   the first pass so cells feel close together. */
+.proj-section--pair{padding:8vh 3vw;gap:10vw}
+.proj-section--pair .proj-cell{
+  aspect-ratio:4/5;
+  height:min(77vh, calc(36vw * 5 / 4));
+  width:auto;max-width:36vw;
+}
+.proj-section--pair .proj-cell--video{
+  aspect-ratio:16/9;
+  height:min(77vh, calc(36vw * 9 / 16));
+  width:auto;max-width:36vw;
+}
+
+/* Grid — 2×2 of identical 4:5 cells */
+.proj-section--grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:3vh 10vw;
+  padding:8vh 3vw;
+  align-content:center;justify-content:center;
+}
+.proj-section--grid .proj-cell{
+  aspect-ratio:4/5;
+  height:min(36vh, calc(32vw * 5 / 4));
+  width:auto;max-width:32vw;
+  justify-self:center;
+}
+
+/* Solo picture — single 4:5 portrait, larger */
+.proj-section--solo-pic{padding:8vh 3vw}
+.proj-section--solo-pic .proj-cell{
+  aspect-ratio:4/5;
+  height:min(79vh, calc(54vw * 5 / 4));
+  width:auto;max-width:54vw;
+}
+
+/* Video-end — every project's videos play at the end, ALL in
+   the same section, side by side. Default aspect is 16:9 (the
+   "video:" prefix). Reels marked with "vreel:" render as
+   9:16 portrait cells (Eloria → 3 reels in a row).
+   Cells are top-aligned so the BOTTOM edge of the video lands
+   on the middle of the viewport, with the lower half left as
+   white space (and the footer following after that). */
+.proj-section--video-end{
+  padding:6vh 3vw;
+  gap:6vw;                /* more breathing room between reels */
+  align-items:center;
+  justify-content:center;
+}
+/* Default: 16:9 landscape clip — big, centered, no black extension. */
+.proj-section--video-end .proj-cell{
+  aspect-ratio:16/9;
+  flex:0 0 auto;
+  height:min(80vh, calc(88vw * 9 / 16));
+  width:auto;
+  max-width:88vw;
+}
+/* Reels — 9:16 portrait, taller so they read like phone reels.
+   3 reels at 70vh × 9:16 ≈ 22vw each: fits comfortably in a row. */
+.proj-section--video-end .proj-cell--reel{
+  aspect-ratio:9/16;
+  height:70vh;
+  width:auto;
+  max-height:70vh;
+  max-width:none;
+}
+
+/* ── TABLET (≤ 1024px) — same shapes, tighter ── */
+@media (max-width: 1024px) {
+  .proj-section--pair{padding:6vh 4vw;gap:6vw}
+  .proj-section--pair .proj-cell{
+    height:min(70vh, calc(42vw * 5 / 4));
+    max-width:42vw;
+  }
+  .proj-section--pair .proj-cell--video{
+    height:min(60vh, calc(42vw * 9 / 16));
+    max-width:42vw;
+  }
+  .proj-section--grid{padding:6vh 4vw;gap:3vh 6vw}
+  .proj-section--grid .proj-cell{
+    height:min(34vh, calc(38vw * 5 / 4));
+    max-width:38vw;
+  }
+  .proj-section--solo-pic{padding:6vh 4vw}
+  .proj-section--solo-pic .proj-cell{
+    height:min(76vh, calc(64vw * 5 / 4));
+    max-width:64vw;
+  }
+  .proj-section--video-end{gap:4vw}
+  .proj-section--video-end .proj-cell--reel{height:60vh}
+}
+
+/* ── MOBILE (≤ 720px) — single column, full-width per cell ── */
+@media (max-width: 720px) {
+  /* Nav-center hidden (no room next to logo + hamburger). Info
+     button sits clearly BELOW the nav band so it doesn't overlap
+     the logo/hamburger row; stays visible while the info panel is
+     open so it can act as the close trigger. */
+  .nav-center{display:none}
+  .info-btn-float{top:calc(1rem + 56px)}
+  body.info-open .info-btn-float{
+    opacity:1 !important;visibility:visible !important;pointer-events:auto !important;
+  }
+
+  /* Every section gets enough top room to clear the fixed nav
+     (was: padding-top:5vh, which on a 667px phone is only 33px —
+     content was sliding under the 64px-tall nav band). */
+  .proj-section{padding:80px 5vw 5vh;min-height:auto}
+
+  /* Pairs stack vertically */
+  .proj-section--pair{flex-direction:column;gap:4vh;padding:5vh 5vw}
+  .proj-section--pair .proj-cell{
+    width:90vw;max-width:90vw;height:auto;
+    aspect-ratio:4/5;
+  }
+  .proj-section--pair .proj-cell--video{
+    width:90vw;max-width:90vw;height:auto;
+    aspect-ratio:16/9;
+  }
+
+  /* Grid collapses to one column */
+  .proj-section--grid{
+    grid-template-columns:1fr;grid-template-rows:repeat(4,auto);
+    gap:4vh;padding:5vh 5vw;
+  }
+  .proj-section--grid .proj-cell{
+    width:90vw;max-width:90vw;height:auto;
+    aspect-ratio:4/5;justify-self:center;
+  }
+
+  /* Solo picture full-width */
+  .proj-section--solo-pic{padding:5vh 5vw}
+  .proj-section--solo-pic .proj-cell{
+    width:90vw;max-width:90vw;height:auto;
+    aspect-ratio:4/5;
+  }
+
+  /* Videos at the end — stack vertically */
+  .proj-section--video-end{
+    flex-direction:column;
+    align-items:center;
+    gap:4vh;padding:5vh 5vw;
+  }
+  .proj-section--video-end .proj-cell{
+    width:90vw;max-width:90vw;height:auto;
+    aspect-ratio:16/9;max-height:none;
+  }
+  .proj-section--video-end .proj-cell--reel{
+    width:auto;max-width:70vw;
+    height:60vh;max-height:60vh;
+    aspect-ratio:9/16;
+  }
+
+  /* Info panel padding adjusts for tighter viewport */
+  .info-panel{padding:5rem 1rem 2.5rem}
+  .info-content{max-width:100%;gap:1.5rem}
+}
+
+/* ── SMALL PHONES (≤ 420px) ── */
+@media (max-width: 420px) {
+  .nav{padding:0 1.25rem}
+  .info-btn-float{top:calc(1rem + 28px);font-size:0.5rem}
+  .proj-section{padding:4vh 4vw}
+  .proj-section--pair{padding:4vh 4vw}
+  .proj-section--grid{padding:4vh 4vw}
+  .info-content{font-size:0.55rem;letter-spacing:0.16em}
+  .info-row__label{font-size:0.55rem}
+}
+
+/* ── INFO PANEL — slides down from the top, content
+   centered in a single column below the project title.
+   Labels in black, body text in gray. */
+.info-panel{
+  position:fixed;top:0;left:0;right:0;
+  background:#fff;color:#111;
+  z-index:8500;
+  padding:7rem 2rem 3rem;
+  max-height:100vh;max-height:100dvh;
+  overflow-y:auto;scrollbar-width:none;
+  transform:translateY(-100%);
+  transition:transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  /* No border / shadow EVER — the closed panel had been
+     leaking a faint gray rectangle into the top of the viewport. */
+  border:0 !important;
+  box-shadow:none !important;
+  outline:0 !important;
+}
+.info-panel::-webkit-scrollbar{display:none}
+.info-panel.open{
+  transform:translateY(0);
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+/* ══════════════════════════════════════════
+   ABOUT / SERVICES / CONTACT — inline overlay panels
+   Identical CSS + HTML + JS to index.html so the layout
+   is consistent everywhere on the site.
+══════════════════════════════════════════ */
+#overlay{
+  position:fixed;top:0;left:0;right:0;height:55vh;
+  z-index:8500;background:#fff;
+  opacity:0;pointer-events:none;transform:translateY(-100%);
+  transition:opacity 0.4s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1);
+  overflow-y:auto;overflow-x:hidden;
+  -ms-overflow-style:none;scrollbar-width:none;
+}
+#overlay::-webkit-scrollbar{display:none}
+#overlay.open{opacity:1;pointer-events:all;transform:translateY(0)}
+/* Project main content slides down to make room for the panel */
+.proj{transition:transform 0.65s cubic-bezier(0.16,1,0.3,1)}
+body.ov-open .proj{transform:translateY(55vh)}
+body.ov-open .nav,
+body.ov-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s ease}
+@keyframes ovIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+#overlay.open .ov-panel.active > *{opacity:0;animation:ovIn 0.7s cubic-bezier(0.16,1,0.3,1) forwards}
+#overlay.open .ov-panel.active > *:nth-child(1){animation-delay:0.06s}
+#overlay.open .ov-panel.active > *:nth-child(2){animation-delay:0.15s}
+#overlay.open .ov-panel.active > *:nth-child(3){animation-delay:0.24s}
+#overlay.open .ov-panel.active > *:nth-child(4){animation-delay:0.33s}
+@media(prefers-reduced-motion:reduce){
+  #overlay.open .ov-panel.active > *{animation:none;opacity:1}
+}
+.ov-close{
+  position:fixed;top:calc(55vh - 1.5rem);left:80%;transform:translate(-50%,-50%);z-index:8700;
+  background:none;border:none;cursor:pointer;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;
+  color:#111;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.4s ease;
+}
+body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s ease 0.15s}
+.ov-close:hover{opacity:0.55}
+.ov-scroll{max-width:1040px;margin:0 auto;padding:2rem 3rem 3rem}
+.ov-panel{display:none}
+.ov-panel.active{display:block}
+.ov-h{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.6rem,4.8vw,2.72rem);line-height:1.15;letter-spacing:0.02em;
+  text-transform:uppercase;color:#111;margin-bottom:1.3rem;
+  white-space:nowrap;
+}
+.ov-panel.ov-about.active{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  column-gap:0;align-items:start;
+}
+.ov-about .ova-col{grid-column:1}
+.ov-about .ova-meta{grid-column:2;margin-top:0;max-width:none}
+.ov-about .ov-h{margin:0 0 1.6rem;color:#111}
+.ov-about .ova-lead{max-width:none;color:#111}
+.ov-about .ova-meta .ov-label,
+.ov-about .ova-meta .ov-body{color:#111}
+@media(max-width:680px){
+  .ov-panel.ov-about.active{display:block}
+  .ov-about .ova-meta{margin-top:3rem}
+}
+.ov-about .ov-h{font-size:0.6rem;letter-spacing:0.22em;line-height:1;margin-bottom:0.8rem}
+.ov-about .ova-lead{font-size:0.72rem;line-height:1.45;letter-spacing:-0.02em;max-width:22rem}
+.ov-about .ova-lead .s + .s{margin-top:1rem}
+.ov-about .ova-meta{display:block;max-width:none;margin-left:-4rem}
+.ov-about .ova-meta .ov-body{max-width:22rem}
+.ov-about .ova-meta > div + div{margin-top:2.5rem}
+[data-panel="services"] .ova-meta .ov-body{max-width:26rem}
+.ov-about .ova-col{margin-left:calc(20vw - 7.5rem - max(0px, (100vw - 1040px) / 2))}
+[data-panel="about"] .ova-studio{margin-top:2rem}
+.ova-lead{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(0.525rem,1.2vw,0.8rem);
+  font-weight:400;line-height:1.4;letter-spacing:-0.01em;
+  color:#111;max-width:700px;margin:0;text-align:justify;
+}
+.ova-lead .s{display:block}
+.ova-lead .s + .s{margin-top:0.7em}
+.ova-meta{
+  display:grid;grid-template-columns:1fr 1fr;gap:4.5rem 5.5rem;
+  margin-top:6rem;max-width:780px;
+}
+.ova-meta--1{grid-template-columns:1fr;gap:2.5rem;max-width:700px}
+.ova-meta .ov-label{margin-bottom:0.8rem}
+.ova-meta .ov-body{line-height:1.62}
+.ova-meta .ov-body + .ov-body{margin-top:1.1rem}
+@media(max-width:680px){
+  .ov-panel.ov-about.active{display:block}
+  .ov-about .ov-h{margin:0 0 1.6rem}
+  .ova-meta{grid-template-columns:1fr;gap:3.5rem;margin-top:4.5rem}
+}
+.ov-label{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;
+  color:#111;margin-bottom:0.8rem;line-height:1;
+}
+.ov-body{
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;line-height:1.45;letter-spacing:-0.02em;color:#111;max-width:600px;
+  text-align:justify;
+}
+.ov-body + .ov-body{margin-top:1rem}
+.ov-facts{
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;line-height:1.95;color:#111;
+  white-space:nowrap;
+}
+.ov-facts b{color:#111;font-weight:700}
+.ov-facts a{color:#111;border-bottom:1px solid rgba(17,17,17,0.3);transition:opacity 0.2s}
+.ov-facts a:hover{opacity:0.45}
+@media(max-width:600px){
+  .ov-scroll{padding:2rem 1.25rem 4rem}
+  .ov-close{top:1rem;right:1.25rem;left:auto;transform:none}
+  .ov-h{margin-left:-0.5rem}
+}
+.info-close{
+  position:absolute;bottom:1.5rem;right:2rem;
+  background:none;border:none;cursor:pointer;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:#111;line-height:1;padding:0;
+  transition:opacity 0.2s;
+}
+.info-close:hover{opacity:0.4}
+
+.info-content{
+  max-width:560px;margin:0 auto;text-align:center;
+  display:flex;flex-direction:column;gap:1.75rem;
+  font-family:'Space Mono',monospace;
+  /* Single uniform body — uppercase, same size everywhere */
+  font-size:0.6rem;font-weight:400;letter-spacing:0.18em;
+  text-transform:uppercase;line-height:1.6;
+}
+.info-row__label{
+  display:block;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
+  text-transform:uppercase;color:#111;
+  margin-bottom:0.4rem;
+}
+.info-row__value{
+  display:block;
+  font-size:0.6rem;font-weight:400;letter-spacing:0.18em;
+  text-transform:uppercase;color:#888;line-height:1.6;
+}
+.info-credits__list{
+  list-style:none;
+  display:flex;flex-direction:column;gap:0.15rem;
+  font-size:0.6rem;font-weight:400;letter-spacing:0.18em;
+  text-transform:uppercase;color:#888;line-height:1.6;
+}
+.info-credits__list li{display:block;text-align:center}
+.info-credits__list .r{
+  color:#888;font-weight:400;text-transform:uppercase;
+  font-size:0.6rem;letter-spacing:0.18em;margin-right:0.5em;
+}
+.info-credits__list .n{color:#888;text-transform:uppercase}
+
+@media(max-width:768px){
+  .info-panel{padding:6rem 1.25rem 2.5rem}
+}
+
+/* Not-found fallback */
+.proj-404{
+  padding:8rem 2rem;text-align:center;
+  font-family:'Space Mono',monospace;color:#111;
+}
+.proj-404 a{
+  display:inline-block;margin-top:1.5rem;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  border-bottom:1px solid #111;padding-bottom:2px;
+}
+
+/* ── FOOTER — same layout as index.html ────── */
+.proj-footer{
+  margin-top:50vh;
+  padding:2.5rem 2rem 3rem;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;
+  color:#111;
+}
+.proj-footer__copy{
+  justify-self:start;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:#111;line-height:1;
+}
+.proj-footer__center{
+  justify-self:center;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
+  text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
+}
+.proj-footer__right{
+  justify-self:end;
+  display:flex;align-items:center;gap:1.75rem;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:#111;line-height:1;
+}
+.proj-footer__right a{
+  color:#111;text-decoration:none;
+  transition:opacity 0.2s;
+}
+.proj-footer__right a:hover{opacity:0.4}
+@media(max-width:720px){
+  .proj-footer{
+    display:flex;flex-direction:column;align-items:center;
+    text-align:center;
+    gap:1rem;
+    padding:2rem 1rem 2rem;
+    margin-top:20vh;          /* was 50vh — too much white on a phone */
+  }
+  /* Creative Studio label dropped on phones. Order is:
+     1) social links  → 2) copyright (last line). Text size kept
+     identical to desktop. */
+  .proj-footer__center{display:none}
+  .proj-footer__right{
+    order:1;
+    flex-wrap:wrap;justify-content:center;
+    gap:0.75rem 1rem;max-width:90vw;
+  }
+  .proj-footer__copy{
+    order:2;
+    max-width:90vw;line-height:1.4;white-space:normal;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ─ logo · project title (center) · page links ══
+   Info button lives INSIDE the nav so the scroll-aware fade
+   catches title + button together. -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">azzi studios</a>
+  <span class="nav-center" id="navTitle"></span>
+  <button type="button" class="info-btn-float" id="infoBtn" aria-expanded="false">Info</button>
+  <div class="nav-right">
+    <a href="index.html">Work</a>
+    <button class="nav-link" type="button" data-panel="about">About</button>
+    <button class="nav-link" type="button" data-panel="services">Services</button>
+    <button class="nav-link" type="button" data-panel="contact">Contact</button>
+  </div>
+  <button class="nav-ham" id="ham" aria-label="Menu"><span></span><span></span></button>
+</nav>
+
+<!-- ══ MOBILE MENU — opens via the nav hamburger on phones ══ -->
+<div class="mob-menu" id="mobMenu" aria-hidden="true">
+  <a href="index.html">Work</a>
+  <button class="nav-link" type="button" data-panel="about">About</button>
+  <button class="nav-link" type="button" data-panel="services">Services</button>
+  <button class="nav-link" type="button" data-panel="contact">Contact</button>
+</div>
+
+<!-- ══ INFO PANEL — slides down from the nav.
+     Close trigger lives in the nav-center ("Back"), not here. ══ -->
+<aside class="info-panel" id="infoPanel" aria-hidden="true">
+  <div class="info-content" id="infoContent"></div>
+</aside>
+
+<!-- ══ OVERLAY (About / Services / Contact) — same as index.html ══ -->
+<div id="overlay" aria-hidden="true">
+  <button id="ovClose" class="ov-close" type="button">Back</button>
+  <div class="ov-scroll">
+
+    <section class="ov-panel ov-about" data-panel="about">
+      <div class="ova-col">
+        <h1 class="ov-h">the studio.</h1>
+        <p class="ova-lead"><span class="s">Azzi Studios is a creative studio based in Beirut.</span><span class="s">We produce campaigns and visual content for luxury, beauty, and lifestyle brands, combining creative direction, set design, and full production from brief to final image.</span><span class="s">Our founder trained as an architect. It shows in the work.</span></p>
+
+        <div class="ova-studio">
+          <p class="ov-facts">
+            <b>Founded:</b> 2024<br>
+            <b>Based:</b> Beirut, Lebanon<br>
+            <b>Specializing:</b> Luxury, Beauty, Lifestyle, F&amp;B<br>
+            <b>Working:</b> Beirut and the region
+          </p>
+        </div>
+      </div>
+
+      <div class="ova-meta">
+        <div>
+          <div class="ov-label">The Work</div>
+          <p class="ov-body">We don&rsquo;t follow briefs. We interpret them.</p>
+          <p class="ov-body">The brands that work with us want more than a campaign. They want a visual identity that holds, one that looks considered, not produced.</p>
+          <p class="ov-body">We bring the direction, the set, and the team. Every decision is made before the camera arrives.</p>
+          <p class="ov-body">We favour long-term collaborations over one-off projects.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ov-panel ov-about" data-panel="services">
+      <div class="ova-col">
+        <h1 class="ov-h">what we do.</h1>
+        <p class="ova-lead"><span class="s">We work with brands who need their campaigns to look exactly the way they imagined.</span><span class="s">We handle everything: creative direction, set design, team, and production.</span><span class="s">We craft images worth keeping.</span></p>
+      </div>
+
+      <div class="ova-meta ova-meta--1">
+        <div>
+          <div class="ov-label">Campaign Production</div>
+          <p class="ov-body">We produce your campaign from brief to final delivery. Creative direction, set design, art direction, photography, and video: one studio, full creative ownership.</p>
+        </div>
+        <div>
+          <div class="ov-label">Visual Content</div>
+          <p class="ov-body">Elevated brand imagery for product launches, lookbooks, and seasonal campaigns. Shot properly, art directed, and delivered ready to use.</p>
+        </div>
+        <div>
+          <div class="ov-label">Brand Identity</div>
+          <p class="ov-body">Visual identity systems built from the ground up. Logo, type, palette, and the codes that hold a brand together across every touchpoint.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ov-panel ov-about" data-panel="contact">
+      <div class="ova-col">
+        <h1 class="ov-h">reach out.</h1>
+        <p class="ova-lead"><span class="s">Tell us what you are working on.</span><span class="s">We favour long-term collaborations and tailor-made approaches.</span><span class="s">Based in beirut. Available across the region and internationally.</span></p>
+      </div>
+
+      <div class="ova-meta">
+        <div>
+          <div class="ov-label">Contact Details</div>
+          <p class="ov-facts">
+            <b>Email:</b> <a href="mailto:hello@azzistudios.com">hello@azzistudios.com</a><br>
+            <b>WhatsApp:</b> <a href="https://wa.me/96178902628" target="_blank" rel="noopener">+961 78 90 26 28</a><br>
+            <b>Instagram:</b> <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">@azzistudios</a><br>
+            <b>LinkedIn:</b> <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">Azzi Studios</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<main class="proj" id="proj-root"></main>
+
+<script src="main.js"></script>
+<script>
+// ── PROJECT DATA ─────────────────────────────────────────────
+const PROJECTS = {
+  'plastik-roadster': {
+    title: 'Roadster Summer',
+    client: 'Plastik Studios',
+    year: '2025',
+    discipline: 'Art direction, production design & props mastering',
+    credits: [
+      { role: 'Creative Dir. & Director', name: '@elirezkallah' },
+      { role: 'Produced by', name: '@plastikstudios' },
+      { role: 'Producer', name: '@camillemedawar' },
+      { role: 'Director of Photography', name: '@rodproduction__' },
+      { role: 'Video Coord. & Editor', name: '@mariaghosh' },
+      { role: 'Stylist', name: '@Jeanclaudearamouni' },
+      { role: 'Production Designer', name: '@mrc.zzi' },
+      { role: 'Makeup', name: '@_moerida' },
+      { role: 'Hair', name: '@remahjammoul' },
+    ],
+    media: [
+      'https://i.ibb.co/b5PKqgft/515285069-18511440391057114-5258077007708806205-n.jpg',
+      'https://i.ibb.co/8LZtqXVN/528330731-18517432678057114-4771236940823808404-n.jpg',
+      'https://i.ibb.co/6Rgq152p/529839148-18517432648057114-1648346591603768476-n.jpg',
+      'https://i.ibb.co/NdMQmbR0/527953147-18517432660057114-9115896980160238796-n.jpg',
+      'https://i.ibb.co/dYx7bK0/528296516-18517432687057114-5396667161801077676-n.jpg',
+      'https://i.ibb.co/wrCvjQZn/529160533-18517432447057114-3963628044403323556-n.jpg',
+      'https://i.ibb.co/G3G1HpQW/529514908-18517432669057114-3525830708845009008-n.jpg',
+      'https://i.ibb.co/hR456ZC3/516740497-18512180509057114-3339638040969611148-n.jpg',
+      'https://i.ibb.co/ZzKT5DCy/517855742-18512547376057114-6651450596493651219-n.jpg',
+    ],
+  },
+  'plastik-asteri': {
+    title: 'Asteri Beauty Summer',
+    client: 'Plastik Studios',
+    year: '2025',
+    discipline: 'Art direction, production design & props mastering',
+    credits: [
+      { role: 'Creative Dir. & Director', name: '@elirezkallah' },
+      { role: 'Produced by', name: '@plastikstudios' },
+      { role: 'Producer', name: '@camillemedawar' },
+      { role: 'Director of Photography', name: '@rodproduction__' },
+      { role: 'Video Coord. & Editor', name: '@mariaghosh' },
+      { role: 'Stylist', name: '@Jeanclaudearamouni' },
+      { role: 'Production Designer', name: '@mrc.zzi' },
+      { role: 'Makeup', name: '@moemaanieh' },
+      { role: 'Hair', name: '@remahjammoul' },
+    ],
+    media: [
+      'https://i.ibb.co/Y4xPbBxX/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-11.webp',
+      'https://i.ibb.co/VYDny8H2/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-02.webp',
+      'https://i.ibb.co/tMpD9jyF/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-17.webp',
+      'https://i.ibb.co/WWhm43KR/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-16.webp',
+      'https://i.ibb.co/RG8RX0dM/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-15.webp',
+      'https://i.ibb.co/93y4MLnz/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-14.webp',
+      'https://i.ibb.co/zTH6WmCV/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-13.webp',
+      'https://i.ibb.co/YFvt0jH3/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-10.webp',
+      'https://i.ibb.co/605bbSzd/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-09.webp',
+      'https://i.ibb.co/mFV7Qnzv/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-08.webp',
+      'https://i.ibb.co/XrwXn6wB/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-07.webp',
+      'https://i.ibb.co/dJJWWWKN/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-06.webp',
+      'https://i.ibb.co/QjpQbStB/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-05.webp',
+      'https://i.ibb.co/HT1cg32t/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-04.webp',
+      'https://i.ibb.co/jknNdHBC/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-03.webp',
+      'https://i.ibb.co/pjb0z0bF/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-01.webp',
+      'video:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_ccn43o&showLogo=false',
+    ],
+  },
+  'eloria-launch': {
+    title: 'Launch Campaign',
+    client: 'Eloria',
+    year: '2025',
+    discipline: 'Creative direction, art direction & set design',
+    credits: [
+      { role: 'Creative & Image Direction', name: 'Azzi Studios' },
+      { role: 'Art Dir. & Set Design', name: 'Azzi Studios' },
+      { role: 'Assistant Director', name: '@royjneidy' },
+      { role: '2nd Assistant Director', name: '@gaelimad' },
+      { role: 'Production Company', name: '@thecreativeagency.lb' },
+      { role: 'Producer', name: '@bikerguy.lb' },
+      { role: 'Production Assistant', name: '@jennifer_lahoud' },
+      { role: 'Photographer', name: '@gabykhoury.lens' },
+      { role: 'Videographer & Editor', name: '@elias_elkhouryyy' },
+      { role: 'Art Dir. & Set Designer', name: 'Marc Azzi' },
+      { role: 'Junior Art Director', name: '@hotaitt' },
+      { role: 'Styling', name: '@jmouannes' },
+      { role: 'Styling Assistant', name: '@christareine' },
+      { role: 'Makeup', name: '@makeupbylouss' },
+      { role: 'Hair', name: '@chidiacmiled @institutelieazzi' },
+      { role: 'Set Construction', name: 'Victor Chlela' },
+      { role: 'Models', name: '@davezz_z @annalauradietz @eman_jandali @xymodelingmanagement' },
+      { role: 'Location', name: '@sistudios.lb' },
+      { role: 'Location Manager', name: '@steveberzghal' },
+    ],
+    media: [
+      'https://i.ibb.co/Z1zMTRZX/image00024.png',
+      'https://i.ibb.co/8DZj5wnQ/image00028.png',
+      'https://i.ibb.co/hNPZp77/image00050.png',
+      'https://i.ibb.co/0RXsgry8/image00045.png',
+      'https://i.ibb.co/TD7cKM8F/image00043.jpg',
+      'https://i.ibb.co/d4p7CVSD/image00040.png',
+      'https://i.ibb.co/XZS7gvrb/image00057.png',
+      'https://i.ibb.co/xt4z83KN/image00052.png',
+      'https://i.ibb.co/27LpLzzP/image00038.png',
+      'https://i.ibb.co/cKD7fxKG/image00032.jpg',
+      'vreel:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=Eloria_WinterShoot_2026_Videos_01_pdhbwa&showLogo=false',
+      'vreel:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=Eloria_LaunchingShoot_2025_Video_Office_uz1dxd&showLogo=false',
+      'vreel:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=Eloria_LaunchingShoot_2025_Video_Gym_xkwau1&showLogo=false',
+    ],
+  },
+  'peachpuff-summer': {
+    title: 'Summer Shoot',
+    client: 'Peachpuff Agency',
+    year: '2025',
+    discipline: 'Set design & props mastering',
+    credits: [
+      { role: 'Photographer & Editor', name: '@francescamatta_' },
+      { role: 'Art Direction', name: '@miakhazen @petra.xx' },
+      { role: 'Set Design & Props', name: '@karen_stephan @mrc.zzi' },
+      { role: 'Styling', name: '@saintbalech' },
+      { role: 'Hair', name: '@markmerhy @hairbymarcos_' },
+      { role: 'Management', name: '@peachpuffagency' },
+      { role: 'Models', name: '@tarekzeidan.1 @luana.tabbara @teresadargham.' },
+    ],
+    media: [
+      'https://i.ibb.co/Pswts4hG/IMG-7884.jpg',
+      'https://i.ibb.co/bgfjV3GL/IMG-7902.jpg',
+      'https://i.ibb.co/0VmG1K7H/IMG-7908.jpg',
+      'https://i.ibb.co/BKshZSzF/IMG-7907.jpg',
+      'https://i.ibb.co/Fk9SZKC4/IMG-7906.jpg',
+      'https://i.ibb.co/pvk5DGZT/IMG-7903.jpg',
+      'https://i.ibb.co/GQcG5Lsc/IMG-7935.jpg',
+      'https://i.ibb.co/R4NRZWk1/IMG-7905.jpg',
+      'https://i.ibb.co/bMY8Vg3n/IMG-7893.jpg',
+      'https://i.ibb.co/TBJ3wkGB/IMG-7895.jpg',
+      'https://i.ibb.co/23ndXdQR/IMG-7881.jpg',
+      'https://i.ibb.co/zhd8T9yy/IMG-7882.jpg',
+      'https://i.ibb.co/ynmfCBtq/IMG-7880.jpg',
+    ],
+  },
+  'ambiance-xmas': {
+    title: 'Christmas Campaign',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Set design, creative direction & props mastering',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'https://i.ibb.co/d09K1pTn/8.jpg',
+      'https://i.ibb.co/JWCKNL95/5.jpg',
+      'https://i.ibb.co/XZrrH8cZ/20.jpg',
+      'https://i.ibb.co/vxyt8B9p/21.jpg',
+      'https://i.ibb.co/TM7SpqXj/22.jpg',
+      'https://i.ibb.co/xKv9Z9y1/23.jpg',
+      'https://i.ibb.co/hx4NhKd0/19.jpg',
+      'https://i.ibb.co/YBk7h4kT/1.jpg',
+      'video:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=AMBIANCE_FINAL_HERO_copy_Resized_sg20zc&showLogo=false',
+    ],
+  },
+  'ambiance-winter': {
+    title: 'Winter Shoot',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Art direction & set design',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'https://i.ibb.co/qMm8Ckhf/DSC03056.jpg',
+      'https://i.ibb.co/wNhbCrhq/DSC03053.jpg',
+      'https://i.ibb.co/3m6ykkRy/DSC03061.jpg',
+      'https://i.ibb.co/S4JkJTjQ/DSC03070.jpg',
+      'https://i.ibb.co/7dDTHCLh/DSC03076.jpg',
+      'https://i.ibb.co/PGrVdJns/DSC03086.jpg',
+      'https://i.ibb.co/KpPKW0x3/DSC03099.jpg',
+      'https://i.ibb.co/Y4bBWkst/DSC03133.jpg',
+    ],
+  },
+  'ambiance-summer': {
+    title: 'Summer Shoot',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Art direction & set design',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'https://i.ibb.co/mVxk0WGN/010-Medium.jpg',
+      'https://i.ibb.co/BXYmMRS/011-Medium.jpg',
+      'https://i.ibb.co/wr8fV046/012-Medium.jpg',
+      'https://i.ibb.co/Z6ds6fhY/013-Medium.jpg',
+      'https://i.ibb.co/pvBWyJyJ/014-Medium.jpg',
+      'https://i.ibb.co/V8BPXb6/015-Medium.jpg',
+      'https://i.ibb.co/0jr5m2GL/016-Medium.jpg',
+      'https://i.ibb.co/M58j8TWK/017-Medium.jpg',
+      'https://i.ibb.co/9mb5701Y/018-Medium.jpg',
+      'https://i.ibb.co/CpDDVbR4/019-Medium.jpg',
+      'https://i.ibb.co/bjPfK5g8/0110-Medium.jpg',
+      'https://i.ibb.co/yFZQx5yY/0111-Medium.jpg',
+      'https://i.ibb.co/h1dzYfQb/0112-Medium.jpg',
+      'https://i.ibb.co/twmY2NK3/0113-Medium.jpg',
+      'https://i.ibb.co/JF7bJM3M/0114-Medium.jpg',
+      'https://i.ibb.co/6zwY612/0115-Medium.jpg',
+      'https://i.ibb.co/8L5NwHtd/0116-Medium.jpg',
+      'https://i.ibb.co/4wqhzKJd/0117-Medium.jpg',
+    ],
+  },
+  'ambiance-emozee': {
+    title: 'Emozee Campaign',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Campaign production & brand direction',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+      { role: 'Animation', name: '@metapath.world' },
+    ],
+    media: [
+      'https://i.ibb.co/wNYKV6k6/emozee1.jpg',
+      'https://i.ibb.co/bMPM1Wqp/emozee2.png',
+      'video:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=2-_EMOZEE_SHOWROOM_mwryua&showLogo=false',
+      'video:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=3-_EMOZEE_LEBANON_avdamt&showLogo=false',
+    ],
+  },
+  'ambiance-spring': {
+    title: 'Spring Shoot',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Art direction & set design',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'https://i.ibb.co/YBpLNk72/IMG-2634.jpg',
+      'https://i.ibb.co/MydhPQHy/IMG-2615.jpg',
+      'https://i.ibb.co/nqPm6gft/IMG-2687.jpg',
+      'https://i.ibb.co/ZzyxbjLM/IMG-2701.jpg',
+      'https://i.ibb.co/qYZ3sMNZ/IMG-2703.jpg',
+      'https://i.ibb.co/C5kYxRx5/IMG-2432.jpg',
+      'https://i.ibb.co/LDmJfnSx/IMG-2451.jpg',
+      'https://i.ibb.co/S7dhP7Lh/IMG-2469-2.jpg',
+      'https://i.ibb.co/7d72v8yt/IMG-2477.jpg',
+      'https://i.ibb.co/nqy85kMz/IMG-2585.jpg',
+      'https://i.ibb.co/1JzQwXP4/IMG-2600.jpg',
+      'https://i.ibb.co/N21vWQtM/IMG-2340.jpg',
+    ],
+  },
+  'ambiance-boutique-xmas': {
+    title: 'Boutique Christmas',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Set design & art direction',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'https://i.ibb.co/N6jNNGgp/IMG-3828.jpg',
+      'https://i.ibb.co/FkZct2p7/IMG-3836.jpg',
+      'https://i.ibb.co/HfVJ93h1/IMG-3837.jpg',
+      'https://i.ibb.co/0pmKMzp3/IMG-3839.jpg',
+      'https://i.ibb.co/CfXMgLZ/IMG-3840.jpg',
+      'https://i.ibb.co/sJczrXg1/IMG-3834.jpg',
+      'https://i.ibb.co/KjDF57tF/IMG-3835.jpg',
+      'https://i.ibb.co/7thzyqJL/IMG-3813.jpg',
+      'https://i.ibb.co/cKTp42kp/IMG-3822.jpg',
+      'https://i.ibb.co/mr49SpK7/IMG-3803.jpg',
+      'https://i.ibb.co/d0yZDfkr/IMG-3804.jpg',
+    ],
+  },
+  'pinch-moi-garden': {
+    title: 'The Garden',
+    client: 'Pinch Moi!',
+    year: '2024',
+    discipline: 'Art direction & set design',
+    credits: [
+      { role: 'Brand', name: '@pinchmoi' },
+    ],
+    media: [
+      'https://i.ibb.co/7J26pnn9/DSC09569.jpg',
+      'https://i.ibb.co/cXgTGPLV/DSC09574.jpg',
+      'https://i.ibb.co/VhkGqVs/DSC09593.jpg',
+      'https://i.ibb.co/whDDkBC5/DSC09648.jpg',
+      'https://i.ibb.co/chC6QL4h/DSC09747.jpg',
+      'https://i.ibb.co/RGR8cj0M/DSC09822.jpg',
+      'https://i.ibb.co/fGLvYYT0/DSC09836.jpg',
+      'https://i.ibb.co/Y7rM893q/DSC09882.jpg',
+    ],
+  },
+  'ambiance-autumn': {
+    title: 'Autumn Shoot',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Art direction & set design',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'https://i.ibb.co/Q7BmwMND/37-A7521-copy-2.jpg',
+      'https://i.ibb.co/spkySGVP/37-A7482-copy-2.jpg',
+      'https://i.ibb.co/1GzZc8t5/37-A7535-copy-2.jpg',
+      'https://i.ibb.co/XkYhZcT1/37-A7580-copy-2.jpg',
+      'https://i.ibb.co/1tXNFPGz/37-A7605-copy-2.jpg',
+      'https://i.ibb.co/236bbh2T/37-A7624-copy-2.jpg',
+      'https://i.ibb.co/HpkT9Th6/37-A7684-copy-2.jpg',
+      'https://i.ibb.co/rfHQJB55/37-A7729-copy-2.jpg',
+      'https://i.ibb.co/VcVkYQfL/37-A7741-copy-2.jpg',
+      'https://i.ibb.co/Lzk3jmWX/37-A7767-copy-2.jpg',
+      'https://i.ibb.co/wkWsTtX/37-A7776-copy-2.jpg',
+      'https://i.ibb.co/R4p88kSw/37-A7799-copy-2.jpg',
+      'https://i.ibb.co/qMT8d9rN/37-A7845-copy-2.jpg',
+      'https://i.ibb.co/0phDHp4F/37-A7888-copy-2.jpg',
+    ],
+  },
+  'ambiance-hue': {
+    title: 'Hue Campaign',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Campaign production & brand direction',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'video:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=1_s3tlhq&showLogo=false',
+      'video:https://player.cloudinary.com/embed/?cloud_name=duf4e8pgd&public_id=4_gotdkg&showLogo=false',
+    ],
+  },
+  'ambiance-boutique-val': {
+    title: 'Boutique Valentine',
+    client: 'Ambiance',
+    year: '2024',
+    discipline: 'Art direction & set design',
+    credits: [
+      { role: 'Production', name: '@digitalsociopath' },
+      { role: 'Brand', name: '@ambiance.world' },
+    ],
+    media: [
+      'https://i.ibb.co/yF5pyyLL/018.jpg',
+      'https://i.ibb.co/KcbDTXfX/011.jpg',
+      'https://i.ibb.co/8g4fCf5Z/010.jpg',
+      'https://i.ibb.co/9kb4qDcs/012.jpg',
+      'https://i.ibb.co/C37QC8vZ/013.jpg',
+      'https://i.ibb.co/C5QFFq1V/015.jpg',
+      'https://i.ibb.co/HLD3z78H/016.jpg',
+      'https://i.ibb.co/1f6dD5gg/017.jpg',
+      'https://i.ibb.co/pBpkzH5v/019.jpg',
+      'https://i.ibb.co/WvDnTLGg/0111.jpg',
+      'https://i.ibb.co/HLf3z4KY/0112.jpg',
+      'https://i.ibb.co/wZZMtSvJ/0113.jpg',
+    ],
+  },
+  'blubay-nightlife': {
+    title: 'Nightlife',
+    client: 'Blubay Beach',
+    year: '2024',
+    discipline: 'Art direction & set design',
+    credits: [
+      { role: 'Venue', name: '@blubaybeach' },
+    ],
+    media: [
+      'https://i.ibb.co/0VRyngxX/20c47669-339f-4487-88f6-bf0924e53105-rw-1920.jpg',
+      'https://i.ibb.co/tphJf9rG/061582b2-45d0-4629-80fb-66700bbd64ae-rw-1920.jpg',
+      'https://i.ibb.co/9HfbkPK7/029443a1-ea64-49c4-8503-fa4501d52a13-rw-1920.jpg',
+      'https://i.ibb.co/FbD2041T/6bc5740d-8be5-4b0c-aa21-1a32e118513e-rw-1920.jpg',
+      'https://i.ibb.co/k2qJ5yzJ/e7b0cb5f-df67-40fa-aef5-69989a1fe917-rw-1920.jpg',
+    ],
+  },
+};
+
+// ── RENDER ───────────────────────────────────────────────────
+(function () {
+  const id = new URLSearchParams(window.location.search).get('id') || 'plastik-asteri';
+  const p  = PROJECTS[id];
+  const root = document.getElementById('proj-root');
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, c =>
+      ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // 'video:URL'  → 16:9 landscape clip (defaults)
+  // 'vreel:URL'  → 9:16 portrait reel
+  function isVideo(src){ return typeof src === 'string' && (src.startsWith('video:') || src.startsWith('vreel:')); }
+  function isReel(src){  return typeof src === 'string' && src.startsWith('vreel:'); }
+  function videoUrl(src){
+    const u = src.slice(6);   // both prefixes are 6 chars
+    return u + (u.includes('?') ? '&' : '?') + 'rm=minimal&autoplay=true&muted=true&loop=true';
+  }
+  function mediaTag(src, cls, eager){
+    if (isVideo(src)) {
+      return `<iframe class="${cls}" src="${esc(videoUrl(src))}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen playsinline loading="lazy"></iframe>`;
+    }
+    // eager=true → no lazy attribute, no rate-limit. Used for the first
+    // few pairs so they're ready the moment the user starts scrolling.
+    const load = eager ? '' : ' loading="lazy"';
+    const prio = eager ? ' fetchpriority="high"' : '';
+    return `<img class="${cls}" src="${esc(src)}" alt=""${load}${prio} decoding="async">`;
+  }
+
+  const footer = `
+    <footer class="proj-footer">
+      <span class="proj-footer__copy">&copy; 2026 Azzi Studios — All rights reserved</span>
+      <span class="proj-footer__center">Creative Studio</span>
+      <div class="proj-footer__right">
+        <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="mailto:hello@azzistudios.com">Email</a>
+      </div>
+    </footer>`;
+
+  if (!p) {
+    document.title = 'Project — Azzi Studios';
+    root.innerHTML = `
+      <div class="proj-404">
+        <p>Project not found.</p>
+        <a href="index.html">Back</a>
+      </div>
+      ${footer}`;
+    return;
+  }
+
+  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+
+  // ── Nav-center reads "CLIENT · TITLE" — replaces the
+  //    "Creative Studio" label used on every other page. ──
+  const navTitle  = document.getElementById('navTitle');
+  const fullTitle = `${p.client} · ${p.title}`;
+  if (navTitle) navTitle.textContent = fullTitle;
+
+  // ── Info panel: centered, labelled rows (Project / Client /
+  //    Services / Credits). Labels black, body gray.
+  //    Drop any credit whose name is just the client's own handle
+  //    (e.g. Ambiance projects → strip the "Brand @ambiance.world"
+  //    line, since the client is already named). ──
+  const clientNorm = String(p.client || '').toLowerCase().replace(/\s+/g, '');
+  const filteredCredits = p.credits.filter(c => {
+    const nameNorm = String(c.name || '').toLowerCase().replace(/^@/, '').replace(/\s+/g, '');
+    return !(c.role === 'Brand' && nameNorm.startsWith(clientNorm));
+  });
+  const creditsHTML = filteredCredits.map(c =>
+    `<li><span class="r">${esc(c.role)}</span><span class="n">${esc(c.name)}</span></li>`
+  ).join('');
+  const infoContent = document.getElementById('infoContent');
+  if (infoContent) {
+    infoContent.innerHTML = `
+      <div class="info-row">
+        <span class="info-row__label">Project</span>
+        <span class="info-row__value">${esc(p.title)}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">Client</span>
+        <span class="info-row__value">${esc(p.client)}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">Services</span>
+        <span class="info-row__value">${esc(p.discipline)}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">Credits</span>
+        <ul class="info-credits__list">${creditsHTML}</ul>
+      </div>`;
+  }
+
+  // Info button toggles the panel
+  const infoBtn   = document.getElementById('infoBtn');
+  const infoPanel = document.getElementById('infoPanel');
+  const infoClose = document.getElementById('infoClose');   // may be null — close trigger now lives in nav-center
+  function openInfo(){
+    infoPanel.classList.add('open');
+    infoBtn.classList.add('is-open');
+    infoBtn.textContent = 'Back';        // also acts as close trigger on mobile
+    infoBtn.setAttribute('aria-expanded', 'true');
+    infoPanel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('info-open');
+    if (navTitle) { navTitle.textContent = 'Back'; navTitle.style.cursor = 'pointer'; }
+  }
+  function closeInfo(){
+    infoPanel.classList.remove('open');
+    infoBtn.classList.remove('is-open');
+    infoBtn.textContent = 'Info';
+    infoBtn.setAttribute('aria-expanded', 'false');
+    infoPanel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('info-open');
+    if (navTitle) { navTitle.textContent = fullTitle; navTitle.style.cursor = ''; }
+  }
+  // nav-center acts as the Back trigger while info is open
+  if (navTitle) navTitle.addEventListener('click', () => {
+    if (infoPanel.classList.contains('open')) closeInfo();
+  });
+  infoBtn.addEventListener('click', () => {
+    infoPanel.classList.contains('open') ? closeInfo() : openInfo();
+  });
+  if (infoClose) infoClose.addEventListener('click', closeInfo);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && infoPanel.classList.contains('open')) closeInfo();
+  });
+
+  // ── Build the section list ──
+  // • Pictures lead the page: paired up two at a time, with a 2×2
+  //   grid slotted in every third section for rhythm.
+  // • An odd trailing picture becomes a solo full-width section.
+  // • Videos always come LAST. Each video is its own section,
+  //   centered alone (9:16 reel frame).
+  function buildSections(media) {
+    const out = [];
+    const pictures = media.filter(s => !isVideo(s));
+    const videos   = media.filter(isVideo);
+
+    const queue = pictures.slice();
+    let sec = 0;
+    while (queue.length) {
+      const remaining = queue.length;
+      if (sec > 0 && sec % 3 === 0 && remaining >= 4) {
+        out.push({ type: 'grid', items: queue.splice(0, 4) });
+      } else if (remaining >= 2) {
+        out.push({ type: 'pair', items: queue.splice(0, 2) });
+      } else {
+        out.push({ type: 'solo-pic', items: queue.splice(0, 1) });
+      }
+      sec++;
+    }
+
+    // All project videos go into ONE section at the end, side
+    // by side (so e.g. Eloria's three reels sit in a row).
+    if (videos.length) out.push({ type: 'video-end', items: videos });
+    return out;
+  }
+
+  const sections  = buildSections(p.media);
+  const EAGER_SEC = 2;          // eager-load media for first 2 sections
+
+  // Cell classes:
+  //   .proj-cell--video → any video (default 16:9 frame)
+  //   .proj-cell--reel  → 9:16 portrait reel (videos with "vreel:")
+  const cellHTML = (src, eager) => {
+    let cls = 'proj-cell';
+    if (isVideo(src)) cls += ' proj-cell--video';
+    if (isReel(src))  cls += ' proj-cell--reel';
+    return `<div class="${cls}">${mediaTag(src, '', eager)}</div>`;
+  };
+
+  const sectionsHTML = sections.map((s, sIdx) => {
+    const eager = sIdx < EAGER_SEC;
+    if (s.type === 'grid') {
+      return `<section class="proj-section proj-section--grid">${s.items.map(src => cellHTML(src, eager)).join('')}</section>`;
+    }
+    if (s.type === 'pair') {
+      return `<section class="proj-section proj-section--pair">${s.items.map(src => cellHTML(src, eager)).join('')}</section>`;
+    }
+    if (s.type === 'video-end') {
+      return `<section class="proj-section proj-section--video-end">${s.items.map(src => cellHTML(src, false)).join('')}</section>`;
+    }
+    return `<section class="proj-section proj-section--solo-pic">${cellHTML(s.items[0], eager)}</section>`;
+  }).join('');
+
+  root.innerHTML = sectionsHTML + footer;
+
+  // ── Aggressively prefetch every still image so scrolling between
+  //    sections never blocks on a fresh download. ──
+  p.media.forEach(src => {
+    if (isVideo(src)) return;
+    const i = new Image();
+    i.decoding = 'async';
+    i.src = src;
+  });
+
+  // ── Lift-fade transition on each section as it scrolls into view
+  //    One-shot: once a section has appeared, it stays visible. (The
+  //    previous re-arming version was triggering a fade-out/fade-in
+  //    every time you scrolled past a section, which made the page
+  //    feel like it was constantly re-loading.) ──
+  const secEls = root.querySelectorAll('.proj-section');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  secEls.forEach(el => io.observe(el));
+  requestAnimationFrame(() => {
+    if (secEls[0]) { secEls[0].classList.add('in-view'); io.unobserve(secEls[0]); }
+  });
+})();
+
+// ══ ABOUT / SERVICES / CONTACT OVERLAY ════════════════════════════
+// Same openPanel / closeOverlay flow as index.html so the
+// drop-down panels look and behave identically across the site.
+(function () {
+  const overlay = document.getElementById('overlay');
+  const ovClose = document.getElementById('ovClose');
+  if (!overlay) return;
+  const panels  = overlay.querySelectorAll('.ov-panel');
+
+  function openPanel(name){
+    let found = false;
+    panels.forEach(p => {
+      const on = p.getAttribute('data-panel') === name;
+      p.classList.toggle('active', on);
+      if (on) found = true;
+    });
+    if (!found) return;
+    document.body.classList.add('ov-open');
+    document.body.setAttribute('data-ov-panel', name);
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.scrollTop = 0;
+  }
+  function closeOverlay(){
+    document.body.classList.remove('ov-open');
+    document.body.removeAttribute('data-ov-panel');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+  ovClose.addEventListener('click', closeOverlay);
+  document.querySelectorAll('[data-panel]').forEach(el => {
+    if (el.closest('#overlay')) return;           // skip the panels themselves
+    el.addEventListener('click', () => openPanel(el.getAttribute('data-panel')));
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay();
+  });
+})();
+
+// ══ MOBILE HAMBURGER ═════════════════════════════════════════════
+// Toggles the full-screen .mob-menu. Closes when any item is tapped
+// (the overlay panel + the Work link both handle their own actions).
+(function () {
+  const ham   = document.getElementById('ham');
+  const menu  = document.getElementById('mobMenu');
+  if (!ham || !menu) return;
+
+  function open(){
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
+    const [s0, s1] = ham.querySelectorAll('span');
+    if (s0) s0.style.transform = 'rotate(45deg) translate(4px, 4px)';
+    if (s1) s1.style.transform = 'rotate(-45deg) translate(4px, -4px)';
+  }
+  function close(){
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+    ham.querySelectorAll('span').forEach(s => s.style.transform = '');
+  }
+  ham.addEventListener('click', () => {
+    menu.classList.contains('open') ? close() : open();
+  });
+  menu.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menu.classList.contains('open')) close();
+  });
+})();
+
+// ══ IMAGE PROTECTION ═════════════════════════════════════════════
+// Block right-click "Save image" and drag-to-save on every image.
+// (Iframes — Cloudinary videos — are out of scope for these events.)
+document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+document.addEventListener('dragstart',   e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+
+// ══ ANONYMIZE IMAGE ALT TEXT ════════════════════════════════════
+// Set every image's alt to "Image N" so the working filename never
+// appears in the saved-as dialog or accessibility tree. Runs once
+// after render — no MutationObserver, which was firing on every DOM
+// change (including scroll transitions) and causing jank.
+(function () {
+  let n = 0;
+  document.querySelectorAll('main img').forEach(img => {
+    n++;
+    img.alt = 'Image ' + n;
+  });
+})();
+</script>
+</body>
+</html>

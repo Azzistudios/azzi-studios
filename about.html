@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Azzi Studios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Squada+One&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html{font-size:16px;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar{display:none}
+body{background:#fff;color:#111;font-family:'Space Mono','Courier New',monospace;font-weight:400;line-height:1.55;min-height:100vh}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ─────────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;
+  height:60px;padding:1.5rem 2rem;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  z-index:100;background:#fff;
+  transition:opacity 0.45s ease;
+}
+.nav.nav--idle{opacity:0;pointer-events:none}
+.nav.nav--idle *{pointer-events:none}
+.nav-logo{
+  /* Loader-style logo (Space Mono, bold, uppercase, spaced) sized
+     to match the nav buttons — kept identical across all pages. */
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1;
+}
+.nav-logo sup{font-size:0.5em;vertical-align:super}
+.nav-right{
+  display:flex;gap:1.5rem;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+}
+.nav-right a{transition:opacity 0.2s;color:#111}
+.nav-right a:hover{opacity:0.4}
+.nav-right a.active{font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+.nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px;cursor:pointer}
+.nav-ham span{display:block;width:18px;height:1px;background:#111}
+.mob-menu{
+  display:none;position:fixed;inset:0;background:#fff;z-index:99;
+  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase}
+.mob-close{position:absolute;top:1.5rem;right:2rem;font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer}
+
+@media(max-width:720px){
+  .nav-right{display:none}
+  .nav-ham{display:flex}
+}
+
+/* ── ABOUT BLOCK ─────────────────────────── */
+.about-block{
+  padding:8rem 2rem 6rem;
+  max-width:760px;
+  margin:0 auto;
+}
+.about-section{
+  margin-bottom:2.5rem;
+}
+.about-label{
+  font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:#111;margin-bottom:0.6rem;
+}
+.about-body{
+  font-size:0.8125rem;
+  line-height:1.55;
+  color:#111;
+  max-width:560px;
+}
+.about-cols{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 3rem;
+  margin-top:0.5rem;
+}
+.about-col-label{
+  font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:#111;margin-bottom:0.6rem;
+}
+.about-col-body{
+  font-size:0.75rem;
+  color:rgba(17,17,17,0.45);
+  line-height:1.55;
+}
+.about-col-body a{
+  transition:color 0.2s;
+}
+.about-col-body a:hover{color:#111}
+
+/* footer row inside about */
+.about-footer{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem 3rem;
+  font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;
+}
+.about-footer-cell{
+  color:rgba(17,17,17,0.45);
+}
+.about-footer-cell--center{text-align:center;color:rgba(17,17,17,0.5)}
+.about-footer-cell--right{text-align:right}
+.about-footer-cell a{
+  color:#111;
+  border-bottom:1px solid rgba(17,17,17,0.25);padding-bottom:1px;
+}
+.about-footer-cell a:hover{border-color:#111}
+
+/* Tablet */
+@media(max-width:1048px){
+  .about-block{padding:7rem 1.5rem 5rem}
+  .about-body{font-size:0.75rem}
+  .nav{padding:1.25rem 1.25rem;height:48px}
+}
+/* Mobile */
+@media(max-width:768px){
+  /* Inner padding lifted to 2rem (= nav padding) so body text
+     starts at the same x-position as the logo and never touches
+     the screen edge. */
+  .about-block{padding:6rem 2rem 3rem}
+  .about-cols{grid-template-columns:1fr;gap:1.25rem}
+  .about-footer{grid-template-columns:1fr;gap:0.5rem;text-align:left;padding:2rem}
+  .about-footer-cell--center,.about-footer-cell--right{text-align:left}
+  .toggle-bar{padding:3rem 2rem 1.5rem}
+}
+
+/* ── VIEW TOGGLE BAR ─────────────────────── */
+.toggle-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:4rem 2rem 2rem;
+}
+.view-toggle{
+  display:flex;gap:1.25rem;align-items:center;
+  font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;
+}
+.vt-btn{
+  background:none;border:none;padding:0;
+  font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:inherit;
+  color:rgba(17,17,17,0.45);cursor:pointer;transition:color 0.2s;
+}
+.vt-btn.active{color:#111}
+.back-link{
+  font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#111;
+  cursor:pointer;
+}
+.back-link:hover{opacity:0.5}
+
+/* ── GALLERY (matches landing page from cactus) ───── */
+.gal{
+  padding:0;
+}
+.gal-row{
+  display:grid;gap:3px;margin-bottom:3px;
+}
+.gal-row--1{grid-template-columns:1fr}
+.gal-row--2{grid-template-columns:1fr 1fr}
+.gal-row--3{grid-template-columns:repeat(3,1fr)}
+.gal-row--4{grid-template-columns:repeat(4,1fr)}
+.gal-row--6{grid-template-columns:repeat(6,1fr)}
+
+.gal-cell{
+  display:block;position:relative;
+}
+.gal-cell-img{
+  overflow:hidden;
+  aspect-ratio:4/3;
+  background:#f4f4f4;
+}
+.gal-cell-img img{
+  transition:transform 0.8s cubic-bezier(0.19,1,0.22,1);
+}
+.gal-cell:hover .gal-cell-img img{transform:scale(1.03)}
+
+/* aspect ratios per row type */
+.gal-row--1 .gal-cell-img{aspect-ratio:16/8}
+.gal-row--2 .gal-cell-img{aspect-ratio:4/5}
+.gal-row--3 .gal-cell-img{aspect-ratio:1/1}
+.gal-row--4 .gal-cell-img{aspect-ratio:1/1}
+.gal-row--6 .gal-cell-img{aspect-ratio:1/1}
+
+.gal-cell-cap{
+  padding:0.5rem 0.25rem 0;
+  font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(17,17,17,0.4);
+  line-height:1.4;
+}
+
+@media(max-width:1048px){
+  .gal-row--6{grid-template-columns:repeat(4,1fr)}
+  .gal-row--4{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:768px){
+  .gal-row--6,.gal-row--4,.gal-row--3{grid-template-columns:repeat(2,1fr)}
+  .gal-row--1 .gal-cell-img{aspect-ratio:4/3}
+  .gal-row--2 .gal-cell-img{aspect-ratio:1/1}
+  .gal-cell-cap{font-size:0.55rem}
+}
+@media(max-width:480px){
+  .gal-row--2{grid-template-columns:1fr}
+  .gal-row--3,.gal-row--4,.gal-row--6{grid-template-columns:1fr 1fr;gap:2px}
+}
+
+/* LIST view */
+.gal.list-view .gal-row{display:none}
+.gal.list-view .gal-list-mode{display:block}
+.gal-list-mode{display:none;padding:0 2rem 3rem}
+.gal-list-mode a{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:0.9rem 0;
+  border-bottom:1px solid rgba(17,17,17,0.1);
+  font-size:0.625rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;
+  transition:opacity 0.2s;
+}
+.gal-list-mode a:hover{opacity:0.5}
+.gal-list-mode a .cat{
+  font-weight:400;color:rgba(17,17,17,0.45);
+  font-size:0.5rem;letter-spacing:0.16em;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">azzi studios</a>
+  <div class="nav-right">
+    <a href="about.html" class="active">About</a>
+    <a href="mailto:hello@azzistudios.com">Email</a>
+  </div>
+  <button class="nav-ham" id="ham"><span></span><span></span></button>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+</div>
+
+<!-- ── ABOUT BLOCK ──────────────────────── -->
+<section class="about-block">
+
+  <div class="about-section">
+    <div class="about-label">The Studio</div>
+    <p class="about-body">
+      Azzi Studios is a creative studio based in Beirut. We produce campaigns and visual content for luxury, beauty, and lifestyle brands &mdash; combining creative direction, set design, and full production from brief to final image.
+    </p>
+    <p class="about-body" style="margin-top:1rem">
+      Our founder trained as an architect. It shows in the work.
+    </p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">The Work</div>
+    <p class="about-body">
+      We don&rsquo;t follow briefs. We interpret them.
+    </p>
+    <p class="about-body" style="margin-top:1rem">
+      The brands that work with us want more than a campaign. They want a visual identity that holds &mdash; one that looks considered, not produced.
+    </p>
+    <p class="about-body" style="margin-top:1rem">
+      We bring the direction, the set, and the team. Every decision is made before the camera arrives.
+    </p>
+    <p class="about-body" style="margin-top:1rem">
+      We favour long-term collaborations over one-off projects.
+    </p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Studio Facts</div>
+    <div class="about-col-body">
+      <span style="color:#111">Founded</span> &mdash; 2024<br>
+      <span style="color:#111">Based</span> &mdash; Beirut, Lebanon<br>
+      <span style="color:#111">Specializing</span> &mdash; Luxury &middot; Beauty &middot; Lifestyle<br>
+      <span style="color:#111">Working</span> &mdash; Beirut and the region
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem">
+    <div class="about-footer">
+      <div class="about-footer-cell">&copy; 2026 AZZI STUDIOS — All Rights Reserved</div>
+      <div class="about-footer-cell about-footer-cell--right">Website by <a href="index.html">AZZI STUDIOS</a></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── VIEW TOGGLE ──────────────────────── -->
+<div class="toggle-bar">
+  <div class="view-toggle">
+    <button class="vt-btn active" id="btnFlow">[+] Flow</button>
+    <button class="vt-btn" id="btnList">[ ] List</button>
+  </div>
+  <span class="back-link" id="backLink">Back</span>
+</div>
+
+<!-- ── GALLERY ──────────────────────────── -->
+<div class="gal" id="gallery">
+
+  <div class="gal-row gal-row--2">
+    <a href="project.html?id=plastik-roadster" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project18_Plastik_Roadster/515285069_18511440391057114_5258077007708806205_n.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Plastik — Roadster</div>
+    </a>
+    <a href="project.html?id=plastik-asteri" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_11.webp" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Plastik — Asteri</div>
+    </a>
+  </div>
+
+  <div class="gal-row gal-row--1">
+    <a href="project.html?id=eloria-launch" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project14_Eloria_Launch/image00024.png" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Eloria — Launch</div>
+    </a>
+  </div>
+
+  <div class="gal-row gal-row--4">
+    <a href="project.html?id=ambiance-xmas" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project03_Ambiance_ChristmasCampaign/8.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Ambiance — Christmas</div>
+    </a>
+    <a href="project.html?id=ambiance-winter" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project09_Ambiance_WinterShoot/DSC03056.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Ambiance — Winter</div>
+    </a>
+    <a href="project.html?id=ambiance-summer" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project07_Ambiance_SummerShoot/010.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Ambiance — Summer</div>
+    </a>
+    <a href="project.html?id=ambiance-spring" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project06_Ambiance_SpringShoot/IMG_2634.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Ambiance — Spring</div>
+    </a>
+  </div>
+
+  <div class="gal-row gal-row--2">
+    <a href="project.html?id=pinch-moi-garden" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project15_PinchMoi_TheGarden/DSC09569.JPG" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Pinch Moi — The Garden</div>
+    </a>
+    <a href="project.html?id=ambiance-autumn" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project01_Ambiance_AutumnShoot/_37A7521%20copy%202.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Ambiance — Autumn</div>
+    </a>
+  </div>
+
+  <div class="gal-row gal-row--6">
+    <a href="project.html?id=ambiance-boutique-xmas" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project02_Ambiance_ChristmasBoutique/IMG_3828.jpeg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Boutique — Christmas</div>
+    </a>
+    <a href="project.html?id=ambiance-boutique-val" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project08_Ambiance_Valentine/018.jpeg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Boutique — Valentine</div>
+    </a>
+    <a href="project.html?id=ambiance-emozee" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project04_Ambiance_Emozee/emozee1.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Ambiance — Emozee</div>
+    </a>
+    <a href="project.html?id=ambiance-hue" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project07_Ambiance_SummerShoot/018.jpg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Ambiance — Hue</div>
+    </a>
+    <a href="project.html?id=peachpuff-summer" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project11_Blubay_Shoot/IMG_7884.JPG" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Peachpuff — Summer</div>
+    </a>
+    <a href="project.html?id=blubay-nightlife" class="gal-cell">
+      <div class="gal-cell-img"><img src="images/Project10_Blubay_Nightlife/20c47669-339f-4487-88f6-bf0924e53105_rw_1920.jpeg" alt="" loading="lazy"></div>
+      <div class="gal-cell-cap">Blubay — Nightlife</div>
+    </a>
+  </div>
+
+  <!-- LIST view (hidden by default) -->
+  <div class="gal-list-mode">
+    <a href="project.html?id=plastik-roadster"><span>Plastik — Roadster</span><span class="cat">Campaign Production</span></a>
+    <a href="project.html?id=plastik-asteri"><span>Plastik — Asteri</span><span class="cat">Campaign Production</span></a>
+    <a href="project.html?id=eloria-launch"><span>Eloria — Launch</span><span class="cat">Art Direction</span></a>
+    <a href="project.html?id=ambiance-xmas"><span>Ambiance — Christmas</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=ambiance-winter"><span>Ambiance — Winter</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=ambiance-summer"><span>Ambiance — Summer</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=ambiance-spring"><span>Ambiance — Spring</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=ambiance-autumn"><span>Ambiance — Autumn</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=ambiance-emozee"><span>Ambiance — Emozee</span><span class="cat">Campaign</span></a>
+    <a href="project.html?id=ambiance-hue"><span>Ambiance — Hue</span><span class="cat">Campaign</span></a>
+    <a href="project.html?id=ambiance-boutique-xmas"><span>Boutique — Christmas</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=ambiance-boutique-val"><span>Boutique — Valentine</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=pinch-moi-garden"><span>Pinch Moi — The Garden</span><span class="cat">Art Direction</span></a>
+    <a href="project.html?id=peachpuff-summer"><span>Peachpuff — Summer</span><span class="cat">Set Design</span></a>
+    <a href="project.html?id=blubay-nightlife"><span>Blubay — Nightlife</span><span class="cat">Art Direction</span></a>
+  </div>
+
+</div>
+
+<script>
+// Hamburger
+document.getElementById('ham').addEventListener('click',()=>document.getElementById('mobMenu').classList.toggle('open'));
+// Close button removed — clicking the hamburger again, or any
+// menu item, closes the menu.
+(function(){
+  const menu = document.getElementById('mobMenu');
+  if (!menu) return;
+  menu.querySelectorAll('a, button').forEach(el =>
+    el.addEventListener('click', () => menu.classList.remove('open'))
+  );
+})();
+
+// View toggle
+(function(){
+  const gallery=document.getElementById('gallery');
+  const btnFlow=document.getElementById('btnFlow');
+  const btnList=document.getElementById('btnList');
+  function setFlow(){gallery.classList.remove('list-view');btnFlow.classList.add('active');btnFlow.textContent='[+] Flow';btnList.classList.remove('active');btnList.textContent='[ ] List'}
+  function setList(){gallery.classList.add('list-view');btnList.classList.add('active');btnList.textContent='[+] List';btnFlow.classList.remove('active');btnFlow.textContent='[ ] Flow'}
+  btnFlow.addEventListener('click',setFlow);
+  btnList.addEventListener('click',setList);
+})();
+
+// Back link — return to the previous page (home as a fallback)
+document.getElementById('backLink').addEventListener('click',()=>{
+  if (history.length > 1) history.back();
+  else window.location.href = 'index.html';
+});
+
+// Image protection
+document.addEventListener('contextmenu',e=>{if(e.target.tagName==='IMG')e.preventDefault()});
+document.addEventListener('dragstart',e=>{if(e.target.tagName==='IMG')e.preventDefault()});
+</script>
+</body>
+</html>

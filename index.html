@@ -1,0 +1,2436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azzi Studios</title>
+<meta name="description" content="Azzi Studios — Creative studio. Campaign production, art direction & set design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Squada+One&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar{display:none}
+body{background:#fff;color:#111;font-family:'Space Mono',monospace;-webkit-font-smoothing:antialiased;overflow:hidden;height:100vh}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
+
+/* ── LOADER ─────────────────────────────── */
+#loader{
+  position:fixed;inset:0;background:#fff;z-index:9000;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1),
+             transform 0.9s cubic-bezier(0.7,0,0.2,1);
+  will-change:opacity,transform;
+}
+#loader.out{opacity:0;transform:translateY(-1.2rem);pointer-events:none}
+#loader.gone{display:none}
+
+.ll-line{
+  display:flex;flex-direction:column;align-items:center;gap:1.6em;
+  font-family:'Space Mono',monospace;
+  font-size:clamp(0.34rem,1.15vw,0.55rem);
+  font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  line-height:1.35;color:#111;text-align:center;max-width:88vw;
+}
+.ll-top,.ll-bot{display:block;will-change:transform,opacity}
+.ll-top{
+  font-size:1.8em;
+  opacity:0;transform:translateY(-3.2em);
+  animation:llDrop 1.3s cubic-bezier(0.22,1,0.36,1) 0.18s forwards;
+}
+.ll-bot{
+  font-size:1.1em;font-weight:400;
+  opacity:0;transform:translateY(3.2em);
+  animation:llRise 1.3s cubic-bezier(0.22,1,0.36,1) 0.42s forwards;
+}
+@keyframes llDrop { to { opacity:1; transform:translateY(0); } }
+@keyframes llRise { to { opacity:1; transform:translateY(0); } }
+
+@media(prefers-reduced-motion:reduce){
+  .ll-top,.ll-bot{opacity:1;transform:none;animation:none}
+  #loader{transition:opacity 0.4s ease}
+  #loader.out{transform:none}
+}
+
+/* ── NAV ────────────────────────────────── */
+.nav{
+  position:fixed;top:1rem;left:0;right:0;
+  height:48px;padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:8600;
+  pointer-events:none;
+  transition:opacity 0.45s ease;
+}
+.nav.nav--idle{opacity:0;pointer-events:none}
+.nav.nav--idle *{pointer-events:none}
+.nav *{pointer-events:all}
+.nav-logo{
+  /* Loader-style logo (Space Mono, bold, uppercase, spaced) but
+     sized to match the nav buttons. */
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1;
+}
+.nav-logo sup{font-size:0.48em;vertical-align:super}
+.nav-center{
+  position:fixed;top:calc(1rem + 24px);left:50%;
+  transform:translate(-50%,-50%);z-index:8600;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;
+  color:#111;white-space:nowrap;cursor:pointer;
+  transition:opacity 0.35s ease,
+             top 0.65s cubic-bezier(0.16,1,0.3,1),
+             left 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+/* When the drop-down panel is open, "Creative Studio" moves to the
+   bottom-middle of the panel, aligned with the Close × button */
+body.ov-open .nav-center{top:calc(55vh - 1.5rem);z-index:8700}
+/* Flow / List drop down with Creative Studio when a panel opens */
+body.ov-open .nav .view-toggle{
+  top:calc(55vh - 1.5rem);left:20%;z-index:8700;
+  font-size:0.6rem;letter-spacing:0.24em;
+}
+.nav-right{
+  transition:opacity 0.3s ease;
+  display:flex;gap:1.75rem;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+}
+.nav-right a{transition:opacity 0.2s;color:#111}
+.nav-right a:hover{opacity:0.4}
+body.ov-open .nav-right{opacity:0;visibility:hidden;pointer-events:none}
+.nav-logo{transition:opacity 0.3s ease}
+body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
+.nav-ham{display:none;flex-direction:column;gap:4px;background:none;border:none;padding:4px}
+.nav-ham span{display:block;width:18px;height:1px;background:#111;transition:all 0.3s}
+
+/* mobile overlay */
+.mob-menu{
+  display:none;position:fixed;inset:0;background:#fff;
+  z-index:790;flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+}
+.mob-menu.open{display:flex}
+.mob-menu a,.mob-menu .nav-link{font-size:1.25rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;transition:opacity 0.2s;color:#111}
+.mob-menu .nav-link{background:none;border:none;cursor:pointer;font-family:inherit}
+.mob-menu a:hover,.mob-menu .nav-link:hover{opacity:0.4}
+.mob-close{position:absolute;top:1.5rem;right:2rem;font-size:0.45rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;pointer-events:all}
+
+/* Mobile + small-tablet — collapse nav into logo + hamburger
+   and hide the Flow/List toggle (touch users can't really use
+   the list-hover preview anyway). */
+@media(max-width:768px){
+  .nav-center,.nav-right{display:none}
+  .nav-ham{display:flex}
+  .nav .view-toggle{display:none}
+}
+
+/* ══════════════════════════════════════════
+   OVERLAY — About / Services / Contact open
+   as a pop-up over the site (no page load)
+══════════════════════════════════════════ */
+#overlay{
+  position:fixed;top:0;left:0;right:0;height:55vh;
+  z-index:8500;background:#fff;
+  opacity:0;pointer-events:none;transform:translateY(-100%);
+  transition:opacity 0.4s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1);
+  overflow-y:auto;overflow-x:hidden;
+  -ms-overflow-style:none;scrollbar-width:none;
+}
+#overlay::-webkit-scrollbar{display:none}
+#overlay.open{opacity:1;pointer-events:all;transform:translateY(0)}
+/* Work page slides down when the drop-down panel opens (not overlaid) */
+#landing,#room{transition:transform 0.65s cubic-bezier(0.16,1,0.3,1)}
+body.ov-open #landing,body.ov-open #room{transform:translateY(55vh)}
+/* site-wide motion: overlay content reveals with a soft stagger */
+@keyframes ovIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+#overlay.open .ov-panel.active > *{opacity:0;animation:ovIn 0.7s cubic-bezier(0.16,1,0.3,1) forwards}
+#overlay.open .ov-panel.active > *:nth-child(1){animation-delay:0.06s}
+#overlay.open .ov-panel.active > *:nth-child(2){animation-delay:0.15s}
+#overlay.open .ov-panel.active > *:nth-child(3){animation-delay:0.24s}
+#overlay.open .ov-panel.active > *:nth-child(4){animation-delay:0.33s}
+@media(prefers-reduced-motion:reduce){
+  #overlay.open .ov-panel.active > *{animation:none;opacity:1}
+}
+.ov-close{
+  position:fixed;top:calc(55vh - 1.5rem);left:80%;transform:translate(-50%,-50%);z-index:8700;
+  background:none;border:none;cursor:pointer;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;
+  color:#111;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.4s ease;
+}
+body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s ease 0.15s}
+.ov-close:hover{opacity:0.55}
+.ov-scroll{max-width:1040px;margin:0 auto;padding:2rem 3rem 3rem}
+.ov-panel{display:none}
+.ov-panel.active{display:block}
+.ov-eyebrow{
+  font-family:'Space Mono',monospace;
+  font-size:0.5rem;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;
+  color:rgba(17,17,17,0.4);margin-bottom:0.7rem;
+}
+.ov-h{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.6rem,4.8vw,2.72rem);line-height:1.15;letter-spacing:0.02em;
+  text-transform:uppercase;color:#111;margin-bottom:1.3rem;margin-left:-3.5cm;
+  white-space:nowrap;
+}
+.ov-section{margin-top:3rem}
+/* About / Services / Contact — same layout: left = title + text,
+   right = meta block. All black. */
+.ov-panel.ov-about.active{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  column-gap:0;
+  align-items:start;
+}
+/* Each column is ONE grid item (a block flow) so the title above
+   each body has identical height — the body first lines line up. */
+.ov-about .ova-col{grid-column:1}
+.ov-about .ova-meta{grid-column:2;margin-top:0;max-width:none}
+.ov-about .ov-h{margin:0 0 1.6rem;color:#111}
+.ov-about .ova-lead{max-width:none;color:#111}
+.ov-about .ova-meta .ov-label,
+.ov-about .ova-meta .ov-body{color:#111}
+@media(max-width:680px){
+  .ov-panel.ov-about.active{display:block}
+  .ov-about .ova-meta{margin-top:3rem}
+}
+/* All panels — col1 starts near viewport 20% (Flow/List), col2 (meta) starts at the C of CREATIVE STUDIO */
+.ov-about .ov-h{font-size:0.6rem;letter-spacing:0.22em;line-height:1;margin-bottom:0.8rem}
+.ov-about .ova-lead{font-size:0.72rem;line-height:1.45;letter-spacing:-0.02em;max-width:22rem}
+.ov-about .ova-lead .s + .s{margin-top:1rem}
+.ov-about .ova-meta{display:block;max-width:none;margin-left:-4rem}
+.ov-about .ova-meta .ov-body{max-width:22rem}
+.ov-about .ova-meta > div + div{margin-top:2.5rem}
+[data-panel="services"] .ova-meta .ov-body{max-width:26rem}
+.ov-about .ova-col{margin-left:calc(20vw - 7.5rem - max(0px, (100vw - 1040px) / 2))}
+/* About-only: studio facts block sits in col1 under the lead */
+[data-panel="about"] .ova-studio{margin-top:2rem}
+.ova-lead{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(0.525rem,1.2vw,0.8rem);
+  font-weight:400;line-height:1.4;letter-spacing:-0.01em;
+  color:#111;max-width:700px;margin:0;text-align:justify;
+}
+.ova-lead .s{display:block}
+.ova-lead .s + .s{margin-top:0.7em}
+.ova-meta{
+  display:grid;grid-template-columns:1fr 1fr;gap:4.5rem 5.5rem;
+  margin-top:6rem;max-width:780px;
+}
+.ova-meta--1{grid-template-columns:1fr;gap:2.5rem;max-width:700px}
+/* match .ov-h's 0.8rem so col-2 body lines up with col-1 body */
+.ova-meta .ov-label{margin-bottom:0.8rem}
+.ova-meta .ov-body{line-height:1.62}
+.ova-meta .ov-body + .ov-body{margin-top:1.1rem}
+@media(max-width:680px){
+  .ov-panel.ov-about.active{display:block}
+  .ov-about .ov-h{margin:0 0 1.6rem}
+  .ova-meta{grid-template-columns:1fr;gap:3.5rem;margin-top:4.5rem}
+}
+.ov-label{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;
+  color:#111;margin-bottom:0.8rem;line-height:1;
+}
+.ov-body{
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;line-height:1.45;letter-spacing:-0.02em;color:#111;max-width:600px;
+  text-align:justify;
+}
+.ov-body + .ov-body{margin-top:1rem}
+.ov-em{
+  font-family:'Space Mono',monospace;
+  font-size:0.85rem;line-height:1.6;color:rgba(17,17,17,0.5);
+  margin-top:0.7rem;font-style:italic;
+}
+.ov-facts{
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;line-height:1.95;color:#111;
+  white-space:nowrap;
+}
+.ov-facts b{color:#111;font-weight:700}
+.ov-facts a{color:#111;border-bottom:1px solid rgba(17,17,17,0.3);transition:opacity 0.2s}
+.ov-facts a:hover{opacity:0.45}
+.ov-closeline{
+  margin-top:3.5rem;
+  font-family:'Squada One',sans-serif;
+  font-size:clamp(1.2rem,3.4vw,1.9rem);color:#111;line-height:1.2;
+}
+.ov-form{margin-top:2rem;max-width:560px;display:flex;flex-direction:column;gap:1.1rem}
+.ov-form input,.ov-form textarea{
+  width:100%;background:none;border:none;
+  border-bottom:1px solid rgba(17,17,17,0.25);padding:0.6rem 0;
+  font-family:'Space Mono',monospace;font-size:0.8rem;color:#111;
+  transition:border-color 0.2s;
+}
+.ov-form textarea{resize:vertical;min-height:90px}
+.ov-form input::placeholder,.ov-form textarea::placeholder{
+  color:rgba(17,17,17,0.4);text-transform:uppercase;letter-spacing:0.12em;font-size:0.66rem;
+}
+.ov-form input:focus,.ov-form textarea:focus{outline:none;border-color:#111}
+.ov-send{
+  align-self:flex-start;margin-top:0.5rem;
+  background:none;border:none;cursor:pointer;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#111;
+  border-bottom:1px solid #111;padding-bottom:3px;transition:opacity 0.2s;
+}
+.ov-send:hover{opacity:0.5}
+.nav-right button.nav-link{
+  background:none;border:none;padding:0;cursor:pointer;
+  font:inherit;letter-spacing:inherit;text-transform:inherit;color:#111;
+  transition:opacity 0.2s;
+}
+.nav-right button.nav-link:hover{opacity:0.4}
+@media(max-width:600px){
+  .ov-scroll{padding:2rem 1.25rem 4rem}
+  .ov-close{top:1rem;right:1.25rem}
+  .ov-h{margin-left:-0.5rem}
+}
+
+/* ══════════════════════════════════════════
+   3D ROOM — Rectangular box interior, irregular grid
+   • Box has distinct width × height × depth (not a cube)
+   • Each wall has a regular underlying grid, but cells
+     SPAN different sizes → mix of square / portrait / landscape
+   • Some cells are intentionally empty = white space
+   • Hovering a picture crossfades to a new image
+   • No more than 2 images of the same project on screen
+══════════════════════════════════════════ */
+:root{
+  --box-w: min(145vmin, 96vw);   /* box width  (X) — front wall */
+  --box-h: min(86vmin,  78vh);   /* box height (Y) — front wall */
+  /* Box depth — side/top/bottom walls recede this far. Each side
+     wall's content is packed into its 2 visible columns/rows, so
+     the rest reads as receding white depth out past the screen. */
+  --box-d: min(82vmin, 80vw);    /* box depth  (Z) */
+  /* Back wall held at a fixed close distance behind the screen
+     plane — decoupled from box depth so the front wall stays put. */
+  --back-z: -14vmin;
+  /* Z-shift for the side/top/bottom walls so their FAR edge meets the
+     back wall (3vmin overlap = no gap, nothing pokes out behind it). */
+  --side-z: calc(var(--back-z) + var(--box-d) / 2 - 3vmin);
+}
+@media(max-width:1100px){
+  :root{ --box-w: min(150vmin, 96vw); --box-h: min(92vmin, 80vh); --box-d: min(90vmin, 88vw); --back-z: -16vmin; }
+}
+@media(max-width:600px){
+  :root{ --box-w: min(160vmin, 96vw); --box-h: min(105vmin, 84vh); --box-d: min(98vmin, 92vw); --back-z: -18vmin; }
+}
+
+#room{
+  position:fixed;inset:0;z-index:700;
+  background:#fff;
+  overflow:hidden;
+  transition:opacity 0.55s ease;
+}
+/* White vignette — corners feather to solid #fff */
+#room::after{
+  content:'';
+  position:absolute;inset:0;
+  pointer-events:none;z-index:7;
+  background: radial-gradient(ellipse 92% 88% at center,
+                transparent 52%,
+                rgba(255,255,255,0.55) 72%,
+                rgba(255,255,255,0.92) 88%,
+                #fff 97%);
+}
+#room-persp{
+  position:absolute;inset:0;
+  perspective:1300px;
+  perspective-origin:50% 50%;
+  display:flex;align-items:center;justify-content:center;
+}
+#room-scene{
+  position:relative;
+  width:var(--box-w);height:var(--box-h);
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+
+/* Walls have different sizes — box-w × box-h, box-d × box-h, box-w × box-d.
+   A plain flat 3D-placed plane: NO overflow/transform-style. The
+   overflow:hidden + preserve-3d combo confused hit-testing on the
+   un-rotated back wall. Each cell clips its own image, so the wall
+   doesn't need to clip anything. */
+.wall{
+  position:absolute;
+  top:0;left:0;
+  background:#fff;
+  /* Walls carry no listeners — only cells do. */
+  pointer-events:none;
+}
+.wall-back{
+  width:var(--box-w); height:var(--box-h);
+  /* Negative Z — back wall sits behind the screen plane so the box
+     looks continuous. Side/top/bottom still use full box-d depth. */
+  transform: translateZ(var(--back-z));
+}
+/* The leading translateZ(--side-z) pushes each side/top/bottom wall
+   forward so its far edge meets the back wall — nothing extends
+   behind it, so no strip can peek past the back wall's edge. */
+.wall-left{
+  width:var(--box-d); height:var(--box-h);
+  transform: translateZ(var(--side-z)) translateX(calc(var(--box-d) / -2)) rotateY(90deg);
+}
+.wall-right{
+  width:var(--box-d); height:var(--box-h);
+  left: calc(var(--box-w) - var(--box-d));
+  transform: translateZ(var(--side-z)) translateX(calc(var(--box-d) / 2)) rotateY(-90deg);
+}
+.wall-top{
+  width:var(--box-w); height:var(--box-d);
+  transform: translateZ(var(--side-z)) translateY(calc(var(--box-d) / -2)) rotateX(-90deg);
+}
+.wall-bottom{
+  width:var(--box-w); height:var(--box-d);
+  top: calc(var(--box-h) - var(--box-d));
+  transform: translateZ(var(--side-z)) translateY(calc(var(--box-d) / 2)) rotateX(90deg);
+}
+
+/* Wall grid — regular underlying grid (cols × rows set inline per wall);
+   each cell spans 1×1, 1×2 (portrait), 2×1 (landscape), 2×2 (large square),
+   etc. so the grid reads as irregular even though the rhythm is uniform. */
+.wall-grid{
+  position:absolute;inset:0;
+  display:grid;
+  gap:0;
+  /* Pass-through — only the picture cells themselves catch the cursor.
+     Without this, a side wall's grid (which projects large near the
+     camera) covers the centre of the view and steals hovers meant
+     for the back wall, so the front wall never reacted to the cursor. */
+  pointer-events:none;
+}
+
+.wcell{
+  position:relative;
+  overflow:hidden;
+  background:#f1efe9;
+  opacity:0;transform:translateY(14px) scale(0.9);
+  transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1) var(--d,0s),
+             transform 0.8s cubic-bezier(0.22,1,0.36,1) var(--d,0s);
+  cursor:pointer;
+  pointer-events:auto;
+  will-change:transform,opacity;
+}
+/* Exact 1.0 scale — cells sit at their true grid size so no border
+   overlap between neighbouring pictures. (Was scale(1.012) to mask
+   hairline seams; the few-pixel overflow it produced read as a
+   visible overlap, so we accept the rare seam over the overlap.) */
+.wcell.in{opacity:1;transform:none}
+.wcell img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;pointer-events:none;
+  transition:opacity 0.55s ease;
+}
+.wcell .img-b{opacity:0}
+.wcell video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;pointer-events:none;
+  transition:opacity 0.55s ease;
+}
+
+/* Empty cells = the white-space the user asked for: no picture, no
+   hover, no background — they let the wall's white show through. */
+.wcell--empty{
+  background:transparent;
+  cursor:default;
+  pointer-events:none;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .wcell{opacity:1;transform:none;transition:none}
+  .wcell img{transition:none}
+}
+
+/* ══════════════════════════════════════════
+   LANDING PAGE — scrollable vertical gallery
+   Matches the Cactus landing page screenshot
+══════════════════════════════════════════ */
+#landing{
+  position:fixed;inset:0;
+  overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;
+  scrollbar-width:none;-ms-overflow-style:none;
+  opacity:0;pointer-events:none;
+  transition:opacity 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+  background:#fff;
+  padding-top:10rem;padding-bottom:3rem;
+}
+#landing::-webkit-scrollbar{display:none}
+#landing.vis{opacity:1;pointer-events:all}
+
+/* View toggle bar */
+.toggle-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:2rem 2rem 1.5rem;
+}
+.view-toggle{
+  display:flex;gap:1.25rem;align-items:center;
+  font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;
+}
+.nav .view-toggle{
+  position:fixed;top:calc(1rem + 24px);left:25%;
+  transform:translate(-50%,-50%);z-index:8600;
+  display:flex;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.35s ease,
+             top 0.65s cubic-bezier(0.16,1,0.3,1),
+             left 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+body.entered .nav .view-toggle{opacity:1;pointer-events:auto}
+.vt-btn{
+  background:none;border:none;padding:0;
+  font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:inherit;
+  color:rgba(17,17,17,0.45);cursor:pointer;transition:color 0.2s;
+}
+.vt-btn.active{color:#111}
+.back-link{
+  font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#111;
+  cursor:pointer;
+}
+.back-link:hover{opacity:0.5}
+
+/* Row-based gallery */
+.gal{padding:0}
+.gal-row{display:grid;gap:6px;margin-bottom:6px}
+.gal-row--1{grid-template-columns:1fr}
+.gal-row--2{grid-template-columns:1fr 1fr}
+.gal-row--3{grid-template-columns:repeat(3,1fr)}
+.gal-row--4{grid-template-columns:repeat(4,1fr)}
+.gal-row--6{grid-template-columns:repeat(6,1fr)}
+
+.gal-cell{
+  display:block;position:relative;
+  opacity:0;transform:translateY(24px);
+  transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1) var(--d,0s),
+             transform 0.85s cubic-bezier(0.16,1,0.3,1) var(--d,0s);
+  will-change:transform,opacity;
+}
+body.entered .gal-cell{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .gal-cell{opacity:1;transform:none;transition:none}
+}
+.gal-cell-img{
+  overflow:hidden;
+  aspect-ratio:4/3;
+  background:#f4f4f4;
+}
+.gal-cell-img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 0.8s cubic-bezier(0.19,1,0.22,1);
+}
+.gal-cell:hover .gal-cell-img img:not(.gal-img){transform:scale(1.03)}
+/* ── Per-cell auto-cycling image stack (slides right → left) ── */
+.gal-cell-img .gal-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  opacity:0;transform:translateX(100%);will-change:transform,opacity;
+  transition:transform 1.4s cubic-bezier(0.65,0,0.35,1), opacity 1s ease;
+}
+.gal-cell-img .gal-img.is-on{opacity:1;transform:translateX(0)}
+.gal-cell-img .gal-img.is-off{opacity:0;transform:translateX(-100%)}
+.gal-cell-img .gal-img.reset{transition:none}
+.gal-cell:hover .gal-cell-img .gal-img.is-on{transform:translateX(0) scale(1.03)}
+@media(prefers-reduced-motion:reduce){
+  .gal-cell-img .gal-img{transition:none}
+}
+
+.gal-row--1 .gal-cell-img{aspect-ratio:16/8}
+/* ── Asteri hero — 3-image preview carousel (portrait, slides R→L) ── */
+.gal-row--hero{grid-template-columns:1fr;padding:2rem 0 1rem}
+.gal-row--hero .gal-cell{max-width:none;width:100%;justify-self:stretch}
+.asteri-window{
+  position:relative;width:100%;
+  height:min(72vh,620px);
+  overflow:hidden;
+}
+.asteri-track{
+  position:absolute;top:0;left:50%;height:100%;
+  display:flex;gap:18rem;
+  transition:transform 1.5s cubic-bezier(0.65,0,0.35,1);
+  will-change:transform;
+}
+.asteri-slide{
+  flex:0 0 auto;width:auto;height:100%;aspect-ratio:3/4;
+  object-fit:cover;display:block;
+}
+/* don't apply the generic hover-zoom to carousel slides */
+.gal-cell--hero:hover .asteri-slide{transform:none}
+@media(prefers-reduced-motion:reduce){
+  .asteri-track,.asteri-slide{transition:none}
+}
+.gal-row--2 .gal-cell-img{aspect-ratio:4/5}
+.gal-row--3 .gal-cell-img{aspect-ratio:1/1}
+.gal-row--4 .gal-cell-img{aspect-ratio:1/1}
+.gal-row--6 .gal-cell-img{aspect-ratio:1/1}
+
+/* ── Varied project layouts — minimal editorial mix ── */
+/* SOLO — single landscape hero with slow drift */
+.gal-row--solo{grid-template-columns:1fr;padding:2rem 0 1rem}
+.gal-row--solo .gal-cell{max-width:none;width:100%;justify-self:stretch}
+.solo-window{
+  position:relative;width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;background:#f6f5f2;
+}
+.solo-window img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transform:scale(1.04);
+  transition:transform 12s linear;
+}
+.gal-cell--solo:hover .solo-window img{transform:scale(1.06)}
+
+/* DUO — two portraits side by side */
+.gal-row--duo{grid-template-columns:1fr;padding:2rem 0 1rem}
+.gal-row--duo .gal-cell{max-width:none;width:100%;justify-self:stretch}
+.duo-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.duo-window{
+  position:relative;aspect-ratio:3/4;
+  overflow:hidden;background:#f6f5f2;
+}
+.duo-window img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 0.8s var(--ease-expo, cubic-bezier(0.19,1,0.22,1));
+}
+.gal-cell--duo:hover .duo-window img{transform:scale(1.03)}
+
+/* STAGGER — large left + small right, vertically offset */
+.gal-row--stagger{grid-template-columns:1fr;padding:2rem 0 1rem}
+.gal-row--stagger .gal-cell{max-width:none;width:100%;justify-self:stretch}
+.stagger-pair{display:grid;grid-template-columns:1.55fr 1fr;gap:1.5rem;align-items:start}
+.stagger-main{position:relative;aspect-ratio:4/5;overflow:hidden;background:#f6f5f2}
+.stagger-side{padding-top:5rem}
+.stagger-mini{position:relative;aspect-ratio:3/4;overflow:hidden;background:#f6f5f2}
+.gal-row--stagger img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 0.8s var(--ease-expo, cubic-bezier(0.19,1,0.22,1));
+}
+.gal-cell--stagger:hover img{transform:scale(1.03)}
+
+@media(prefers-reduced-motion:reduce){
+  .solo-window img,
+  .duo-window img,
+  .gal-row--stagger img{transition:none;transform:none}
+}
+
+.gal-cell-cap{
+  /* Starts at the same x-position as the "A" of the azzi studios
+     logo in the top nav (nav padding-left is 2rem). */
+  padding:0.5rem 0 0 2rem;
+  font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:#111;font-weight:700;
+  line-height:1.35;
+}
+
+/* Tablet */
+@media(max-width:1048px){
+  .toggle-bar{padding:1.5rem 1.25rem 1rem}
+  .gal-row--6{grid-template-columns:repeat(4,1fr)}
+  .gal-row--4{grid-template-columns:repeat(3,1fr)}
+}
+/* Mobile */
+@media(max-width:768px){
+  .toggle-bar{padding:1.25rem 1rem 0.75rem}
+  #landing{padding-top:5rem;padding-bottom:2rem}
+
+  /* Tighter gaps between rows — text size kept identical to desktop */
+  .gal-row{gap:4px;margin-bottom:4px}
+
+  /* Multi-column rows simplify */
+  .gal-row--6,.gal-row--4{grid-template-columns:repeat(2,1fr)}
+  .gal-row--3{grid-template-columns:repeat(2,1fr)}
+  .gal-row--1 .gal-cell-img{aspect-ratio:4/3}
+  .gal-row--2 .gal-cell-img{aspect-ratio:1/1}
+
+  /* Hero row reduces padding so the asteri reel fits without
+     a giant empty band at the top under the nav. */
+  .gal-row--hero{padding:1rem 0 0.5rem}
+
+  /* SOLO — shorter aspect on phones so it doesn't dominate */
+  .gal-row--solo{padding:1rem 0 0.5rem}
+  .solo-window{aspect-ratio:4/3}
+
+  /* DUO + STAGGER stack into one column on mobile */
+  .gal-row--duo{padding:1rem 0 0.5rem}
+  .duo-pair{grid-template-columns:1fr;gap:4px}
+  .duo-window{aspect-ratio:4/5}
+
+  .gal-row--stagger{padding:1rem 0 0.5rem}
+  .stagger-pair{grid-template-columns:1fr;gap:4px}
+  .stagger-side{padding-top:0}
+  .stagger-main,.stagger-mini{aspect-ratio:4/5}
+}
+@media(max-width:480px){
+  .gal-row--2{grid-template-columns:1fr}
+  .gal-row--3,.gal-row--4,.gal-row--6{grid-template-columns:1fr 1fr;gap:2px}
+  .gal-footer{
+    padding:1.75rem 1rem 1.5rem;
+    display:flex;flex-direction:column;
+    align-items:center;
+    gap:1rem;text-align:center;
+  }
+  /* Creative Studio centre label is dropped on phones — keeps the
+     footer to: social links → copyright (last line). */
+  .gal-footer__center{display:none}
+  .gal-footer__copy{
+    order:2;                   /* last line */
+    max-width:90vw;line-height:1.4;
+  }
+  /* override the global .nav-right{display:none} mobile rule for the footer */
+  .gal-footer .nav-right{
+    order:1;
+    display:flex;flex-wrap:wrap;justify-content:center;
+    gap:0.75rem 1rem;max-width:90vw;
+  }
+}
+/* ── Archive grid — projects on a 7-col grid, empty cells = white space ── */
+.archive-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:1.6rem;
+  padding:5rem 5% 6rem;
+}
+.archive-cell{
+  display:block;
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1) var(--d,0s),
+             transform 0.85s cubic-bezier(0.16,1,0.3,1) var(--d,0s);
+}
+body.entered .archive-cell{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .archive-cell{opacity:1;transform:none;transition:none}
+}
+.archive-cell-img{
+  position:relative;width:100%;
+  aspect-ratio:3/4;
+  overflow:hidden;background:#f4f4f4;
+  transition:opacity 0.4s ease;
+}
+.archive-cell-img img,
+.archive-cell-img video{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 0.8s var(--ease-expo, cubic-bezier(0.19,1,0.22,1));
+}
+.archive-cell:hover .archive-cell-img img,
+.archive-cell:hover .archive-cell-img video{transform:scale(1.03)}
+.archive-cell-cap{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:0.5rem;
+  padding:0.45rem 0.1rem 0;
+  font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:#111;font-weight:700;line-height:1.3;
+  transition:opacity 0.3s ease;
+  white-space:nowrap;          /* titles stay on one line */
+}
+.archive-cell-cap > span:first-child{
+  overflow:hidden;text-overflow:ellipsis;min-width:0;
+}
+.archive-cell-cap .archive-num{flex-shrink:0}
+.archive-cell-cap .archive-num{
+  color:#111;font-weight:700;letter-spacing:0.1em;
+}
+/* Hover one picture → every other fades to ~10%, all captions vanish.
+   :has() so it only triggers on a real cell, not the white-space gaps. */
+.archive-grid:has(.archive-cell:hover) .archive-cell-img{opacity:0.1}
+.archive-grid:has(.archive-cell:hover) .archive-cell:hover .archive-cell-img{opacity:1}
+.archive-grid:has(.archive-cell:hover) .archive-cell-cap{opacity:0}
+/* Hidden in list view */
+.gal.list-view .archive-grid{display:none}
+
+@media(max-width:1100px){
+  .archive-grid{gap:1.6rem;padding:4rem 5% 5rem}
+}
+@media(max-width:768px){
+  .duo-pair{gap:0.5rem}
+  .stagger-pair{grid-template-columns:1fr;gap:0.5rem}
+  .stagger-side{padding-top:0}
+  .solo-window{aspect-ratio:4/3}
+  .stagger-main{aspect-ratio:3/4}
+  /* explicit slot placement only works wide — collapse to 2-col flow */
+  .archive-grid{grid-template-columns:repeat(2,1fr);gap:1rem;padding:3rem 5% 4rem}
+  .archive-cell{grid-column:auto !important;grid-row:auto !important}
+  .archive-cell-cap{font-size:0.5rem}
+}
+
+/* LIST view */
+.gal.list-view .gal-row{display:none}
+.gal.list-view .gal-list-mode{display:block}
+.gal-list-mode{display:none;padding:0 2rem 3rem}
+.gal-list-mode a{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:0.9rem 0;
+  border-bottom:1px solid rgba(17,17,17,0.1);
+  font-size:0.625rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;
+  transition:opacity 0.2s;
+}
+.gal-list-mode a:hover{opacity:0.5}
+.gal-list-mode a .cat{
+  font-weight:400;color:rgba(17,17,17,0.45);
+  font-size:0.5rem;letter-spacing:0.16em;
+}
+/* Hover preview shown while scrubbing the list */
+#list-preview{
+  position:fixed;left:0;top:0;z-index:60;
+  width:min(300px,30vw);
+  height:calc(min(300px,30vw) * 4 / 3);
+  aspect-ratio:3/4;object-fit:cover;
+  opacity:0;transform:translate(-50%,-50%) scale(0.97);
+  /* Snappy enough that fast hovers feel responsive, slow enough
+     that cached swaps still look soft. */
+  transition:
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.22s ease;
+  pointer-events:none;will-change:transform,opacity;
+  box-shadow:0 24px 60px -24px rgba(0,0,0,0.4);
+}
+#list-preview.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* Only used when a NEW image is still downloading — most swaps
+   skip this entirely because the picture is already in cache. */
+#list-preview.swapping{opacity:0.55;filter:blur(1px)}
+@media(max-width:768px){ #list-preview{display:none} }
+
+/* Footer strip — mirrors the top nav exactly:
+   copyright (left) · Creative Studio (centered) · social links (right) */
+.gal-footer{
+  margin-top:50vh;            /* breathe — half a viewport above the footer */
+  padding:2.5rem 2rem 0;
+  /* 3-column grid: copyright | Creative Studio | nav-right — all
+     three sit on the same row, vertically centered together. */
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  color:#111;
+  gap:1rem;
+}
+.gal-footer__copy{
+  justify-self:start;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:#111;line-height:1;
+}
+.gal-footer__center{
+  justify-self:center;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
+  text-transform:uppercase;color:#111;line-height:1;
+  white-space:nowrap;
+}
+.gal-footer .nav-right{
+  justify-self:end;
+  display:flex;align-items:center;gap:1.75rem;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  line-height:1;
+}
+.gal-footer .nav-right a{
+  color:#111;text-decoration:none;
+  font:inherit;letter-spacing:inherit;text-transform:inherit;
+  line-height:1;border-bottom:none;
+  transition:opacity 0.2s;
+}
+.gal-footer .nav-right a:hover{opacity:0.4}
+</style>
+</head>
+<body>
+
+<div id="loader" role="status" aria-label="Loading Azzi Studios">
+  <div class="ll-line">
+    <span class="ll-top">azzi studios</span>
+    <span class="ll-bot">Campaign Production / Visual Content / Brand Identity</span>
+  </div>
+</div>
+
+<!-- ══ NAV ═══════════════════════════════ -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <div class="view-toggle">
+    <button class="vt-btn active" id="btnFlow">[+] Flow</button>
+    <button class="vt-btn" id="btnList">[ ] List</button>
+  </div>
+  <a href="index.html" class="nav-center" onclick="sessionStorage.removeItem('azzi_entered')">Creative Studio</a>
+  <div class="nav-right">
+    <button class="nav-link" type="button" data-home>Work</button>
+    <button class="nav-link" type="button" data-panel="about">About</button>
+    <button class="nav-link" type="button" data-panel="services">Services</button>
+    <button class="nav-link" type="button" data-panel="contact">Contact</button>
+  </div>
+  <button class="nav-ham" id="ham"><span></span><span></span></button>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <button class="nav-link" type="button" data-home>Work</button>
+  <button class="nav-link" type="button" data-panel="about">About</button>
+  <button class="nav-link" type="button" data-panel="services">Services</button>
+  <button class="nav-link" type="button" data-panel="contact">Contact</button>
+</div>
+
+<!-- ══ OVERLAY (About / Services / Contact) ══ -->
+<div id="overlay" aria-hidden="true">
+  <button id="ovClose" class="ov-close" type="button">Back</button>
+  <div class="ov-scroll">
+
+    <section class="ov-panel ov-about" data-panel="about">
+      <div class="ova-col">
+        <h1 class="ov-h">the studio.</h1>
+        <p class="ova-lead"><span class="s">Azzi Studios is a creative studio based in Beirut.</span><span class="s">We produce campaigns and visual content for luxury, beauty, and lifestyle brands, combining creative direction, set design, and full production from brief to final image.</span><span class="s">Our founder trained as an architect. It shows in the work.</span></p>
+
+        <div class="ova-studio">
+          <p class="ov-facts">
+            <b>Founded:</b> 2024<br>
+            <b>Based:</b> Beirut, Lebanon<br>
+            <b>Specializing:</b> Luxury, Beauty, Lifestyle, F&amp;B<br>
+            <b>Working:</b> Beirut and the region
+          </p>
+        </div>
+      </div>
+
+      <div class="ova-meta">
+        <div>
+          <div class="ov-label">The Work</div>
+          <p class="ov-body">We don&rsquo;t follow briefs. We interpret them.</p>
+          <p class="ov-body">The brands that work with us want more than a campaign. They want a visual identity that holds, one that looks considered, not produced.</p>
+          <p class="ov-body">We bring the direction, the set, and the team. Every decision is made before the camera arrives.</p>
+          <p class="ov-body">We favour long-term collaborations over one-off projects.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ov-panel ov-about" data-panel="services">
+      <div class="ova-col">
+        <h1 class="ov-h">what we do.</h1>
+        <p class="ova-lead"><span class="s">We work with brands who need their campaigns to look exactly the way they imagined.</span><span class="s">We handle everything: creative direction, set design, team, and production.</span><span class="s">We craft images worth keeping.</span></p>
+      </div>
+
+      <div class="ova-meta ova-meta--1">
+        <div>
+          <div class="ov-label">Campaign Production</div>
+          <p class="ov-body">We produce your campaign from brief to final delivery. Creative direction, set design, art direction, photography, and video: one studio, full creative ownership.</p>
+        </div>
+        <div>
+          <div class="ov-label">Visual Content</div>
+          <p class="ov-body">Elevated brand imagery for product launches, lookbooks, and seasonal campaigns. Shot properly, art directed, and delivered ready to use.</p>
+        </div>
+        <div>
+          <div class="ov-label">Brand Identity</div>
+          <p class="ov-body">Visual identity systems built from the ground up. Logo, type, palette, and the codes that hold a brand together across every touchpoint.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ov-panel ov-about" data-panel="contact">
+      <div class="ova-col">
+        <h1 class="ov-h">reach out.</h1>
+        <p class="ova-lead"><span class="s">Tell us what you are working on.</span><span class="s">We favour long-term collaborations and tailor-made approaches.</span><span class="s">Based in beirut. Available across the region and internationally.</span></p>
+      </div>
+
+      <div class="ova-meta">
+        <div>
+          <div class="ov-label">Contact Details</div>
+          <p class="ov-facts">
+            <b>Email:</b> <a href="mailto:hello@azzistudios.com">hello@azzistudios.com</a><br>
+            <b>WhatsApp:</b> <a href="https://wa.me/96178902628" target="_blank" rel="noopener">+961 78 90 26 28</a><br>
+            <b>Instagram:</b> <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">@azzistudios</a><br>
+            <b>LinkedIn:</b> <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">Azzi Studios</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ══ 3D ROOM ════════════════════════════ -->
+<div id="room">
+  <div id="room-persp">
+    <div id="room-scene"></div>
+  </div>
+</div>
+
+<!-- ══ LANDING PAGE ══════════════════════ -->
+<div id="landing">
+
+  <img id="list-preview" alt="" aria-hidden="true">
+
+  <div class="gal" id="gallery">
+
+    <div class="gal-row gal-row--hero">
+      <a href="project.html?id=plastik-asteri" class="gal-cell gal-cell--hero">
+        <div class="asteri-window" id="asteriHero">
+          <div class="asteri-track">
+            <img class="asteri-slide is-on" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp" alt="" loading="eager" fetchpriority="high">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp" alt="" loading="eager">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_03.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_04.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_05.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_06.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_07.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_08.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_09.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_10.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_11.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_13.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_14.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_15.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_16.webp" alt="" loading="lazy">
+            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_17.webp" alt="" loading="lazy">
+          </div>
+        </div>
+        <div class="gal-cell-cap">Plastik — Asteri Beauty</div>
+      </a>
+    </div>
+
+    <div class="gal-row gal-row--1">
+      <a href="project.html?id=plastik-roadster" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project18_Plastik_Roadster/515285069_18511440391057114_5258077007708806205_n.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Plastik — Roadster</div>
+      </a>
+    </div>
+
+    <div class="gal-row gal-row--1">
+      <a href="project.html?id=eloria-launch" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project14_Eloria_Launch/image00024.png" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Eloria — Launch</div>
+      </a>
+    </div>
+
+    <div class="gal-row gal-row--4">
+      <a href="project.html?id=ambiance-xmas" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project03_Ambiance_ChristmasCampaign/8.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Christmas</div>
+      </a>
+      <a href="project.html?id=ambiance-winter" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project09_Ambiance_WinterShoot/DSC03056.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Winter</div>
+      </a>
+      <a href="project.html?id=ambiance-summer" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project07_Ambiance_SummerShoot/010.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Summer</div>
+      </a>
+      <a href="project.html?id=ambiance-spring" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project06_Ambiance_SpringShoot/IMG_2634.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Spring</div>
+      </a>
+    </div>
+
+    <div class="gal-row gal-row--2">
+      <a href="project.html?id=pinch-moi-garden" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project15_PinchMoi_TheGarden/DSC09569.JPG" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Pinch Moi — The Garden</div>
+      </a>
+      <a href="project.html?id=ambiance-autumn" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project01_Ambiance_AutumnShoot/_37A7521%20copy%202.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Autumn</div>
+      </a>
+    </div>
+
+    <div class="gal-row gal-row--6">
+      <a href="project.html?id=ambiance-boutique-xmas" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project02_Ambiance_ChristmasBoutique/IMG_3828.jpeg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Boutique — Christmas</div>
+      </a>
+      <a href="project.html?id=ambiance-boutique-val" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project08_Ambiance_Valentine/018.jpeg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Boutique — Valentine</div>
+      </a>
+      <a href="project.html?id=ambiance-emozee" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project04_Ambiance_Emozee/emozee1.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Emozee</div>
+      </a>
+      <a href="project.html?id=ambiance-hue" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project07_Ambiance_SummerShoot/018.jpg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Hue</div>
+      </a>
+      <a href="project.html?id=peachpuff-summer" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project11_Blubay_Shoot/IMG_7884.JPG" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Peachpuff — Summer</div>
+      </a>
+      <a href="project.html?id=blubay-nightlife" class="gal-cell">
+        <div class="gal-cell-img"><img src="images/Project10_Blubay_Nightlife/20c47669-339f-4487-88f6-bf0924e53105_rw_1920.jpeg" alt="" loading="lazy"></div>
+        <div class="gal-cell-cap">Blubay — Nightlife</div>
+      </a>
+    </div>
+
+    <!-- LIST view -->
+    <div class="gal-list-mode">
+      <a href="project.html?id=plastik-roadster"><span>Plastik — Roadster</span><span class="cat">Campaign Production</span></a>
+      <a href="project.html?id=plastik-asteri"><span>Plastik — Asteri</span><span class="cat">Campaign Production</span></a>
+      <a href="project.html?id=eloria-launch"><span>Eloria — Launch</span><span class="cat">Art Direction</span></a>
+      <a href="project.html?id=ambiance-xmas"><span>Ambiance — Christmas</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=ambiance-winter"><span>Ambiance — Winter</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=ambiance-summer"><span>Ambiance — Summer</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=ambiance-spring"><span>Ambiance — Spring</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=ambiance-autumn"><span>Ambiance — Autumn</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=ambiance-emozee"><span>Ambiance — Emozee</span><span class="cat">Campaign</span></a>
+      <a href="project.html?id=ambiance-hue"><span>Ambiance — Hue</span><span class="cat">Campaign</span></a>
+      <a href="project.html?id=ambiance-boutique-xmas"><span>Boutique — Christmas</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=ambiance-boutique-val"><span>Boutique — Valentine</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=pinch-moi-garden"><span>Pinch Moi — The Garden</span><span class="cat">Art Direction</span></a>
+      <a href="project.html?id=peachpuff-summer"><span>Peachpuff — Summer</span><span class="cat">Set Design</span></a>
+      <a href="project.html?id=blubay-nightlife"><span>Blubay — Nightlife</span><span class="cat">Art Direction</span></a>
+    </div>
+
+  </div>
+
+  <div class="gal-footer">
+    <span class="gal-footer__copy">&copy; 2026 Azzi Studios — All rights reserved</span>
+    <span class="gal-footer__center">Creative Studio</span>
+    <div class="nav-right">
+      <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="mailto:hello@azzistudios.com">Email</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ ALL PROJECT IMAGES — full pool from every project folder ═════
+const IMGS = [
+  'images/Project01_Ambiance_AutumnShoot/_37A7482%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7521%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7535%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7580%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7605%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7624%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7684%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7729%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7741%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7767%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7776%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7799%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7845%20copy%202.jpg',
+  'images/Project01_Ambiance_AutumnShoot/_37A7888%20copy%202.jpg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3803.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3804.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3813.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3822.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3828.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3834.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3835.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3836.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3837.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3839.jpeg',
+  'images/Project02_Ambiance_ChristmasBoutique/IMG_3840.jpeg',
+  'images/Project03_Ambiance_ChristmasCampaign/1.JPG',
+  'images/Project03_Ambiance_ChristmasCampaign/19.jpg',
+  'images/Project03_Ambiance_ChristmasCampaign/20.jpg',
+  'images/Project03_Ambiance_ChristmasCampaign/21.jpg',
+  'images/Project03_Ambiance_ChristmasCampaign/22.jpg',
+  'images/Project03_Ambiance_ChristmasCampaign/23.jpg',
+  'images/Project03_Ambiance_ChristmasCampaign/5.jpg',
+  'images/Project03_Ambiance_ChristmasCampaign/8.jpg',
+  'images/Project04_Ambiance_Emozee/emozee1.jpg',
+  'images/Project04_Ambiance_Emozee/emozee2.png',
+  'images/Project06_Ambiance_SpringShoot/IMG_2340.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2432.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2451.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2469%202.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2477.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2585.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2600.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2615.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2634.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2687.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2701.jpg',
+  'images/Project06_Ambiance_SpringShoot/IMG_2703.jpg',
+  'images/Project07_Ambiance_SummerShoot/010.jpg',
+  'images/Project07_Ambiance_SummerShoot/011.jpg',
+  'images/Project07_Ambiance_SummerShoot/0110.jpg',
+  'images/Project07_Ambiance_SummerShoot/0111.jpg',
+  'images/Project07_Ambiance_SummerShoot/0112.jpg',
+  'images/Project07_Ambiance_SummerShoot/0113.jpg',
+  'images/Project07_Ambiance_SummerShoot/0114.jpg',
+  'images/Project07_Ambiance_SummerShoot/0115.jpg',
+  'images/Project07_Ambiance_SummerShoot/0116.jpg',
+  'images/Project07_Ambiance_SummerShoot/0117.jpg',
+  'images/Project07_Ambiance_SummerShoot/012.jpg',
+  'images/Project07_Ambiance_SummerShoot/013.jpg',
+  'images/Project07_Ambiance_SummerShoot/014.jpg',
+  'images/Project07_Ambiance_SummerShoot/015.jpg',
+  'images/Project07_Ambiance_SummerShoot/016.jpg',
+  'images/Project07_Ambiance_SummerShoot/017.jpg',
+  'images/Project07_Ambiance_SummerShoot/018.jpg',
+  'images/Project07_Ambiance_SummerShoot/019.jpg',
+  'images/Project08_Ambiance_Valentine/010.jpg',
+  'images/Project08_Ambiance_Valentine/011.JPG',
+  'images/Project08_Ambiance_Valentine/0111.jpeg',
+  'images/Project08_Ambiance_Valentine/0112.jpeg',
+  'images/Project08_Ambiance_Valentine/0113.jpeg',
+  'images/Project08_Ambiance_Valentine/012.jpg',
+  'images/Project08_Ambiance_Valentine/013.JPG',
+  'images/Project08_Ambiance_Valentine/015.jpeg',
+  'images/Project08_Ambiance_Valentine/016.jpeg',
+  'images/Project08_Ambiance_Valentine/017.jpeg',
+  'images/Project08_Ambiance_Valentine/018.jpeg',
+  'images/Project08_Ambiance_Valentine/019.jpeg',
+  'images/Project09_Ambiance_WinterShoot/DSC03053.jpg',
+  'images/Project09_Ambiance_WinterShoot/DSC03056.jpg',
+  'images/Project09_Ambiance_WinterShoot/DSC03061.jpg',
+  'images/Project09_Ambiance_WinterShoot/DSC03070.jpg',
+  'images/Project09_Ambiance_WinterShoot/DSC03076.jpg',
+  'images/Project09_Ambiance_WinterShoot/DSC03086.jpg',
+  'images/Project09_Ambiance_WinterShoot/DSC03099.jpg',
+  'images/Project09_Ambiance_WinterShoot/DSC03133.jpg',
+  'images/Project10_Blubay_Nightlife/029443a1-ea64-49c4-8503-fa4501d52a13_rw_1920.jpg',
+  'images/Project10_Blubay_Nightlife/061582b2-45d0-4629-80fb-66700bbd64ae_rw_1920.jpeg',
+  'images/Project10_Blubay_Nightlife/20c47669-339f-4487-88f6-bf0924e53105_rw_1920.jpeg',
+  'images/Project10_Blubay_Nightlife/6bc5740d-8be5-4b0c-aa21-1a32e118513e_rw_1920.jpeg',
+  'images/Project10_Blubay_Nightlife/e7b0cb5f-df67-40fa-aef5-69989a1fe917_rw_1920.jpeg',
+  'images/Project11_Blubay_Shoot/IMG_7880.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7881.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7882.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7883.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7884.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7893.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7895.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7901.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7902.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7903.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7904.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7905.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7906.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7907.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7908.JPG',
+  'images/Project11_Blubay_Shoot/IMG_7935.JPG',
+  'images/Project14_Eloria_Launch/image00023.png',
+  'images/Project14_Eloria_Launch/image00024.png',
+  'images/Project14_Eloria_Launch/image00028.png',
+  'images/Project14_Eloria_Launch/image00030.png',
+  'images/Project14_Eloria_Launch/image00032.jpeg',
+  'images/Project14_Eloria_Launch/image00038.png',
+  'images/Project14_Eloria_Launch/image00040.png',
+  'images/Project14_Eloria_Launch/image00043.jpeg',
+  'images/Project14_Eloria_Launch/image00045.png',
+  'images/Project14_Eloria_Launch/image00050.png',
+  'images/Project14_Eloria_Launch/image00052.png',
+  'images/Project14_Eloria_Launch/image00057.png',
+  'images/Project15_PinchMoi_TheGarden/DSC09569.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09574.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09593.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09617.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09648.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09711.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09747.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09822.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09836.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09875.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09882.JPG',
+  'images/Project15_PinchMoi_TheGarden/DSC09900.JPG',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_03.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_04.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_05.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_06.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_07.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_08.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_09.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_10.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_11.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_13.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_14.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_15.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_16.webp',
+  'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_17.webp',
+  'images/Project18_Plastik_Roadster/515285069_18511440391057114_5258077007708806205_n.jpg',
+  'images/Project18_Plastik_Roadster/516740497_18512180509057114_3339638040969611148_n.jpg',
+  'images/Project18_Plastik_Roadster/517855742_18512547376057114_6651450596493651219_n.jpg',
+  'images/Project18_Plastik_Roadster/527953147_18517432660057114_9115896980160238796_n.jpg',
+  'images/Project18_Plastik_Roadster/528296516_18517432687057114_5396667161801077676_n.jpg',
+  'images/Project18_Plastik_Roadster/528330731_18517432678057114_4771236940823808404_n.jpg',
+  'images/Project18_Plastik_Roadster/529160533_18517432447057114_3963628044403323556_n.jpg',
+  'images/Project18_Plastik_Roadster/529514908_18517432669057114_3525830708845009008_n.jpg',
+  'images/Project18_Plastik_Roadster/529839148_18517432648057114_1648346591603768476_n.jpg',
+];
+
+// ══ WALL LAYOUTS ══════════════════════════════════════════
+// Each wall has a regular cols × rows grid; cells span various
+// (w, h) combinations so the look is irregular — squares, portraits,
+// landscapes mixed together. Cells with `empty: true` render as
+// white space (no image, no hover) — that's the "white space"
+// the user asked for, NOT gutters between pictures.
+const WALL_LAYOUTS = {
+  // Finer grids so "small" can be a mix of small SQUARE (1×1),
+  // small PORTRAIT (1×2), and small LANDSCAPE (2×1) — variety
+  // within the small size. Across the whole mosaic only:
+  //   • 2 BIG landscapes (back wall + top wall)  — span 5×2
+  //   • 2 BIG portraits  (left wall + right wall) — span 2×4
+  // Unfilled grid tracks render as the wall's white background,
+  // so there's no need to declare empty cells explicitly.
+  back:   { cols:10, rows:6, cells: [
+    // BIG landscape anchored lower-left — a video tile
+    {c:2,  r:4, w:3, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video.mp4'},
+
+    // ── Top band ──
+    {c:1,  r:1, w:1, h:1},   // small square (top-left corner)
+    {c:3,  r:1, w:2, h:1},   // small landscape
+    {c:6,  r:1, w:1, h:1},   // small square
+    {c:8,  r:1, w:1, h:2},   // small portrait
+    {c:10, r:1, w:1, h:1},   // small square (top-right corner)
+
+    // ── Middle band ──
+    {c:1,  r:2, w:1, h:2},   // small portrait (upper-left)
+    {c:3,  r:2, w:1, h:1},   // small square
+    {c:5,  r:2, w:1, h:1},   // small square
+    {c:6,  r:3, w:1, h:2},   // small portrait
+    {c:9,  r:2, w:1, h:2},   // small portrait (upper-right)
+
+    // ── Lower band — anchored by the big ──
+    {c:1,  r:5, w:1, h:1},   // small square
+    {c:7,  r:4, w:2, h:1},   // small landscape (right of big)
+    {c:8,  r:5, w:1, h:2},   // small portrait
+    {c:10, r:4, w:1, h:1},   // small square
+
+    // ── Bottom row ──
+    {c:1,  r:6, w:1, h:1},   // small square (bottom-left corner)
+    {c:5,  r:6, w:2, h:1},   // small landscape
+    {c:10, r:6, w:1, h:1},   // small square (bottom-right corner)
+  ]},
+  // ── Side / top / bottom walls — content SPREAD across the whole
+  // wall with generous white-space gaps, and the videos placed
+  // centrally. Whatever slice is in view always has pictures and
+  // breathing room — no fully-white strip. ──
+  left:   { cols:6, rows:6, cells: [
+    {c:1, r:1, w:1, h:2},   // portrait
+    {c:3, r:1, w:1, h:1},   // square
+    {c:5, r:1, w:2, h:1},   // landscape
+    {c:2, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym.mp4'},
+    {c:5, r:2, w:1, h:2},   // portrait
+    {c:1, r:4, w:1, h:1},   // square
+    {c:6, r:4, w:1, h:2},   // portrait
+    {c:4, r:5, w:1, h:1},   // square
+    {c:1, r:6, w:1, h:1},   // square
+    {c:2, r:6, w:1, h:1},   // square
+  ]},
+  right:  { cols:6, rows:6, cells: [
+    {c:1, r:1, w:2, h:1},   // landscape
+    {c:4, r:1, w:1, h:2},   // portrait
+    {c:6, r:1, w:1, h:1},   // square
+    {c:1, r:3, w:1, h:2},   // portrait
+    {c:3, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office.mp4'},
+    {c:6, r:3, w:1, h:2},   // portrait
+    {c:1, r:5, w:1, h:1},   // square
+    {c:5, r:5, w:1, h:1},   // square
+    {c:3, r:6, w:2, h:1},   // landscape
+    {c:6, r:6, w:1, h:1},   // square
+  ]},
+  top:    { cols:10, rows:6, cells: [
+    {c:1,  r:1, w:1, h:1},   // square
+    {c:3,  r:1, w:2, h:1},   // landscape
+    {c:6,  r:1, w:1, h:2},   // portrait
+    {c:8,  r:1, w:1, h:1},   // square
+    {c:10, r:1, w:1, h:2},   // portrait
+    {c:1,  r:2, w:1, h:2},   // portrait
+    {c:3,  r:3, w:3, h:2, video:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01.mp4'},
+    {c:7,  r:3, w:1, h:1},   // square
+    {c:9,  r:3, w:1, h:2},   // portrait
+    {c:1,  r:5, w:2, h:1},   // landscape
+    {c:4,  r:5, w:1, h:1},   // square
+    {c:6,  r:5, w:1, h:2},   // portrait
+    {c:3,  r:6, w:1, h:1},   // square
+    {c:8,  r:6, w:2, h:1},   // landscape
+  ]},
+  bottom: { cols:10, rows:6, cells: [
+    {c:1,  r:1, w:1, h:2},   // portrait
+    {c:3,  r:1, w:1, h:1},   // square
+    {c:5,  r:1, w:2, h:1},   // landscape
+    {c:8,  r:1, w:1, h:2},   // portrait
+    {c:10, r:1, w:1, h:1},   // square
+    {c:3,  r:2, w:1, h:1},   // square
+    {c:1,  r:3, w:1, h:1},   // square
+    {c:6,  r:3, w:2, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video.mp4'},
+    {c:9,  r:3, w:1, h:2},   // portrait
+    {c:3,  r:4, w:1, h:2},   // portrait
+    {c:1,  r:5, w:2, h:1},   // landscape
+    {c:5,  r:5, w:1, h:1},   // square
+    {c:8,  r:5, w:1, h:1},   // square
+    {c:10, r:5, w:1, h:2},   // portrait
+    {c:5,  r:6, w:1, h:1},   // square
+    {c:7,  r:6, w:1, h:1},   // square
+  ]},
+};
+
+// ══ LOADER → BUILD ROOM ══════════════════════════════════
+// Progress-driven loader: it eases toward ~90% on its own, then
+// completes when the page actually finishes loading (or a hard
+// fallback fires so it can never get stuck), holds a brief floor so
+// it never just flashes, then cleanly tears itself out of the layout
+// while the room builds beneath it.
+(function startLoader(){
+  const loader  = document.getElementById('loader');
+  const landing = document.getElementById('landing');
+
+  // Already entered this session → skip the whole intro and show the
+  // gallery straight away, so Back from a project doesn't replay the
+  // 3D mosaic.
+  if (sessionStorage.getItem('azzi_entered')) {
+    loader.style.display = 'none';
+    const r = document.getElementById('room');
+    if (r) r.style.display = 'none';
+    document.body.style.overflow = '';
+    landing.classList.add('vis');
+    document.body.classList.add('entered');
+    return;
+  }
+
+  const MIN_VISIBLE = 1600;   // ms — let the up/down animation read
+  const MAX_WAIT    = 2700;   // ms hard cap — mosaic is always up within 3s
+  const t0 = performance.now();
+  let done = false, built = false;
+
+  function teardown(){
+    if (built) return;
+    built = true;
+    buildRoom();
+    requestAnimationFrame(() => loader.classList.add('out'));
+    let finished = false;
+    const finish = () => { if (!finished){ finished = true; loader.classList.add('gone'); } };
+    const onEnd = (e) => {
+      if (e.propertyName === 'transform'){
+        loader.removeEventListener('transitionend', onEnd);
+        finish();
+      }
+    };
+    loader.addEventListener('transitionend', onEnd);
+    setTimeout(finish, 1200); // safety: fires if transitionend doesn't
+  }
+
+  function complete(){
+    if (done) return;
+    done = true;
+    const hold = Math.max(0, MIN_VISIBLE - (performance.now() - t0));
+    setTimeout(teardown, hold);
+  }
+
+  if (document.readyState === 'complete') complete();
+  else window.addEventListener('load', complete);
+  setTimeout(complete, MAX_WAIT); // fallback so it can never hang
+})();
+
+function buildRoom() {
+  const scene = document.getElementById('room-scene');
+  scene.innerHTML = '';
+
+  const projectOf = url => decodeURIComponent(url).split('/')[1];
+
+  // The mosaic loads small thumbnails (in thumbs/, ~16 MB total vs
+  // ~1.9 GB of originals) so the whole box paints in well under 3s.
+  // Remote URLs (ImgBB / any https://) and .webp originals already
+  // small enough are used as-is.
+  const thumb = url =>
+    /^https?:\/\//.test(url) ? url :
+    url.endsWith('.webp')     ? url :
+    'thumbs/' + url.slice('images/'.length);
+
+  // ── Bookkeeping ──
+  // projectCount: project name → how many cells currently show it
+  // liveUrls:     URLs currently visible (no duplicates on screen)
+  // cellUrl:      WeakMap cell-element → URL currently showing
+  const projectCount = {};
+  const liveUrls     = new Set();
+  const cellUrl      = new WeakMap();
+
+  function bump(p, delta){
+    projectCount[p] = (projectCount[p] || 0) + delta;
+    if (projectCount[p] <= 0) delete projectCount[p];
+  }
+
+  // Pick an image for a cell.
+  //   • Initial fill (currentUrl == null): respect "≤ 2 per project on
+  //     screen" and don't duplicate something already visible.
+  //   • Hover swap (currentUrl != null): same as above PLUS the new
+  //     image MUST be from a different project than the one being
+  //     replaced, so hovering never shows the same project twice in
+  //     a row for that cell.
+  function pickImage(currentUrl){
+    const currentProject = currentUrl ? projectOf(currentUrl) : null;
+    const candidates = [];
+    for (const url of IMGS){
+      if (url === currentUrl) continue;
+      if (liveUrls.has(url)) continue;
+      const p = projectOf(url);
+      if (currentProject && p === currentProject) continue;  // no same-project swap
+      if ((projectCount[p] || 0) >= 2) continue;
+      candidates.push(url);
+    }
+    if (!candidates.length) {
+      // Fallback 1: relax the per-project cap, still avoid same project
+      for (const url of IMGS){
+        if (url === currentUrl) continue;
+        if (liveUrls.has(url)) continue;
+        if (currentProject && projectOf(url) === currentProject) continue;
+        candidates.push(url);
+      }
+    }
+    if (!candidates.length) {
+      // Fallback 2: anything not on screen and not the current URL
+      for (const url of IMGS){
+        if (url === currentUrl) continue;
+        if (!liveUrls.has(url)) candidates.push(url);
+      }
+    }
+    return candidates.length
+      ? candidates[Math.floor(Math.random() * candidates.length)]
+      : currentUrl;
+  }
+
+  function commit(cell, newUrl){
+    const oldUrl = cellUrl.get(cell);
+    if (oldUrl){
+      liveUrls.delete(oldUrl);
+      bump(projectOf(oldUrl), -1);
+    }
+    cellUrl.set(cell, newUrl);
+    liveUrls.add(newUrl);
+    bump(projectOf(newUrl), 1);
+  }
+
+  // ── Cell construction ──
+  let cellSeq = 0;
+  const SWAP_MS = 600;
+
+  function makeCell(pos){
+    const cell = document.createElement('div');
+    cell.className = 'wcell' + (pos.empty ? ' wcell--empty' : '');
+    cell.style.gridColumn = pos.c + ' / span ' + pos.w;
+    cell.style.gridRow    = pos.r + ' / span ' + pos.h;
+    cellSeq++;   // used only to decide eager vs lazy image loading
+
+    // Empty cell = white space, no image, no interaction
+    if (pos.empty) return cell;
+
+    // ── Video cell — muted 3-second loop ──
+    if (pos.video) {
+      cell.classList.add('wcell--video');
+      const vid = document.createElement('video');
+      vid.src = pos.video;
+      vid.muted = true; vid.loop = true; vid.autoplay = true;
+      vid.playsInline = true; vid.preload = 'metadata';
+      vid.setAttribute('muted', '');
+      vid.setAttribute('playsinline', '');
+      vid.addEventListener('timeupdate', () => {
+        if (vid.currentTime >= 3) vid.currentTime = 0;   // loop first 3s
+      });
+      const play = () => { const p = vid.play(); if (p && p.catch) p.catch(() => {}); };
+      vid.addEventListener('canplay', play, { once: true });
+      play();
+      cell.appendChild(vid);
+    } else {
+      // ── Image cell ──
+      const initUrl = pickImage(null);
+      commit(cell, initUrl);
+      const imgA = document.createElement('img');
+      imgA.className = 'img-a';
+      imgA.src = thumb(initUrl);
+      imgA.alt = '';
+      imgA.loading  = cellSeq < 14 ? 'eager' : 'lazy';
+      imgA.decoding = 'async';
+      cell.appendChild(imgA);
+    }
+
+    // ── Hover-swap — works for EVERY cell on EVERY wall, picture or
+    // video. Exposed as cell._swap so it can be fired by the native
+    // mouseenter AND by the geometric back-wall detector below. ──
+    let swapping = false;
+    cell._swap = function(){
+      if (swapping) return;
+      const oldUrl = cellUrl.get(cell) || null;   // null for a video cell
+      const newUrl = pickImage(oldUrl);
+      if (!newUrl || newUrl === oldUrl) return;
+      swapping = true;
+
+      const newImg = document.createElement('img');
+      newImg.className = 'img-b';
+      newImg.src = thumb(newUrl);
+      newImg.alt = '';
+      newImg.decoding = 'async';
+      cell.appendChild(newImg);
+
+      // Crossfade in over whatever's there — picture or video.
+      requestAnimationFrame(() => {
+        newImg.style.opacity = '1';
+        const oldImg = cell.querySelector('img.img-a');
+        if (oldImg) oldImg.style.opacity = '0';
+        const oldVid = cell.querySelector('video');
+        if (oldVid) oldVid.style.opacity = '0';
+      });
+      setTimeout(() => {
+        const oldImg = cell.querySelector('img.img-a');
+        if (oldImg) oldImg.remove();
+        const oldVid = cell.querySelector('video');
+        if (oldVid) { try { oldVid.pause(); } catch (e) {} oldVid.remove(); }
+        cell.classList.remove('wcell--video');
+        newImg.className = 'img-a';
+        newImg.style.opacity = '';
+        commit(cell, newUrl);
+        swapping = false;
+      }, SWAP_MS);
+    };
+    cell.addEventListener('mouseenter', cell._swap);
+
+    return cell;
+  }
+
+  // ── Build all 5 walls ──
+  const backCells = [];   // back-wall cells — for the geometric hover detector
+  Object.entries(WALL_LAYOUTS).forEach(([id, layout]) => {
+    const wallEl = document.createElement('div');
+    wallEl.className = 'wall wall-' + id;
+    const grid = document.createElement('div');
+    grid.className = 'wall-grid';
+    grid.style.gridTemplateColumns = 'repeat(' + layout.cols + ', 1fr)';
+    grid.style.gridTemplateRows    = 'repeat(' + layout.rows + ', 1fr)';
+    layout.cells.forEach(pos => {
+      const cell = makeCell(pos);
+      grid.appendChild(cell);
+      if (id === 'back' && cell._swap) backCells.push(cell);
+    });
+    wallEl.appendChild(grid);
+    scene.appendChild(wallEl);
+  });
+
+  // ── Front-wall hover — bullet-proof geometric detection ──
+  // Native 3D hit-testing intermittently fails to deliver mouseenter
+  // to the un-rotated back wall (it gets occluded by sibling walls in
+  // the hit-test pass). So we ALSO test the cursor against each
+  // back-wall cell's real on-screen rectangle and fire the same swap.
+  // The per-cell `swapping` guard makes the double path safe.
+  let lastBackHover = null;
+  document.addEventListener('mousemove', e => {
+    if (typeof alive !== 'undefined' && !alive) return;
+    let hit = null;
+    for (let i = 0; i < backCells.length; i++){
+      const r = backCells[i].getBoundingClientRect();
+      if (r.width && e.clientX >= r.left && e.clientX < r.right &&
+          e.clientY >= r.top && e.clientY < r.bottom){ hit = backCells[i]; break; }
+    }
+    if (hit && hit !== lastBackHover && hit._swap) hit._swap();
+    lastBackHover = hit;
+  });
+
+  // ── Reveal — the mosaic appears in batches, group after group ──
+  // Every cell is shuffled first so each batch lights up spread
+  // across the WHOLE box (never wall-by-wall), then the batches are
+  // revealed one after another — a domino of groups.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const cells = Array.from(scene.querySelectorAll('.wcell'));
+    for (let i = cells.length - 1; i > 0; i--){          // Fisher–Yates shuffle
+      const j = Math.floor(Math.random() * (i + 1));
+      [cells[i], cells[j]] = [cells[j], cells[i]];
+    }
+    const BATCHES = 6, STAGGER = 165;                    // ms between groups
+    const per = Math.ceil(cells.length / BATCHES);
+    for (let b = 0; b < BATCHES; b++){
+      const group = cells.slice(b * per, (b + 1) * per);
+      setTimeout(() => group.forEach(c => c.classList.add('in')),
+                 80 + b * STAGGER);
+    }
+  }));
+
+  // ── Mouse parallax + ambient idle ──
+  let curX = -2.2, curY = -3.6;   // settle in from a slight offset
+  let mTgtX = 0, mTgtY = 0;
+  let lastMove = 0;
+  let alive = true;
+  let rafId = 0;
+
+  document.addEventListener('mousemove', e => {
+    lastMove = performance.now();
+    mTgtX = (e.clientY / window.innerHeight - 0.5) * -6;
+    mTgtY = (e.clientX / window.innerWidth  - 0.5) *  9;
+  });
+
+  let tStartX = null, tStartY = null;
+  document.addEventListener('touchstart', e => {
+    if (!e.touches[0]) return;
+    tStartX = e.touches[0].clientX; tStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchmove', e => {
+    if (tStartX === null || !e.touches[0]) return;
+    lastMove = performance.now();
+    const dx = e.touches[0].clientX - tStartX;
+    const dy = e.touches[0].clientY - tStartY;
+    mTgtY = (dx / window.innerWidth)  * 18;
+    mTgtX = -(dy / window.innerHeight) * 14;
+  }, { passive: true });
+
+  // Always write the SAME 3-function transform (rotateX rotateY
+  // translateZ). The click-to-enter transition animates between two
+  // of these — a matching function list interpolates cleanly, where
+  // a mismatched one forced an ugly matrix-decomposition glitch.
+  function applyTransform(z){
+    scene.style.transform =
+      'rotateX(' + curX.toFixed(3) + 'deg) ' +
+      'rotateY(' + curY.toFixed(3) + 'deg) ' +
+      'translateZ(' + z + ')';
+  }
+
+  function lerpRoom(){
+    if (!alive) { rafId = 0; return; }
+    const now = performance.now();
+    let tx, ty;
+    if (now - lastMove > 1400){
+      tx = Math.sin(now / 2600) * 2.0;   // ambient float
+      ty = Math.cos(now / 3400) * 3.2;
+    } else {
+      tx = mTgtX; ty = mTgtY;
+    }
+    curX += (tx - curX) * 0.065;
+    curY += (ty - curY) * 0.065;
+    applyTransform('0px');
+    rafId = requestAnimationFrame(lerpRoom);
+  }
+  rafId = requestAnimationFrame(lerpRoom);
+
+  // Tab-switch recovery — requestAnimationFrame is suspended while the
+  // tab is hidden and can return stalled. On becoming visible again,
+  // cancel any stale frame and start one clean loop; reset the idle
+  // timer so it eases via ambient drift instead of snapping.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden || !alive) return;
+    if (rafId) cancelAnimationFrame(rafId);
+    lastMove = performance.now() - 2000;
+    rafId = requestAnimationFrame(lerpRoom);
+  });
+
+  // ── Click to enter — soft crossfade ──
+  // The box is never transformed by the entry: the parallax loop
+  // stays alive so it keeps gently floating, and the whole room
+  // simply dissolves while the work page fades in underneath.
+  // No rotation, no dolly → it can't glitch and never flattens
+  // into a single wall.
+  const room = document.getElementById('room');
+  const landing = document.getElementById('landing');
+  let entering = false;
+  room.addEventListener('click', () => {
+    if (entering) return;
+    entering = true;
+    sessionStorage.setItem('azzi_entered', '1');
+
+    // Dissolve the 3D room (box keeps floating underneath the fade).
+    room.style.transition = 'opacity 1.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    room.style.opacity = '0';
+    room.style.pointerEvents = 'none';
+
+    // Work page crossfades in underneath, overlapping the fade-out.
+    setTimeout(() => {
+      document.body.classList.add('entered');
+      landing.classList.add('vis');
+    }, 250);
+
+    // After the crossfade, stop the parallax loop and drop the room.
+    setTimeout(() => {
+      alive = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      room.style.display = 'none';
+      document.body.style.overflow = '';
+    }, 1450);
+  });
+}
+
+// ══ HAMBURGER ════════════════════════════════════════════
+// Tap the hamburger to toggle the menu. No close button — tapping
+// the hamburger again (or any menu item) dismisses it.
+(function () {
+  const ham  = document.getElementById('ham');
+  const menu = document.getElementById('mobMenu');
+  if (!ham || !menu) return;
+  function close(){ menu.classList.remove('open'); }
+  ham.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a, button').forEach(el => el.addEventListener('click', close));
+})();
+
+// ══ FLOW / LIST TOGGLE ═══════════════════════════════════
+// Mode is persisted to sessionStorage so navigating into a
+// project and back returns you to the same view you left from.
+(function(){
+  const g = document.getElementById('gallery');
+  const bf = document.getElementById('btnFlow');
+  const bl = document.getElementById('btnList');
+  if (!g || !bf || !bl) return;
+
+  const KEY = 'azzi_view_mode';
+  function setFlow(persist){
+    g.classList.remove('list-view');
+    bf.classList.add('active');    bf.textContent = '[+] Flow';
+    bl.classList.remove('active'); bl.textContent = '[ ] List';
+    if (persist !== false) sessionStorage.setItem(KEY, 'flow');
+  }
+  function setList(persist){
+    g.classList.add('list-view');
+    bl.classList.add('active');    bl.textContent = '[+] List';
+    bf.classList.remove('active'); bf.textContent = '[ ] Flow';
+    if (persist !== false) sessionStorage.setItem(KEY, 'list');
+  }
+  bf.addEventListener('click', () => setFlow());
+  bl.addEventListener('click', () => setList());
+
+  // Restore the saved mode on load (defaults to flow)
+  const saved = sessionStorage.getItem(KEY);
+  if (saved === 'list') setList(false);
+  else                  setFlow(false);
+})();
+
+// ══ LIST HOVER PREVIEW ═══════════════════════════════════
+// Hovering a row in List view shows one of that project's
+// images, following the cursor. Re-hovering the same row
+// cycles through the project's other images so it never
+// feels static.
+(function(){
+  const preview = document.getElementById('list-preview');
+  const list    = document.querySelector('.gal-list-mode');
+  const gallery = document.getElementById('gallery');
+  if (!preview || !list || !gallery) return;
+
+  // Group all IMGS by their project folder
+  const byFolder = {};
+  if (typeof IMGS !== 'undefined') {
+    IMGS.forEach(url => {
+      const m = url.match(/^images\/([^\/]+)\//);
+      if (!m) return;
+      (byFolder[m[1]] = byFolder[m[1]] || []).push(url);
+    });
+  }
+
+  // For each gallery cell, derive its project folder from the
+  // first image, then map the project id to the full image list.
+  const map = {};
+  document.querySelectorAll('#gallery .gal-cell').forEach(a => {
+    const idMatch = (a.getAttribute('href') || '').match(/id=([a-z0-9-]+)/);
+    const img = a.querySelector('img');
+    if (!idMatch || !img) return;
+    const src = img.getAttribute('src') || '';
+    const folderMatch = src.match(/^images\/([^\/]+)\//);
+    const imgs = folderMatch ? (byFolder[folderMatch[1]] || []) : [];
+    map[idMatch[1]] = imgs.length ? imgs : [src];
+  });
+
+  // Pre-warm browser cache for every preview image so the first
+  // hover never shows a blank flash — the picture is already
+  // decoded and ready to paint.
+  const seen = new Set();
+  Object.values(map).forEach(imgs => imgs.forEach(src => {
+    if (seen.has(src)) return;
+    seen.add(src);
+    const i = new Image();
+    i.decoding = 'async';
+    i.src = src;
+  }));
+
+  // Per-id rotation index — advances on every fresh mouseenter
+  const cursor = {};
+  let lastId = null;
+
+  let raf = 0, cx = 0, cy = 0;
+  const place = () => { raf = 0; preview.style.left = cx + 'px'; preview.style.top = cy + 'px'; };
+
+  // Request-token swap. Each call gets a fresh id; any in-flight
+  // load that finishes after a newer call is discarded. Cached
+  // images (most of them — we preloaded above) swap instantly with
+  // no flash; uncached ones briefly soft-fade until ready.
+  let token = 0;
+  function showSrc(src) {
+    const my = ++token;
+    preview.classList.add('show');
+    if (preview.getAttribute('src') === src) {
+      preview.classList.remove('swapping');
+      return;
+    }
+    // Probe the image — if it's already in the browser cache,
+    // probe.complete will be true synchronously and we can swap
+    // without any visible transition.
+    const probe = new Image();
+    probe.decoding = 'async';
+    probe.src = src;
+    const apply = () => {
+      if (my !== token) return;   // a newer hover superseded us
+      preview.src = src;
+      preview.classList.remove('swapping');
+    };
+    if (probe.complete && probe.naturalWidth > 0) {
+      apply();
+    } else {
+      preview.classList.add('swapping');
+      probe.addEventListener('load',  apply, { once: true });
+      probe.addEventListener('error', () => { if (my === token) preview.classList.remove('swapping'); }, { once: true });
+    }
+  }
+
+  list.querySelectorAll('a').forEach(row => {
+    const m = (row.getAttribute('href') || '').match(/id=([a-z0-9-]+)/);
+    const id = m && m[1];
+    const imgs = id && map[id];
+    if (!imgs || !imgs.length) return;
+
+    row.addEventListener('mouseenter', () => {
+      if (!gallery.classList.contains('list-view')) return;
+      const next = (cursor[id] || 0) % imgs.length;
+      cursor[id] = next + 1;
+      showSrc(imgs[next]);
+      lastId = id;
+    });
+    row.addEventListener('mousemove', e => {
+      cx = e.clientX; cy = e.clientY;
+      if (!raf) raf = requestAnimationFrame(place);
+    });
+    row.addEventListener('mouseleave', () => {
+      ++token;   // abort any pending load
+      preview.classList.remove('show');
+      preview.classList.remove('swapping');
+    });
+  });
+})();
+
+// ══ BACK LINK ════════════════════════════════════════════
+(function(){
+  const link = document.getElementById('backLink');
+  if (!link) return;
+  link.addEventListener('click', () => {
+    sessionStorage.removeItem('azzi_entered');   // back to the 3D mosaic
+    window.location.href = 'index.html';
+  });
+})();
+
+// ══ NAV OVERLAY (About / Services / Contact) ════════════
+(function(){
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+  const panels  = overlay.querySelectorAll('.ov-panel');
+  const landing = document.getElementById('landing');
+  const room    = document.getElementById('room');
+  const mob     = document.getElementById('mobMenu');
+
+  function showHome(){
+    sessionStorage.setItem('azzi_entered', '1');
+    if (room) room.style.display = 'none';
+    document.body.style.overflow = '';
+    if (landing) landing.classList.add('vis');
+    document.body.classList.add('entered');
+  }
+  function openPanel(name){
+    let found = false;
+    panels.forEach(p => {
+      const on = p.getAttribute('data-panel') === name;
+      p.classList.toggle('active', on);
+      if (on) found = true;
+    });
+    if (!found) return;
+    // make sure the work page is the layer underneath, so clicking
+    // Close drops you back onto it (not onto the 3D mosaic).
+    showHome();
+    document.body.classList.add('ov-open');
+    document.body.setAttribute('data-ov-panel', name);
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.scrollTop = 0;
+  }
+  function closeOverlay(){
+    document.body.classList.remove('ov-open');
+    document.body.removeAttribute('data-ov-panel');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  document.querySelectorAll('[data-panel]').forEach(el => {
+    if (el.closest('#overlay')) return;          // skip the panels themselves
+    el.addEventListener('click', () => {
+      openPanel(el.getAttribute('data-panel'));
+      if (mob) mob.classList.remove('open');
+    });
+  });
+  document.querySelectorAll('[data-home]').forEach(el => {
+    el.addEventListener('click', () => {
+      closeOverlay();
+      showHome();
+      if (mob) mob.classList.remove('open');
+    });
+  });
+  document.getElementById('ovClose').addEventListener('click', closeOverlay);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+})();
+
+// ══ ASTERI HERO — continuous 3-image preview carousel ════
+// Track scrolls right→left one slide every 3s. The slides are cloned
+// once so the track can keep moving past the original last slide; when
+// we reach the clone of slide 0 we silently snap back, giving a seam-
+// less continuous loop with no visible jump back to "picture 01".
+(function(){
+  const win = document.getElementById('asteriHero');
+  if (!win) return;
+  const track = win.querySelector('.asteri-track');
+  const originals = track ? Array.from(track.querySelectorAll('.asteri-slide')) : [];
+  const N = originals.length;
+  if (!track || N < 2) return;
+
+  // Duplicate all slides at the tail of the track so we can scroll past
+  // the original set and snap back at a visually identical position.
+  originals.forEach(s => {
+    const clone = s.cloneNode(true);
+    clone.classList.remove('is-on');
+    track.appendChild(clone);
+  });
+  const slides = track.querySelectorAll('.asteri-slide');
+
+  const step = () => {
+    const cs = getComputedStyle(track);
+    const gap = parseFloat(cs.columnGap || cs.gap || 0) || 0;
+    return slides[0].offsetWidth + gap;
+  };
+  const offsetFor = i => -(slides[0].offsetWidth / 2 + step() * i);
+
+  let cur = 0;
+  function place(animate){
+    slides.forEach((s, i) => s.classList.toggle('is-on', i === cur));
+    if (!animate) {
+      const prev = track.style.transition;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(' + offsetFor(cur) + 'px)';
+      void track.offsetWidth;     // reflow
+      track.style.transition = prev;
+    } else {
+      track.style.transform = 'translateX(' + offsetFor(cur) + 'px)';
+    }
+  }
+
+  // initial position once first image has measured itself
+  const init = () => place(false);
+  if (originals[0].complete) init();
+  else originals[0].addEventListener('load', init, { once:true });
+  window.addEventListener('resize', () => place(false));
+
+  const TICK = 3000, TRANSITION = 1700;
+  setInterval(() => {
+    cur++;
+    place(true);
+    if (cur === N) {
+      // we've slid into the clone of slide 0 — wait for the transition
+      // to finish, then teleport silently back so the carousel keeps
+      // moving forward forever instead of resetting visibly.
+      setTimeout(() => {
+        cur = 0;
+        place(false);
+      }, TRANSITION);
+    }
+  }, TICK);
+})();
+
+// ══ ALL PROJECTS — varied editorial layouts ══════════════
+// Asteri hero (the first .gal-row--hero) is left untouched.
+// Every other project is rebuilt as one of four minimal layouts:
+//   duo      — two portrait images side by side
+//   stagger  — one large + one smaller portrait, vertically offset
+//   reel     — Asteri-style 3-image preview carousel (R→L, looping)
+//   solo     — one landscape hero with a slow drift
+// The rotation cycles so no two adjacent projects share a layout.
+(function(){
+  if (typeof IMGS === 'undefined' || !IMGS.length) return;
+  const gallery = document.getElementById('gallery');
+  if (!gallery) return;
+  // The list-view block is a static last child of #gallery — insert
+  // ALL flow content before it so the order stays correct:
+  //   hero → section-1 rows → Roadster → Eloria → archive grid.
+  const listMode = gallery.querySelector('.gal-list-mode');
+
+  // Group all images by their project folder
+  const byFolder = {};
+  IMGS.forEach(url => {
+    const m = url.match(/^images\/([^\/]+)\//);
+    if (!m) return;
+    (byFolder[m[1]] = byFolder[m[1]] || []).push(url);
+  });
+
+  // Snapshot all existing project cells (skip the Asteri hero — kept as-is)
+  const projects = [];
+  gallery.querySelectorAll('.gal-row:not(.gal-row--hero) .gal-cell').forEach(cell => {
+    const href  = cell.getAttribute('href') || '#';
+    const cap   = cell.querySelector('.gal-cell-cap');
+    const title = cap ? cap.textContent.trim() : '';
+    const img   = cell.querySelector('img');
+    const src   = img ? img.getAttribute('src') : '';
+    const fm    = src.match(/^images\/([^\/]+)\//);
+    if (!fm) return;
+    const imgs  = byFolder[fm[1]] || [];
+    if (!imgs.length) return;
+    projects.push({ href, title, imgs });
+  });
+
+  // Wipe the old non-hero rows. The work page is now a REPEATING
+  // pattern of blocks, each: [carousel] → [full picture] → [grid].
+  // Block 1's carousel is the Asteri hero (the kept .gal-row--hero);
+  // every following block builds its own reel from the next project.
+  gallery.querySelectorAll('.gal-row:not(.gal-row--hero)').forEach(r => r.remove());
+
+  const add   = el => gallery.insertBefore(el, listMode);
+  const thumb = u  =>
+    /^https?:\/\//.test(u) ? u :
+    u.endsWith('.webp')    ? u :
+    'thumbs/' + u.slice('images/'.length);
+
+  // Eloria leads — it's block 1's full picture.
+  const eIdx = projects.findIndex(p =>
+    /eloria/i.test(p.href) || /eloria/i.test(p.title));
+  if (eIdx > 0) projects.unshift(projects.splice(eIdx, 1)[0]);
+
+  // Plastik Roadster → block 2's carousel (section 4).
+  const rIdx = projects.findIndex(p =>
+    /roadster/i.test(p.href) || /roadster/i.test(p.title));
+  const roadster = rIdx >= 0 ? projects.splice(rIdx, 1)[0] : null;
+
+  // Peachpuff Summer (the other Blubay shoot) → block 2's full picture
+  // (section 5). Match against its real id/title — not the Nightlife one.
+  const bIdx = projects.findIndex(p =>
+    /peachpuff/i.test(p.href) || /peachpuff/i.test(p.title));
+  const blubay = bIdx >= 0 ? projects.splice(bIdx, 1)[0] : null;
+
+  // Ambiance Christmas → final 3:4 full-picture section that closes the
+  // page. The grid copy of the project is spliced out so we don't show
+  // it twice; the final section uses image 5.jpg explicitly.
+  const moIdx = projects.findIndex(p =>
+    /ambiance-xmas/i.test(p.href));
+  const finalProj = moIdx >= 0 ? projects.splice(moIdx, 1)[0] : null;
+  const finalShot = finalProj ? {
+    href:  finalProj.href,
+    title: finalProj.title,
+    imgs:  ['images/Project03_Ambiance_ChristmasCampaign/5.jpg'],
+  } : null;
+
+  // ── Irregular 7-column grid for a slice of projects ──
+  // First block's grid carries the muted autoplay videos; later
+  // blocks are image-only. Unfilled cells are white space.
+  const V = {
+    asteri:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video.mp4',
+    gym:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym.mp4',
+    office:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office.mp4',
+    winter:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01.mp4',
+  };
+  // Two distinct irregular patterns — grid 1 carries the videos,
+  // grid 2 is image-only and uses a different layout but keeps the
+  // same white-space imbalance.
+  const GRID1_SLOTS = [
+    {c:1,r:1},{c:3,r:1},{c:4,r:1,vid:'asteri'},{c:5,r:1},{c:6,r:1},
+    {c:1,r:2},{c:2,r:2},{c:4,r:2},{c:6,r:2,vid:'gym'},
+    {c:2,r:3},{c:3,r:3},{c:5,r:3,vid:'winter'},{c:7,r:3},
+    {c:1,r:4},{c:3,r:4,vid:'office'},{c:5,r:4},{c:6,r:4},
+  ];
+  // Grid 2 = horizontal mirror of grid 1 (col c → 8-c), 17 cells, no
+  // videos. Iteration is round-robin across rows so every row gets a
+  // cell before any row gets its second — even when the chunk is short
+  // and repeats are needed to fill, no row goes empty.
+  const GRID2_SLOTS = [
+    {c:7,r:1},{c:7,r:2},{c:6,r:3},{c:7,r:4},   // round 1 (1 per row)
+    {c:5,r:1},{c:6,r:2},{c:5,r:3},{c:5,r:4},   // round 2
+    {c:4,r:1},{c:4,r:2},{c:3,r:3},{c:3,r:4},   // round 3
+    {c:3,r:1},{c:2,r:2},{c:1,r:3},{c:2,r:4},   // round 4
+    {c:2,r:1},                                  // row 1's 5th cell
+  ];
+  // Visual layout (P = filled cell, · = white space):
+  //   row 1   · P P P P · P    (mirror of grid 1 row 1)
+  //   row 2   · P · P · P P    (mirror of grid 1 row 2)
+  //   row 3   P · P · P P ·    (mirror of grid 1 row 3)
+  //   row 4   · P P · P · P    (mirror of grid 1 row 4)
+
+  // Cumulative counter shared across grid 1 and grid 2 so the [ N ]
+  // labels run 1 → total without restarting per grid.
+  let gridNum = 0;
+  // Track every thumbnail URL already shown anywhere on the page so
+  // grid 1, grid 2, and the cells inside each grid never repeat the
+  // same image. Video stills used in grid 1 also reserve their
+  // companion thumbnail so the picture variants of the same project
+  // can still appear without dupes.
+  const usedImgs = new Set();
+  function pickFreshImage(list, startIdx){
+    for (let off = 0; off < list.length; off++){
+      const p = list[(startIdx + off) % list.length];
+      if (!p || !p.imgs || !p.imgs.length) continue;
+      const fresh = p.imgs.find(img => !usedImgs.has(img));
+      if (fresh){ usedImgs.add(fresh); return { p, img: fresh }; }
+    }
+    return null;
+  }
+  function buildGrid(list, slots, withVideo, fillAll){
+    const g = document.createElement('section');
+    g.className = 'archive-grid';
+    let imgSeq = 0;                  // round-robin index across image cells
+    slots.forEach(slot => {
+      let href, title, media;
+      if (slot.vid && withVideo) {
+        const asteri = slot.vid === 'asteri';
+        href  = asteri ? 'project.html?id=plastik-asteri' : 'project.html?id=eloria-launch';
+        title = asteri ? 'Plastik — Asteri' : 'Eloria — Launch';
+        media = '<video src="' + esc(V[slot.vid]) + '" muted loop autoplay ' +
+                'playsinline preload="metadata"></video>';
+      } else {
+        const pick = pickFreshImage(list, imgSeq);
+        if (!pick) {
+          // Every image in every project consumed — fall back rather than
+          // leave a hole; only happens if fillAll demands more cells than
+          // unique images exist.
+          if (!fillAll) { imgSeq++; return; }
+          const p = list[imgSeq % list.length];
+          if (!p || !p.imgs.length) { imgSeq++; return; }
+          href  = p.href; title = p.title;
+          media = '<img src="' + esc(thumb(p.imgs[imgSeq % p.imgs.length])) + '" alt="" loading="lazy" decoding="async">';
+        } else {
+          href  = pick.p.href; title = pick.p.title;
+          media = '<img src="' + esc(thumb(pick.img)) + '" alt="" loading="lazy" decoding="async">';
+        }
+        imgSeq++;
+      }
+      const a = document.createElement('a');
+      a.href = href;
+      a.className = 'archive-cell';
+      a.style.gridColumn = slot.c;
+      a.style.gridRow = slot.r;
+      a.style.setProperty('--d', (g.children.length * 45) + 'ms');
+      gridNum++;
+      a.innerHTML =
+        '<div class="archive-cell-img">' + media + '</div>' +
+        '<div class="archive-cell-cap">' +
+          '<span>' + esc(title) + '</span>' +
+          '<span class="archive-num">[' + gridNum + ']</span>' +
+        '</div>';
+      g.appendChild(a);
+    });
+    g.querySelectorAll('video').forEach(v => {
+      const pl = v.play(); if (pl && pl.catch) pl.catch(() => {});
+    });
+    return g;
+  }
+
+  // ── Build the repeating blocks ──
+  let ptr = 0, block = 0;
+  const GRID_N = 6;   // projects per grid chunk
+  while (ptr < projects.length || block === 0) {
+    block++;
+    // Carousel — block 1 = Asteri hero (static); block 2 = Roadster
+    // (held aside); further blocks pull the next project in line.
+    if (block > 1) {
+      const carP = (block === 2 && roadster) ? roadster : projects[ptr++];
+      if (carP) {
+        const multi = carP.imgs.length > 1;
+        const reel  = buildRow(multi ? 'reel' : 'solo', carP);
+        add(reel);
+        if (multi) initCarousel(reel.querySelector('.asteri-window'));
+      }
+    }
+    // Full picture — block 1 = Eloria (in projects[0]); block 2 = Blubay
+    // (held aside); further blocks pull the next project.
+    const soloP = (block === 2 && blubay) ? blubay : projects[ptr++];
+    if (soloP) add(buildRow('solo', soloP));
+    // Grid chunk — block 1 uses GRID1 (with videos) and pulls the
+    // next GRID_N projects in line. Block 2+ uses GRID2 and draws
+    // from the FULL project pool (including the ones grid 1 already
+    // showed) so 17 cells spread across ~10 projects with at most ~2
+    // repeats per project — no project appears 4× anymore.
+    const chunk = block === 1
+      ? projects.slice(ptr, ptr + GRID_N)
+      : projects.slice();
+    ptr += GRID_N;
+    if (chunk.length) {
+      const slots = block === 1 ? GRID1_SLOTS : GRID2_SLOTS;
+      add(buildGrid(chunk, slots, block === 1, block !== 1));
+    } else break;
+  }
+
+  // ── Final section — full-width 3:4 picture of Ambiance Christmas
+  //    (image 5.jpg explicitly), then footer ──
+  if (finalShot) {
+    const row = buildRow('solo', finalShot);
+    const win = row.querySelector('.solo-window');
+    if (win) win.style.aspectRatio = '3 / 4';
+    add(row);
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, c =>
+      ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function buildRow(layout, p){
+    const row   = document.createElement('div');
+    const href  = esc(p.href);
+    const title = esc(p.title);
+    const lazy  = ' loading="lazy" decoding="async"';
+
+    if (layout === 'solo') {
+      row.className = 'gal-row gal-row--solo';
+      row.innerHTML =
+        '<a href="' + href + '" class="gal-cell gal-cell--solo">' +
+          '<div class="solo-window">' +
+            '<img src="' + esc(p.imgs[0]) + '" alt=""' + lazy + '>' +
+          '</div>' +
+          '<div class="gal-cell-cap">' + title + '</div>' +
+        '</a>';
+      return row;
+    }
+
+    if (layout === 'duo') {
+      row.className = 'gal-row gal-row--duo';
+      row.innerHTML =
+        '<a href="' + href + '" class="gal-cell gal-cell--duo">' +
+          '<div class="duo-pair">' +
+            '<div class="duo-window"><img src="' + esc(p.imgs[0]) + '" alt=""' + lazy + '></div>' +
+            '<div class="duo-window"><img src="' + esc(p.imgs[1]) + '" alt=""' + lazy + '></div>' +
+          '</div>' +
+          '<div class="gal-cell-cap">' + title + '</div>' +
+        '</a>';
+      return row;
+    }
+
+    if (layout === 'stagger') {
+      row.className = 'gal-row gal-row--stagger';
+      row.innerHTML =
+        '<a href="' + href + '" class="gal-cell gal-cell--stagger">' +
+          '<div class="stagger-pair">' +
+            '<div class="stagger-main"><img src="' + esc(p.imgs[0]) + '" alt=""' + lazy + '></div>' +
+            '<div class="stagger-side"><div class="stagger-mini"><img src="' + esc(p.imgs[1]) + '" alt=""' + lazy + '></div></div>' +
+          '</div>' +
+          '<div class="gal-cell-cap">' + title + '</div>' +
+        '</a>';
+      return row;
+    }
+
+    // reel — full Asteri-style carousel
+    row.className = 'gal-row gal-row--hero';
+    const slides = p.imgs.map((u, i) =>
+      '<img class="asteri-slide' + (i === 0 ? ' is-on' : '') + '" ' +
+      'src="' + esc(u) + '" alt="" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">'
+    ).join('');
+    row.innerHTML =
+      '<a href="' + href + '" class="gal-cell gal-cell--hero">' +
+        '<div class="asteri-window">' +
+          '<div class="asteri-track">' + slides + '</div>' +
+        '</div>' +
+        '<div class="gal-cell-cap">' + title + '</div>' +
+      '</a>';
+    return row;
+  }
+
+  // Same carousel logic as the original Asteri hero — duplicated slides
+  // for continuous loop with a silent snap-back at the clone boundary.
+  function initCarousel(win){
+    if (!win) return;
+    const track = win.querySelector('.asteri-track');
+    const originals = track ? Array.from(track.querySelectorAll('.asteri-slide')) : [];
+    const N = originals.length;
+    if (!track || N < 2) return;
+
+    originals.forEach(s => {
+      const clone = s.cloneNode(true);
+      clone.classList.remove('is-on');
+      track.appendChild(clone);
+    });
+    const slides = track.querySelectorAll('.asteri-slide');
+
+    const step = () => {
+      const cs = getComputedStyle(track);
+      const gap = parseFloat(cs.columnGap || cs.gap || 0) || 0;
+      return slides[0].offsetWidth + gap;
+    };
+    const offsetFor = i => -(slides[0].offsetWidth / 2 + step() * i);
+
+    let cur = 0;
+    function place(animate){
+      slides.forEach((s, i) => s.classList.toggle('is-on', i === cur));
+      if (!animate) {
+        const prev = track.style.transition;
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(' + offsetFor(cur) + 'px)';
+        void track.offsetWidth;
+        track.style.transition = prev;
+      } else {
+        track.style.transform = 'translateX(' + offsetFor(cur) + 'px)';
+      }
+    }
+
+    const init = () => place(false);
+    if (originals[0].complete) init();
+    else originals[0].addEventListener('load', init, { once:true });
+    window.addEventListener('resize', () => place(false));
+
+    const TICK = 3000, TRANSITION = 1700;
+    // Stagger each carousel's first tick so they're not all in sync
+    const startDelay = (Math.random() * TICK) | 0;
+    setTimeout(() => {
+      function loop(){
+        cur++;
+        place(true);
+        if (cur === N) {
+          setTimeout(() => { cur = 0; place(false); }, TRANSITION);
+        }
+      }
+      loop();
+      setInterval(loop, TICK);
+    }, startDelay);
+  }
+})();
+
+// ══ GALLERY ENTRY STAGGER ════════════════════════════════
+// Give each .gal-cell a small index-based transition delay so the
+// work page reveals in a soft cascade when body.entered is added.
+(function(){
+  document.querySelectorAll('#gallery .gal-cell').forEach((el, i) => {
+    el.style.setProperty('--d', (i * 35) + 'ms');
+  });
+})();
+
+// ══ IMAGE PROTECTION ═════════════════════════════════════
+document.addEventListener('contextmenu', e => { if (e.target.tagName==='IMG') e.preventDefault(); });
+document.addEventListener('dragstart',   e => { if (e.target.tagName==='IMG') e.preventDefault(); });
+
+// ══ SCROLL-AWARE HEADER FADE ═════════════════════════════
+// Nav is visible at the top of the page. After scrolling it fades
+// 700ms after the last scroll. Moving the cursor into the top
+// ~110px of the viewport (the header band) brings it back
+// instantly and pins it for as long as the cursor stays there.
+// The scrolling element on index.html is #landing (body has
+// overflow:hidden), so we listen there too.
+(function () {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  let idleTimer;
+  const IDLE_MS       = 700;
+  const TOP_THRESHOLD = 4;
+  const HOVER_ZONE    = 110;
+  const landing = document.getElementById('landing');
+
+  function atTop() {
+    if (landing && landing.scrollTop > TOP_THRESHOLD) return false;
+    if ((window.scrollY || window.pageYOffset || 0) > TOP_THRESHOLD) return false;
+    return true;
+  }
+  function show() {
+    nav.classList.remove('nav--idle');
+    clearTimeout(idleTimer);
+    if (!atTop()) {
+      idleTimer = setTimeout(() => nav.classList.add('nav--idle'), IDLE_MS);
+    }
+  }
+  function showSticky() {
+    nav.classList.remove('nav--idle');
+    clearTimeout(idleTimer);
+  }
+
+  const targets = [window, landing].filter(Boolean);
+  targets.forEach(t => {
+    ['scroll','wheel','touchmove'].forEach(ev =>
+      t.addEventListener(ev, show, { passive: true }));
+  });
+
+  // Cursor-in-header trigger
+  window.addEventListener('mousemove', e => {
+    if (e.clientY <= HOVER_ZONE) showSticky();
+    else if (!nav.classList.contains('nav--idle') && !atTop()) {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => nav.classList.add('nav--idle'), IDLE_MS);
+    }
+  }, { passive: true });
+
+  // Start visible at the top.
+  nav.classList.remove('nav--idle');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Azzi Studios</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.c-nav { background: var(--bg); }
+
+/* ── CONTACT PAGE ───────────────────────────── */
+.contact-header {
+  padding: calc(var(--nav-h) + 3.5rem) var(--margin) 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.contact-header__title {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.contact-header__sub {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.contact-header__sub em {
+  font-style: italic;
+  color: var(--text-light);
+}
+
+/* ── CONTACT DETAILS ────────────────────────── */
+.contact-details {
+  padding: 3rem var(--margin);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contact-details__label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  padding-top: 0.4rem;
+}
+
+.contact-channels { list-style: none; }
+
+.contact-channel {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.contact-channel:first-child { border-top: 1px solid var(--border); }
+
+.contact-channel__type {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.contact-channel__value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: opacity 0.2s;
+}
+
+.contact-channel__value:hover { opacity: 0.5; }
+
+/* ── FORM ───────────────────────────────────── */
+.contact-form-section {
+  padding: 3rem var(--margin);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contact-form-section__label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  padding-top: 0.4rem;
+}
+
+.contact-form { width: 100%; max-width: 600px; }
+
+.form-row {
+  border-bottom: 1px solid var(--border);
+  padding: 0.875rem 0;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.form-row:first-child { border-top: 1px solid var(--border); }
+
+.form-row label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text);
+  width: 100%;
+  resize: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-row input::placeholder,
+.form-row textarea::placeholder { color: #111; opacity: 0.4; font-weight: 300; }
+
+.form-row textarea { min-height: 80px; padding-top: 0.25rem; }
+
+.form-row select option { background: var(--bg); }
+
+.form-submit {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.btn-send {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: none;
+  padding: 1rem 2.25rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-send:hover { opacity: 0.65; }
+.btn-send:disabled { opacity: 0.35; cursor: default; }
+
+/* ── CLOSING ────────────────────────────────── */
+.contact-closing {
+  padding: 3rem var(--margin);
+}
+
+.contact-closing__text {
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  .contact-details,
+  .contact-form-section { grid-template-columns: 1fr; gap: 1.5rem; }
+  .form-row { grid-template-columns: 80px 1fr; }
+}
+
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr; }
+  .form-row label { margin-bottom: 0.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="c-nav" id="nav">
+  <a href="index.html" class="c-nav__logo">azzi studios</a>
+  <ul class="c-nav__links">
+    <li><a href="work.html">Work</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="c-nav__right">
+    <a href="contact.html" class="c-nav__cta">Start a project</a>
+  </div>
+  <button class="c-nav__hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span>
+  </button>
+</nav>
+
+<div class="c-layout">
+
+  <!-- HEADER -->
+  <div class="contact-header">
+    <h1 class="contact-header__title reveal">Start a project.</h1>
+    <p class="contact-header__sub reveal reveal-delay-1">
+      Tell us what you are working on.<br>
+      <em>We favour long-term collaborations and tailor-made approaches.</em>
+    </p>
+  </div>
+
+  <!-- CONTACT DETAILS -->
+  <div class="contact-details">
+    <p class="contact-details__label">Contact details</p>
+    <ul class="contact-channels reveal">
+      <li class="contact-channel">
+        <span class="contact-channel__type">Email</span>
+        <a href="mailto:hello@azzistudios.com" class="contact-channel__value">hello@azzistudios.com</a>
+      </li>
+      <li class="contact-channel">
+        <span class="contact-channel__type">Phone</span>
+        <a href="tel:+96178902628" class="contact-channel__value">+961 78 90 26 28</a>
+      </li>
+      <li class="contact-channel">
+        <span class="contact-channel__type">WhatsApp</span>
+        <a href="https://wa.me/96178902628" class="contact-channel__value">+961 78 90 26 28</a>
+      </li>
+      <li class="contact-channel">
+        <span class="contact-channel__type">Instagram</span>
+        <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener" class="contact-channel__value">@azzistudios</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- FORM -->
+  <div class="contact-form-section">
+    <p class="contact-form-section__label">Send a message</p>
+    <form class="contact-form reveal" onsubmit="handleSend(event)">
+      <div class="form-row">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required>
+      </div>
+      <div class="form-row">
+        <label for="brand">Brand</label>
+        <input type="text" id="brand" name="brand" placeholder="Brand or company">
+      </div>
+      <div class="form-row">
+        <label for="type">Project type</label>
+        <select id="type" name="type">
+          <option value="">Select</option>
+          <option>Campaign Production</option>
+          <option>Visual Content</option>
+          <option>VM &amp; Window Display</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="timeline">Timeline</label>
+        <input type="text" id="timeline" name="timeline" placeholder="e.g. June 2026">
+      </div>
+      <div class="form-row">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell us about the project…" required></textarea>
+      </div>
+      <div class="form-submit">
+        <button type="submit" class="btn-send" id="send-btn">Send →</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="contact-closing">
+    <p class="contact-closing__text">Based in Beirut. Available across the region and internationally.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="c-footer">
+    <div class="c-footer__top">
+      <span class="c-footer__logo">azzi studios.</span>
+      <div class="c-footer__contact">
+        <a href="mailto:hello@azzistudios.com">hello@azzistudios.com</a>
+        <span>·</span>
+        <a href="tel:+96178902628">+961 78 90 26 28</a>
+        <span>·</span>
+        <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">@azzistudios</a>
+      </div>
+    </div>
+    <div class="c-footer__bottom">
+      <span>Beirut — and wherever the work demands.</span>
+      <span>© 2026 Azzi Studios</span>
+    </div>
+  </footer>
+
+</div>
+
+<script src="main.js"></script>
+<script>
+function handleSend(e) {
+  e.preventDefault();
+  const btn = document.getElementById('send-btn');
+  btn.textContent = 'Sent ✓';
+  btn.disabled = true;
+}
+</script>
+</body>
+</html>
