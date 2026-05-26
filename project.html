@@ -256,7 +256,12 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 }
 .proj-cell img,
 .proj-cell video{
-  width:100%;height:100%;object-fit:cover;display:block;
+  /* Slightly taller than the cell + negative margin to center so
+     the scroll-driven parallax (~±18px translateY) never reveals
+     the white background behind the image. */
+  width:100%;height:calc(100% + 40px);margin-top:-20px;
+  object-fit:cover;display:block;
+  will-change:transform;
 }
 .proj-cell iframe{
   width:100%;height:100%;border:0;display:block;background:#000;
@@ -706,7 +711,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=10">
+<link rel="stylesheet" href="/enhance.css?v=11">
 </head>
 <body>
 
@@ -1466,6 +1471,33 @@ const PROJECTS = {
   requestAnimationFrame(() => {
     if (secEls[0]) { secEls[0].classList.add('in-view'); io.unobserve(secEls[0]); }
   });
+
+  // ── Parallax — images drift ±18px against the scroll direction
+  // so the page feels alive instead of static. Only on .proj-cell
+  // media; iframes (Cloudinary players) are skipped because the
+  // embed renders its own player chrome that shouldn't shift. ──
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const media = root.querySelectorAll('.proj-cell img, .proj-cell video');
+    let ticking = false;
+    function tick() {
+      ticking = false;
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      media.forEach((el) => {
+        const cell = el.parentElement;
+        const r = cell.getBoundingClientRect();
+        // -0.5 (just entering bottom) → +0.5 (just leaving top)
+        const progress = (r.top + r.height / 2 - vh / 2) / (vh + r.height);
+        const shift = (-progress * 36).toFixed(1);
+        el.style.transform = `translate3d(0, ${shift}px, 0)`;
+      });
+    }
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(tick);
+    }, { passive: true });
+    tick();
+  }
 })();
 
 // ══ ABOUT / SERVICES / CONTACT OVERLAY ════════════════════════════
@@ -1496,11 +1528,25 @@ const PROJECTS = {
     document.body.removeAttribute('data-ov-panel');
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
+    // If the overlay was opened from the mobile burger menu, the
+    // user expects to return to the burger (on the index page) on
+    // close — not to the project page they came from.
+    if (sessionStorage.getItem('azzi_burger_return') === '1') {
+      sessionStorage.removeItem('azzi_burger_return');
+      window.location.href = 'index.html?openBurger=1';
+    }
   }
   ovClose.addEventListener('click', closeOverlay);
   document.querySelectorAll('[data-panel]').forEach(el => {
     if (el.closest('#overlay')) return;           // skip the panels themselves
-    el.addEventListener('click', () => openPanel(el.getAttribute('data-panel')));
+    el.addEventListener('click', () => {
+      // Record that this open() came from the burger menu, so
+      // closeOverlay can route the user back to it on index.
+      if (el.closest('.mob-menu')) {
+        sessionStorage.setItem('azzi_burger_return', '1');
+      }
+      openPanel(el.getAttribute('data-panel'));
+    });
   });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay();

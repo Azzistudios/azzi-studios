@@ -223,11 +223,23 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   .nav-logo{font-size:0.6rem;letter-spacing:0.2em}
   .nav-center,.nav-right{display:none}
   .nav-ham{display:flex}
-  /* Flow/List hidden on mobile — the hover-preview behaviour
-     it controls doesn't translate to touch anyway. Mobile nav
-     stays clean: logo (left) and burger (right). */
-  .nav .view-toggle,
-  body.entered .nav .view-toggle{display:none !important;opacity:0 !important;pointer-events:none !important}
+  /* Flow/List on mobile: centered between logo (left) and burger
+     (right). Stays visible only once the user has entered the
+     work view (body.entered), and hidden while overlay or burger
+     menu is open. */
+  .nav .view-toggle{
+    display:flex !important;
+    left:50% !important;
+    right:auto !important;
+    top:calc(max(1rem, env(safe-area-inset-top)) + 24px) !important;
+    transform:translate(-50%, -50%) !important;
+    opacity:0;pointer-events:none;
+    font-size:0.5rem;letter-spacing:0.16em;
+    gap:0.8rem;
+  }
+  body.entered .nav .view-toggle{opacity:1 !important;pointer-events:auto !important}
+  body.ov-open .nav .view-toggle,
+  body.menu-open .nav .view-toggle{opacity:0 !important;pointer-events:none !important}
   /* When the burger menu is open (body.menu-open is set by JS),
      hide the top-left nav logo so the centered "azzi studios"
      inside the menu is the only one visible — was showing two
@@ -465,8 +477,17 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 @media(max-width:1100px){
   :root{ --box-w: min(150vmin, 96vw); --box-h: min(92vmin, 80vh); --box-d: min(90vmin, 88vw); --back-z: -16vmin; }
 }
+/* Phones — scale the 3D box up so it fills the whole viewport
+   (was leaving margins of white at the top/sides). Keep the
+   proportions and the 3D perspective; only the magnitude of the
+   box dimensions changes. */
 @media(max-width:600px){
-  :root{ --box-w: min(160vmin, 96vw); --box-h: min(105vmin, 84vh); --box-d: min(98vmin, 92vw); --back-z: -18vmin; }
+  :root{
+    --box-w: min(180vmin, 110vw);
+    --box-h: min(130vmin, 110vh);
+    --box-d: min(110vmin, 110vw);
+    --back-z: -22vmin;
+  }
 }
 
 #room{
@@ -660,6 +681,26 @@ body.entered .nav .view-toggle{opacity:1;pointer-events:auto}
 body.entered .gal-cell{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   .gal-cell{opacity:1;transform:none;transition:none}
+}
+/* Subtle scroll-linked parallax on gallery cells — uses native
+   CSS scroll-driven animations (Chrome 115+, Safari 18.1+). The
+   cell tilts +6px / -6px as it travels across the viewport, so
+   scrolling feels alive without breaking the existing hover
+   scale on the images inside. Browsers without animation-timeline
+   simply skip the rule — gallery still works statically. */
+@supports (animation-timeline: view()) {
+  body.entered .gal-cell{
+    animation: galCellLift linear both;
+    animation-timeline: view();
+    animation-range: entry 10% exit 90%;
+  }
+  @keyframes galCellLift {
+    from { transform: translateY(8px); }
+    to   { transform: translateY(-8px); }
+  }
+  @media(prefers-reduced-motion:reduce){
+    body.entered .gal-cell{animation:none}
+  }
 }
 .gal-cell-img{
   overflow:hidden;
@@ -1003,7 +1044,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=10">
+<link rel="stylesheet" href="/enhance.css?v=11">
 </head>
 <body>
 
@@ -2120,13 +2161,30 @@ function buildRoom() {
     document.body.removeAttribute('data-ov-panel');
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
+    // If the overlay was opened from the mobile burger menu, the
+    // user wants to return to the burger on close.
+    if (sessionStorage.getItem('azzi_burger_return') === '1') {
+      sessionStorage.removeItem('azzi_burger_return');
+      if (mob) {
+        mob.classList.add('open');
+        document.body.classList.add('menu-open');
+      }
+    }
   }
 
   document.querySelectorAll('[data-panel]').forEach(el => {
     if (el.closest('#overlay')) return;          // skip the panels themselves
     el.addEventListener('click', () => {
+      // Remember the burger origin so closeOverlay() can route
+      // the user back to it.
+      if (el.closest('.mob-menu')) {
+        sessionStorage.setItem('azzi_burger_return', '1');
+      }
       openPanel(el.getAttribute('data-panel'));
-      if (mob) mob.classList.remove('open');
+      if (mob) {
+        mob.classList.remove('open');
+        document.body.classList.remove('menu-open');
+      }
     });
   });
   document.querySelectorAll('[data-home]').forEach(el => {
@@ -2141,10 +2199,25 @@ function buildRoom() {
 
   // Auto-open overlay when arriving from /404 or an external link:
   // /?panel=about | services | contact
-  const qsPanel = new URLSearchParams(window.location.search).get('panel');
+  const qsParams = new URLSearchParams(window.location.search);
+  const qsPanel = qsParams.get('panel');
   if (qsPanel && /^(about|services|contact)$/.test(qsPanel)) {
     // Wait one frame so showHome() has finished hiding the room first
     requestAnimationFrame(() => openPanel(qsPanel));
+  }
+  // Arriving from a project page's burger → overlay → close. Open
+  // the burger menu so the user lands back in the navigation
+  // state they were in.
+  if (qsParams.get('openBurger') === '1') {
+    requestAnimationFrame(() => {
+      showHome();
+      if (mob) {
+        mob.classList.add('open');
+        document.body.classList.add('menu-open');
+      }
+    });
+    // Clean the URL so a refresh doesn't keep the menu open.
+    history.replaceState(null, '', window.location.pathname);
   }
 })();
 
