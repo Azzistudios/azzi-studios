@@ -21,7 +21,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project.html" id="og-url">
 <meta property="og:title" content="Project — Azzi Studios" id="og-title">
-<meta property="og:description" content="Set design, art direction and creative direction by Azzi Studios." id="og-description">
+<meta property="og:description" content="A project by Azzi Studios — a Beirut-based creative studio specialising in set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands." id="og-description">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og-image.png" id="og-image">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
@@ -29,7 +29,7 @@
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Project — Azzi Studios" id="twitter-title">
-<meta name="twitter:description" content="Set design, art direction and creative direction by Azzi Studios." id="twitter-description">
+<meta name="twitter:description" content="A project by Azzi Studios — a Beirut-based creative studio specialising in set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands." id="twitter-description">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og-image.png" id="twitter-image">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1212,7 +1212,7 @@ const PROJECTS = {
   // previews and Google show the right project info per URL.
   const url   = `https://azzistudios.com/project.html?id=${id}`;
   const title = `${p.client} — ${p.title} · Azzi Studios`;
-  const desc  = `${p.client} · ${p.title}. ${p.discipline}.`;
+  const desc  = `${p.client} — ${p.title}. ${p.discipline}. A project by Azzi Studios, a Beirut-based creative studio.`;
   const firstImage = (p.media || []).find(s => !isVideo(s)) || '';
   const setMeta = (sel, attr, val) => {
     const el = document.querySelector(sel);
