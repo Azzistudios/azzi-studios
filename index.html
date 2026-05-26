@@ -180,7 +180,7 @@ body.ov-open .nav-right{opacity:0;visibility:hidden;pointer-events:none}
 .nav-logo{transition:opacity 0.3s ease}
 body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
 .nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:12px;margin:-8px;cursor:pointer}
-.nav-ham span{display:block;width:22px;height:1.5px;background:#111;transition:all 0.3s}
+.nav-ham span{display:block;width:16px;height:1.5px;background:#111;transition:all 0.3s}
 
 /* mobile overlay */
 .mob-menu{
@@ -223,13 +223,15 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   .nav-logo{font-size:0.6rem;letter-spacing:0.2em}
   .nav-center,.nav-right{display:none}
   .nav-ham{display:flex}
-  /* Flow/List on mobile: centered between logo (left) and burger
-     (right). Stays visible only once the user has entered the
-     work view (body.entered), and hidden while overlay or burger
-     menu is open. */
+  /* Flow/List on mobile: VISUALLY centered between the "azzi
+     studios" logo (left, ~85px of text + 1.25rem padding) and
+     the burger (right, ~40px tap area + 1.25rem padding). The
+     geometric midpoint of that gap sits ~20px right of the
+     viewport centre — viewport centre alone would push
+     Flow/List too far left and crowd the logo. */
   .nav .view-toggle{
     display:flex !important;
-    left:50% !important;
+    left:calc(50% + 20px) !important;
     right:auto !important;
     top:calc(max(1rem, env(safe-area-inset-top)) + 24px) !important;
     transform:translate(-50%, -50%) !important;
@@ -1044,7 +1046,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=11">
+<link rel="stylesheet" href="/enhance.css?v=12">
 </head>
 <body>
 
