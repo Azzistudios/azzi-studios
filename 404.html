@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+
+<title>Page not found — Azzi Studios</title>
+<meta name="description" content="That page isn't here. Head back to the work or get in touch.">
+<meta name="robots" content="noindex, follow">
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" href="brand_assets/logo-monogram.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" href="brand_assets/logo-circle-monogram.png" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="brand_assets/logo-circle-monogram.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{height:100%;background:#fff;color:#111;font-family:'Space Mono',monospace}
+body{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+}
+.logo{
+  width:88px;height:88px;margin-bottom:3rem;
+  background:url('brand_assets/logo-circle-monogram.png') center/contain no-repeat;
+}
+.code{
+  font-size:0.6rem;font-weight:700;letter-spacing:0.32em;
+  text-transform:uppercase;color:#888;margin-bottom:1.25rem;
+}
+.headline{
+  font-size:clamp(1.4rem, 4vw, 2.4rem);
+  font-weight:700;letter-spacing:-0.02em;line-height:1.1;
+  margin-bottom:1.5rem;
+}
+.headline em{font-style:italic;font-weight:400;color:#888}
+.sub{
+  font-size:0.75rem;font-weight:400;letter-spacing:0.04em;
+  color:#888;max-width:32ch;margin-bottom:3rem;line-height:1.6;
+}
+.links{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center}
+.links a{
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:#111;text-decoration:none;
+  border-bottom:1px solid #111;padding-bottom:3px;
+  transition:opacity 0.2s, border-color 0.2s;
+}
+.links a:hover{opacity:0.55}
+.links a:focus-visible{outline:2px solid #111;outline-offset:4px}
+</style>
+<link rel="stylesheet" href="/enhance.css">
+</head>
+<body>
+  <div class="logo" aria-hidden="true"></div>
+  <p class="code">Error 404</p>
+  <h1 class="headline">This page <em>doesn't exist.</em></h1>
+  <p class="sub">The link is broken or the page has been moved. Try one of these instead:</p>
+  <div class="links">
+    <a href="/">Back to work</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+<script defer src="/enhance.js"></script>
+</body>
+</html>

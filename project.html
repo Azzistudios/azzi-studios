@@ -32,6 +32,13 @@
 <meta name="twitter:description" content="Set design, art direction and creative direction by Azzi Studios." id="twitter-description">
 <meta name="twitter:image" content="brand_assets/logo-circle-full.png" id="twitter-image">
 
+<!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
+     the first image asks for them. Saves ~100-300ms on the LCP. -->
+<link rel="preconnect" href="https://i.ibb.co" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://player.cloudinary.com">
+
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ"></script>
 <script>
@@ -153,6 +160,16 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   .nav-right{display:none}
   .nav-center{display:none}
   .nav-ham{display:flex}
+
+  /* Mobile overlay = full-screen */
+  #overlay{height:100vh;height:100dvh}
+  body.ov-open .proj{transform:translateY(100vh);transform:translateY(100dvh)}
+  /* "Back" text close button hidden — burger morphs into × */
+  .ov-close{display:none !important}
+  body.ov-open .nav-ham,
+  body.ov-open .nav-logo{opacity:1 !important;visibility:visible !important;pointer-events:auto !important;z-index:9001;position:relative}
+  body.ov-open .nav-ham span:nth-child(1){transform:translateY(2.5px) rotate(45deg)}
+  body.ov-open .nav-ham span:nth-child(2){transform:translateY(-2.5px) rotate(-45deg)}
 }
 
 /* Mobile full-screen menu */
@@ -176,6 +193,12 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 }
 .mob-menu a:hover,
 .mob-menu button:hover{opacity:0.45}
+.mob-menu__brand{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
+  text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
+}
 
 /* ── PROJECT PAGE — editorial sections ──
    Sections vary by what they contain:
@@ -642,6 +665,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
+<link rel="stylesheet" href="/enhance.css">
 </head>
 <body>
 
@@ -667,6 +691,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   <button class="nav-link" type="button" data-panel="about">About</button>
   <button class="nav-link" type="button" data-panel="services">Services</button>
   <button class="nav-link" type="button" data-panel="contact">Contact</button>
+  <span class="mob-menu__brand">Creative Studio</span>
 </div>
 
 <!-- ══ INFO PANEL — slides down from the nav.
@@ -1202,6 +1227,25 @@ const PROJECTS = {
   setMeta('#twitter-description','content', desc);
   if (firstImage) setMeta('#twitter-image', 'content', firstImage);
 
+  // Per-project JSON-LD (CreativeWork) — gives Google a structured
+  // record of this project so it can render rich search results.
+  const ldjson = {
+    "@context":  "https://schema.org",
+    "@type":     "CreativeWork",
+    "name":      `${p.client} — ${p.title}`,
+    "headline":  p.title,
+    "url":       url,
+    "image":     firstImage || undefined,
+    "creator":   { "@type": "Organization", "name": "Azzi Studios", "url": "https://azzistudios.com" },
+    "about":     p.client,
+    "datePublished": p.year ? String(p.year) : undefined,
+    "keywords":  (p.discipline || '').split(/[,&]/).map(s => s.trim()).filter(Boolean),
+  };
+  const ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify(ldjson, null, 2);
+  document.head.appendChild(ld);
+
   // ── Nav-center reads "CLIENT · TITLE" — replaces the
   //    "Creative Studio" label used on every other page. ──
   const navTitle  = document.getElementById('navTitle');
@@ -1273,7 +1317,19 @@ const PROJECTS = {
   });
   if (infoClose) infoClose.addEventListener('click', closeInfo);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && infoPanel.classList.contains('open')) closeInfo();
+    if (e.key === 'Escape' && infoPanel.classList.contains('open')) { closeInfo(); return; }
+    // ← / → cycle through projects (skipped when any overlay/menu/info is open)
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      if (infoPanel.classList.contains('open')) return;
+      if (document.body.classList.contains('ov-open')) return;
+      const ids = Object.keys(PROJECTS);
+      const cur = ids.indexOf(id);
+      if (cur < 0) return;
+      const next = e.key === 'ArrowLeft'
+        ? (cur - 1 + ids.length) % ids.length
+        : (cur + 1) % ids.length;
+      window.location.href = `project.html?id=${ids[next]}`;
+    }
   });
 
   // ── Build the section list ──
@@ -1425,6 +1481,13 @@ const PROJECTS = {
     ham.querySelectorAll('span').forEach(s => s.style.transform = '');
   }
   ham.addEventListener('click', () => {
+    // If the about/services/contact overlay is open, the burger
+    // acts as its close trigger (CSS morphs it into an ×).
+    if (document.body.classList.contains('ov-open')) {
+      const ovClose = document.getElementById('ovClose');
+      if (ovClose) ovClose.click();
+      return;
+    }
     menu.classList.contains('open') ? close() : open();
   });
   menu.querySelectorAll('a, button').forEach(el => {
@@ -1454,5 +1517,6 @@ document.addEventListener('dragstart',   e => { if (e.target.tagName === 'IMG') 
   });
 })();
 </script>
+<script defer src="/enhance.js"></script>
 </body>
 </html>

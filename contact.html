@@ -234,6 +234,7 @@
   .form-row label { margin-bottom: 0.25rem; }
 }
 </style>
+<link rel="stylesheet" href="/enhance.css">
 </head>
 <body>
 
@@ -287,42 +288,6 @@
     </ul>
   </div>
 
-  <!-- FORM -->
-  <div class="contact-form-section">
-    <p class="contact-form-section__label">Send a message</p>
-    <form class="contact-form reveal" onsubmit="handleSend(event)">
-      <div class="form-row">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your name" required>
-      </div>
-      <div class="form-row">
-        <label for="brand">Brand</label>
-        <input type="text" id="brand" name="brand" placeholder="Brand or company">
-      </div>
-      <div class="form-row">
-        <label for="type">Project type</label>
-        <select id="type" name="type">
-          <option value="">Select</option>
-          <option>Campaign Production</option>
-          <option>Visual Content</option>
-          <option>VM &amp; Window Display</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label for="timeline">Timeline</label>
-        <input type="text" id="timeline" name="timeline" placeholder="e.g. June 2026">
-      </div>
-      <div class="form-row">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="Tell us about the project…" required></textarea>
-      </div>
-      <div class="form-submit">
-        <button type="submit" class="btn-send" id="send-btn">Send →</button>
-      </div>
-    </form>
-  </div>
-
   <!-- CLOSING -->
   <div class="contact-closing">
     <p class="contact-closing__text">Based in Beirut. Available across the region and internationally.</p>
@@ -350,12 +315,9 @@
 
 <script src="main.js"></script>
 <script>
-function handleSend(e) {
-  e.preventDefault();
-  const btn = document.getElementById('send-btn');
-  btn.textContent = 'Sent ✓';
-  btn.disabled = true;
-}
+/* Contact form removed — visitors reach out via the channels above
+   (email / phone / WhatsApp / Instagram). */
 </script>
+<script defer src="/enhance.js"></script>
 </body>
 </html>
