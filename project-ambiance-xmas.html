@@ -336,12 +336,18 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 
 /* ── MOBILE (≤ 720px) — single column, full-width per cell ── */
 @media (max-width: 720px) {
-  /* Nav-center hidden (no room next to logo + hamburger). Info
-     button sits clearly BELOW the nav band so it doesn't overlap
-     the logo/hamburger row; stays visible while the info panel is
-     open so it can act as the close trigger. */
+  /* Nav-center (project title) hidden on mobile — no room.
+     Info button sits ON the same row as the logo and the
+     hamburger, centered between them, at the same font size and
+     letter-spacing as the logo. Stays visible while the info
+     panel is open so it can act as the close trigger. */
   .nav-center{display:none}
-  .info-btn-float{top:calc(1rem + 56px)}
+  .info-btn-float{
+    top:calc(1rem + 24px);            /* vertical center of the 48px nav band */
+    transform:translate(-50%, -50%);  /* center on both axes */
+    font-size:0.6rem;                 /* match .nav-logo */
+    letter-spacing:0.2em;             /* match .nav-logo */
+  }
   body.info-open .info-btn-float{
     opacity:1 !important;visibility:visible !important;pointer-events:auto !important;
   }
@@ -403,7 +409,10 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 /* ── SMALL PHONES (≤ 420px) ── */
 @media (max-width: 420px) {
   .nav{padding:0 1.25rem}
-  .info-btn-float{top:calc(1rem + 28px);font-size:0.5rem}
+  /* Keep Info aligned with logo + hamburger row at the same font
+     size as the logo (set in the 720px block above — don't override
+     here). The previous override pushed it BELOW the nav and shrank
+     the text. */
   .proj-section{padding:4vh 4vw}
   .proj-section--pair{padding:4vh 4vw}
   .proj-section--grid{padding:4vh 4vw}
