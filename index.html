@@ -195,13 +195,14 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
   text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
 }
-/* "azzi studios" pinned to the top centre of the mobile burger
-   menu — matches the project page's mob-menu__top and gives the
-   menu a consistent top-anchor across the site. */
+/* "azzi studios" inside the burger menu — pinned at the SAME
+   coordinates as the now-centered nav-logo so when the menu
+   opens and the nav-logo gets hidden, the menu version slots in
+   visually at the identical position. */
 .mob-menu__top{
   position:absolute;
-  top:calc(max(1rem, env(safe-area-inset-top)) + 18px);
-  left:50%;transform:translateX(-50%);
+  top:calc(max(1rem, env(safe-area-inset-top)) + 24px);
+  left:50%;transform:translate(-50%, -50%);
   font-family:'Space Mono',monospace;
   font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
   text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
@@ -218,30 +219,40 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
     top:max(1rem, env(safe-area-inset-top));
     padding:0 1.25rem;
   }
-  /* Same text size as the project-page nav-logo (0.6rem/0.2em) so
-     "azzi studios" reads identically across every page on mobile. */
-  .nav-logo{font-size:0.6rem;letter-spacing:0.2em}
+  /* Mobile nav layout: Flow/List (left) · azzi studios (center) · ≡
+     (right). The logo is taken out of the flex flow with absolute
+     positioning so it sits in the visual centre of the nav band
+     regardless of how wide Flow/List or the burger become. */
+  .nav-logo{
+    font-size:0.6rem;letter-spacing:0.2em;
+    position:absolute;
+    left:50%;top:50%;
+    transform:translate(-50%, -50%);
+  }
   .nav-center,.nav-right{display:none}
   .nav-ham{display:flex}
-  /* Flow/List on mobile: VISUALLY centered between the "azzi
-     studios" logo (left, ~85px of text + 1.25rem padding) and
-     the burger (right, ~40px tap area + 1.25rem padding). The
-     geometric midpoint of that gap sits ~20px right of the
-     viewport centre — viewport centre alone would push
-     Flow/List too far left and crowd the logo. */
+  /* Flow/List on mobile: top-LEFT (first flex child in the nav).
+     Shows only ONE button at a time — whichever mode you're not
+     currently in. body.flow-mode hides the Flow button, leaving
+     "List" visible (click to switch); body.list-mode does the
+     opposite. */
   .nav .view-toggle{
     display:flex !important;
-    left:calc(50% + 20px) !important;
-    right:auto !important;
-    top:calc(max(1rem, env(safe-area-inset-top)) + 24px) !important;
-    transform:translate(-50%, -50%) !important;
+    position:static !important;
+    top:auto !important;left:auto !important;right:auto !important;
+    transform:none !important;
     opacity:0;pointer-events:none;
-    font-size:0.5rem;letter-spacing:0.16em;
-    gap:0.8rem;
+    font-size:0.55rem;letter-spacing:0.16em;
+    gap:0;
+    align-items:center;
   }
   body.entered .nav .view-toggle{opacity:1 !important;pointer-events:auto !important}
   body.ov-open .nav .view-toggle,
   body.menu-open .nav .view-toggle{opacity:0 !important;pointer-events:none !important}
+  /* Show only the inactive mode's button — the active one would be
+     a no-op to tap, so we hide it to keep the nav clean. */
+  body.flow-mode .nav .view-toggle #btnFlow{display:none}
+  body.list-mode .nav .view-toggle #btnList{display:none}
   /* When the burger menu is open (body.menu-open is set by JS),
      hide the top-left nav logo so the centered "azzi studios"
      inside the menu is the only one visible — was showing two
@@ -1046,7 +1057,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=12">
+<link rel="stylesheet" href="/enhance.css?v=13">
 </head>
 <body>
 
@@ -1988,12 +1999,18 @@ function buildRoom() {
     g.classList.remove('list-view');
     bf.classList.add('active');    bf.textContent = '[+] Flow';
     bl.classList.remove('active'); bl.textContent = '[ ] List';
+    // body classes drive the mobile-only "show one button only"
+    // rule — see the .view-toggle CSS in the mobile @media block.
+    document.body.classList.add('flow-mode');
+    document.body.classList.remove('list-mode');
     if (persist !== false) sessionStorage.setItem(KEY, 'flow');
   }
   function setList(persist){
     g.classList.add('list-view');
     bl.classList.add('active');    bl.textContent = '[+] List';
     bf.classList.remove('active'); bf.textContent = '[ ] Flow';
+    document.body.classList.add('list-mode');
+    document.body.classList.remove('flow-mode');
     if (persist !== false) sessionStorage.setItem(KEY, 'list');
   }
   bf.addEventListener('click', () => setFlow());

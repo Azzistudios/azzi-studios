@@ -160,9 +160,15 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   .nav-right{display:none}
   .nav-center{display:none}
   .nav-ham{display:flex}
-  /* When the burger is open, hide the top-left nav logo so the
-     centered "azzi studios" inside the menu is the only one
-     visible — was showing two copies. */
+  /* Mobile: centre the nav-logo in the nav band so it matches
+     the index page's centered "azzi studios". The burger sits
+     at the right via flex space-between. */
+  .nav-logo{
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%, -50%);
+  }
+  /* When the burger is open, hide the centered nav-logo so
+     mob-menu__top (also centered) is the only "azzi studios". */
   body.menu-open .nav-logo{visibility:hidden}
   /* Hamburger morphs into × while the menu is open. !important
      beats the inline style:transform="" set by the open()/close()
@@ -212,14 +218,13 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
   text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
 }
-/* "azzi studios" pinned to the top centre of the mobile menu —
-   matches the nav-logo on every other page (the project-page
-   nav-logo sits top-LEFT and gets covered by the menu z-stack,
-   so we mirror it here for parity). */
+/* "azzi studios" inside the menu — same coordinates as the
+   centered nav-logo so they're visually identical when the menu
+   opens and the nav-logo gets hidden. */
 .mob-menu__top{
   position:absolute;
-  top:calc(max(1rem, env(safe-area-inset-top)) + 18px);
-  left:50%;transform:translateX(-50%);
+  top:calc(max(1rem, env(safe-area-inset-top)) + 24px);
+  left:50%;transform:translate(-50%, -50%);
   font-family:'Space Mono',monospace;
   font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
   text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
@@ -711,7 +716,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=12">
+<link rel="stylesheet" href="/enhance.css?v=13">
 </head>
 <body>
 
