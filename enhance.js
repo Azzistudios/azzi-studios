@@ -52,10 +52,26 @@
   // ── Service worker ────────────────────────────────────
   // Only register on HTTPS (Vercel) or localhost — Safari/Chrome
   // require a secure origin.
+  //
+  // updateViaCache:'none' makes the browser bypass its HTTP cache
+  // when checking /sw.js, so a new VERSION ships within minutes
+  // of a deploy instead of waiting for the 24h SW cache.
+  //
+  // controllerchange fires when a newly-installed SW takes over an
+  // already-open tab (sw.js calls self.clients.claim()). When that
+  // happens we reload once so the user immediately sees fresh CSS/JS
+  // instead of the old assets the previous SW was serving.
   if ('serviceWorker' in navigator
       && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').catch(() => { /* fail quietly */ });
+      navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
+        .catch(() => { /* fail quietly */ });
+    });
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloaded) return;
+      reloaded = true;
+      window.location.reload();
     });
   }
 

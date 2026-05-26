@@ -7,7 +7,7 @@
    • Skips ImgBB & Cloudinary (they have their own CDN
      caching, and we don't want to fill SW storage).
    ============================================= */
-const VERSION   = 'azzi-v4';
+const VERSION   = 'azzi-v5';
 const STATIC    = `${VERSION}-static`;
 const RUNTIME   = `${VERSION}-runtime`;
 

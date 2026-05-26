@@ -199,6 +199,18 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
   text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
 }
+/* "azzi studios" pinned to the top centre of the mobile menu —
+   matches the nav-logo on every other page (the project-page
+   nav-logo sits top-LEFT and gets covered by the menu z-stack,
+   so we mirror it here for parity). */
+.mob-menu__top{
+  position:absolute;
+  top:calc(max(1rem, env(safe-area-inset-top)) + 18px);
+  left:50%;transform:translateX(-50%);
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
+}
 
 /* ── PROJECT PAGE — editorial sections ──
    Sections vary by what they contain:
@@ -356,6 +368,11 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
      (was: padding-top:5vh, which on a 667px phone is only 33px —
      content was sliding under the 64px-tall nav band). */
   .proj-section{padding:80px 5vw 5vh;min-height:auto}
+  /* First section was still hugging the nav because the variant
+     rules (--pair / --grid / --solo-pic / --video-end) override
+     padding back to 5vh. Force a generous gap on whichever
+     variant lands first. */
+  .proj-section:first-of-type{padding-top:120px !important}
 
   /* Pairs stack vertically */
   .proj-section--pair{flex-direction:column;gap:4vh;padding:5vh 5vw}
@@ -674,7 +691,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=4">
+<link rel="stylesheet" href="/enhance.css?v=5">
 </head>
 <body>
 
@@ -696,6 +713,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 
 <!-- ══ MOBILE MENU — opens via the nav hamburger on phones ══ -->
 <div class="mob-menu" id="mobMenu" aria-hidden="true">
+  <span class="mob-menu__top">azzi studios</span>
   <a href="index.html">Work</a>
   <button class="nav-link" type="button" data-panel="about">About</button>
   <button class="nav-link" type="button" data-panel="services">Services</button>
