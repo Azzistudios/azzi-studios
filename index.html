@@ -233,9 +233,13 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
      inside the menu is the only one visible — was showing two
      copies. */
   body.menu-open .nav-logo{visibility:hidden}
-  /* Hamburger morphs into × so it doubles as the close button. */
-  body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.5px) rotate(45deg)}
-  body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
+  /* Hamburger morphs into × so it doubles as the close button.
+     Geometry: spans are 1.5px tall with 5px gap (total 8px). Each
+     span's centre is 0.75px or 7.25px from the top — both need to
+     translate ±3.25px to meet at the geometric centre (4px) for a
+     clean, symmetric ×. */
+  body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+  body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
 
   /* Mobile overlay = full-screen, page below slides completely
      off so nothing of index leaks through. */
@@ -245,12 +249,16 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   /* Hide the "Back" text close button on mobile — the burger
      itself becomes an × that closes the overlay. */
   .ov-close{display:none !important}
-  /* Keep the burger / logo visible above the overlay while open. */
-  body.ov-open .nav-ham,
-  body.ov-open .nav-logo{opacity:1 !important;visibility:visible !important;pointer-events:auto !important;z-index:9001;position:relative}
-  /* Burger morphs into × when overlay is open. */
-  body.ov-open .nav-ham span:nth-child(1){transform:translateY(2.5px) rotate(45deg)}
-  body.ov-open .nav-ham span:nth-child(2){transform:translateY(-2.5px) rotate(-45deg)}
+  /* Keep ONLY the burger visible above the overlay while open
+     (it doubles as the close button via the × morph). The
+     nav-logo stays hidden — was showing a duplicate "azzi
+     studios" above the overlay panel content. */
+  body.ov-open .nav-ham{opacity:1 !important;visibility:visible !important;pointer-events:auto !important;z-index:9001;position:relative}
+  /* Burger morphs into × when overlay is open. Same ±3.25px
+     translate so spans meet at the geometric centre — was 2.5px
+     which left a small offset and read as a tilted ×. */
+  body.ov-open .nav-ham span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+  body.ov-open .nav-ham span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
 }
 
 /* ══════════════════════════════════════════
@@ -258,7 +266,7 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
    as a pop-up over the site (no page load)
 ══════════════════════════════════════════ */
 #overlay{
-  position:fixed;top:0;left:0;right:0;height:55vh;
+  position:fixed;top:0;left:0;right:0;height:100vh;height:100dvh;
   z-index:8500;background:#fff;
   opacity:0;pointer-events:none;transform:translateY(-100%);
   transition:opacity 0.4s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1);
@@ -267,9 +275,10 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
 }
 #overlay::-webkit-scrollbar{display:none}
 #overlay.open{opacity:1;pointer-events:all;transform:translateY(0)}
-/* Work page slides down when the drop-down panel opens (not overlaid) */
+/* Work page slides fully off when the drop-down opens — no gallery
+   should peek behind the overlay. */
 #landing,#room{transition:transform 0.65s cubic-bezier(0.16,1,0.3,1)}
-body.ov-open #landing,body.ov-open #room{transform:translateY(55vh)}
+body.ov-open #landing,body.ov-open #room{transform:translateY(100vh);transform:translateY(100dvh)}
 /* site-wide motion: overlay content reveals with a soft stagger */
 @keyframes ovIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 #overlay.open .ov-panel.active > *{opacity:0;animation:ovIn 0.7s cubic-bezier(0.16,1,0.3,1) forwards}
@@ -772,7 +781,11 @@ body.entered .gal-cell{opacity:1;transform:none}
 /* Mobile */
 @media(max-width:768px){
   .toggle-bar{padding:1.25rem 1rem 0.75rem}
-  #landing{padding-top:5rem;padding-bottom:2rem}
+  /* No bottom padding on mobile — the footer already provides
+     its own bottom padding, and the extra 3rem from #landing's
+     desktop rule was leaving a strip of white below the footer
+     that the project pages don't have. */
+  #landing{padding-top:5rem;padding-bottom:0}
 
   /* Tighter gaps between rows — text size kept identical to desktop */
   .gal-row{gap:4px;margin-bottom:4px}
@@ -990,7 +1003,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=9">
+<link rel="stylesheet" href="/enhance.css?v=10">
 </head>
 <body>
 

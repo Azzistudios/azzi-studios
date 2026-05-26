@@ -167,18 +167,22 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   /* Hamburger morphs into × while the menu is open. !important
      beats the inline style:transform="" set by the open()/close()
      JS so the CSS animation drives the morph cleanly. */
-  body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.5px) rotate(45deg) !important}
-  body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3px) rotate(-45deg) !important}
+  body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.25px) rotate(45deg) !important}
+  body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg) !important}
 
   /* Mobile overlay = full-screen */
   #overlay{height:100vh;height:100dvh}
   body.ov-open .proj{transform:translateY(100vh);transform:translateY(100dvh)}
   /* "Back" text close button hidden — burger morphs into × */
   .ov-close{display:none !important}
-  body.ov-open .nav-ham,
-  body.ov-open .nav-logo{opacity:1 !important;visibility:visible !important;pointer-events:auto !important;z-index:9001;position:relative}
-  body.ov-open .nav-ham span:nth-child(1){transform:translateY(2.5px) rotate(45deg)}
-  body.ov-open .nav-ham span:nth-child(2){transform:translateY(-2.5px) rotate(-45deg)}
+  /* Keep ONLY the burger visible above the overlay (doubles as the
+     × close button). nav-logo stays hidden so we don't get a
+     duplicate "azzi studios" above the overlay panel. */
+  body.ov-open .nav-ham{opacity:1 !important;visibility:visible !important;pointer-events:auto !important;z-index:9001;position:relative}
+  /* Symmetric ±3.25px so the spans meet at the geometric centre
+     and the × looks clean. */
+  body.ov-open .nav-ham span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+  body.ov-open .nav-ham span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
 }
 
 /* Mobile full-screen menu */
@@ -702,7 +706,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=9">
+<link rel="stylesheet" href="/enhance.css?v=10">
 </head>
 <body>
 
