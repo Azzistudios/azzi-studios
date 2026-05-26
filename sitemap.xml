@@ -25,21 +25,23 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Project pages -->
-  <url><loc>https://azzistudios.com/project.html?id=plastik-asteri</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=plastik-roadster</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=eloria-launch</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=peachpuff-summer</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-xmas</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-winter</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-summer</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-emozee</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-spring</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-boutique-xmas</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=pinch-moi-garden</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-autumn</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-hue</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=ambiance-boutique-val</loc><priority>0.7</priority></url>
-  <url><loc>https://azzistudios.com/project.html?id=blubay-nightlife</loc><priority>0.7</priority></url>
+  <!-- Project pages — one static HTML per project so social
+       scrapers (LinkedIn / WhatsApp / Facebook) see the right
+       per-project OG card without running JavaScript. -->
+  <url><loc>https://azzistudios.com/project-plastik-asteri.html</loc><priority>0.8</priority></url>
+  <url><loc>https://azzistudios.com/project-plastik-roadster.html</loc><priority>0.8</priority></url>
+  <url><loc>https://azzistudios.com/project-eloria-launch.html</loc><priority>0.8</priority></url>
+  <url><loc>https://azzistudios.com/project-peachpuff-summer.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-xmas.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-winter.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-summer.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-emozee.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-spring.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-boutique-xmas.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-pinch-moi-garden.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-autumn.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-hue.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-ambiance-boutique-val.html</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project-blubay-nightlife.html</loc><priority>0.7</priority></url>
 
 </urlset>
