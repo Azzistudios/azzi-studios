@@ -796,32 +796,9 @@ body.entered .gal-cell{opacity:1;transform:none}
   .stagger-side{padding-top:0}
   .stagger-main,.stagger-mini{aspect-ratio:4/5}
 }
-/* Mobile footer — everything stacked on its own line, centered.
-   Order: LinkedIn / Instagram / WhatsApp / Email (each on its own
-   row), then a thin gap, then copyright as the last line. */
-@media(max-width:768px){
-  .gal-footer{
-    margin-top:20vh;
-    padding:2.5rem 1.25rem;
-    display:flex;flex-direction:column;
-    align-items:center;
-    gap:1.5rem;text-align:center;
-  }
-  .gal-footer__center{display:none}
-  .gal-footer__copy{
-    order:2;
-    font-size:0.6rem;letter-spacing:0.16em;
-    max-width:90vw;line-height:1.4;white-space:normal;
-  }
-  /* Override the global .nav-right{display:none} for this footer
-     AND stack each social link on its own line. */
-  .gal-footer .nav-right{
-    order:1;
-    display:flex !important;flex-direction:column;align-items:center;
-    gap:0.9rem;
-    font-size:0.65rem;letter-spacing:0.18em;
-  }
-}
+/* (Mobile footer rules moved below the desktop .gal-footer block
+   further down — defining them here was being overridden by the
+   later desktop rules.) */
 @media(max-width:480px){
   .gal-row--2{grid-template-columns:1fr}
   .gal-row--3,.gal-row--4,.gal-row--6{grid-template-columns:1fr 1fr;gap:2px}
@@ -973,8 +950,42 @@ body.entered .archive-cell{opacity:1;transform:none}
   transition:opacity 0.2s;
 }
 .gal-footer .nav-right a:hover{opacity:0.4}
+
+/* ── MOBILE FOOTER ─ defined AFTER the desktop .gal-footer block
+   so its overrides actually win the cascade. The previous mobile
+   block sat earlier in the file and got beaten by the desktop
+   rules below it. Layout: 4 social links on ONE row, then the
+   copyright as a single line below. */
+@media(max-width:768px){
+  .gal-footer{
+    margin-top:20vh;
+    padding:2.5rem 1rem;
+    display:flex !important;
+    flex-direction:column !important;
+    grid-template-columns:none !important;
+    align-items:center;
+    gap:1.2rem;text-align:center;
+  }
+  .gal-footer__center{display:none}
+  .gal-footer__copy{
+    order:2;justify-self:auto !important;
+    font-size:0.55rem;letter-spacing:0.14em;
+    max-width:90vw;line-height:1.4;white-space:normal;
+  }
+  /* Social links: ONE row, centered. Override the global mobile
+     .nav-right{display:none} and the desktop .gal-footer .nav-right
+     gap:1.75rem with tighter values so all four fit on a phone. */
+  .gal-footer .nav-right{
+    order:1;justify-self:auto !important;
+    display:flex !important;flex-direction:row !important;
+    align-items:center;justify-content:center;
+    gap:0.85rem !important;
+    font-size:0.55rem !important;letter-spacing:0.12em !important;
+    white-space:nowrap;
+  }
+}
 </style>
-<link rel="stylesheet" href="/enhance.css?v=7">
+<link rel="stylesheet" href="/enhance.css?v=8">
 </head>
 <body>
 
