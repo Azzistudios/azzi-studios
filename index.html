@@ -23,7 +23,7 @@
 <meta property="og:url" content="https://azzistudios.com/">
 <meta property="og:title" content="Azzi Studios — Creative Direction, Art Direction & Set Design">
 <meta property="og:description" content="A creative studio based in Beirut. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
-<meta property="og:image" content="brand_assets/logo-circle-full.png">
+<meta property="og:image" content="https://azzistudios.com/brand_assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_US">
@@ -33,7 +33,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Azzi Studios — Creative Direction, Art Direction & Set Design">
 <meta name="twitter:description" content="A creative studio based in Beirut. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
-<meta name="twitter:image" content="brand_assets/logo-circle-full.png">
+<meta name="twitter:image" content="https://azzistudios.com/brand_assets/og-image.png">
 
 <!-- Structured data — helps Google understand the studio -->
 <script type="application/ld+json">
@@ -2058,6 +2058,14 @@ function buildRoom() {
   });
   document.getElementById('ovClose').addEventListener('click', closeOverlay);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+
+  // Auto-open overlay when arriving from /404 or an external link:
+  // /?panel=about | services | contact
+  const qsPanel = new URLSearchParams(window.location.search).get('panel');
+  if (qsPanel && /^(about|services|contact)$/.test(qsPanel)) {
+    // Wait one frame so showHome() has finished hiding the room first
+    requestAnimationFrame(() => openPanel(qsPanel));
+  }
 })();
 
 // ══ ASTERI HERO — continuous 3-image preview carousel ════
