@@ -218,7 +218,9 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
     top:max(1rem, env(safe-area-inset-top));
     padding:0 1.25rem;
   }
-  .nav-logo{font-size:0.7rem;letter-spacing:0.22em}
+  /* Same text size as the project-page nav-logo (0.6rem/0.2em) so
+     "azzi studios" reads identically across every page on mobile. */
+  .nav-logo{font-size:0.6rem;letter-spacing:0.2em}
   .nav-center,.nav-right{display:none}
   .nav-ham{display:flex}
   /* Flow/List hidden on mobile — the hover-preview behaviour
@@ -231,6 +233,9 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
      inside the menu is the only one visible — was showing two
      copies. */
   body.menu-open .nav-logo{visibility:hidden}
+  /* Hamburger morphs into × so it doubles as the close button. */
+  body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.5px) rotate(45deg)}
+  body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
 
   /* Mobile overlay = full-screen, page below slides completely
      off so nothing of index leaks through. */
@@ -985,7 +990,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=8">
+<link rel="stylesheet" href="/enhance.css?v=9">
 </head>
 <body>
 

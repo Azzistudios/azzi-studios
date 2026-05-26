@@ -164,6 +164,11 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
      centered "azzi studios" inside the menu is the only one
      visible — was showing two copies. */
   body.menu-open .nav-logo{visibility:hidden}
+  /* Hamburger morphs into × while the menu is open. !important
+     beats the inline style:transform="" set by the open()/close()
+     JS so the CSS animation drives the morph cleanly. */
+  body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.5px) rotate(45deg) !important}
+  body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3px) rotate(-45deg) !important}
 
   /* Mobile overlay = full-screen */
   #overlay{height:100vh;height:100dvh}
@@ -697,7 +702,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=8">
+<link rel="stylesheet" href="/enhance.css?v=9">
 </head>
 <body>
 
@@ -1507,19 +1512,17 @@ const PROJECTS = {
   const menu  = document.getElementById('mobMenu');
   if (!ham || !menu) return;
 
+  // The hamburger → × morph is driven by CSS now (body.menu-open
+   // .nav-ham span rules), so we just toggle the class.
   function open(){
     menu.classList.add('open');
     document.body.classList.add('menu-open');
     menu.setAttribute('aria-hidden', 'false');
-    const [s0, s1] = ham.querySelectorAll('span');
-    if (s0) s0.style.transform = 'rotate(45deg) translate(4px, 4px)';
-    if (s1) s1.style.transform = 'rotate(-45deg) translate(4px, -4px)';
   }
   function close(){
     menu.classList.remove('open');
     document.body.classList.remove('menu-open');
     menu.setAttribute('aria-hidden', 'true');
-    ham.querySelectorAll('span').forEach(s => s.style.transform = '');
   }
   ham.addEventListener('click', () => {
     // If the about/services/contact overlay is open, the burger
