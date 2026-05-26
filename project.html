@@ -160,6 +160,10 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   .nav-right{display:none}
   .nav-center{display:none}
   .nav-ham{display:flex}
+  /* When the burger is open, hide the top-left nav logo so the
+     centered "azzi studios" inside the menu is the only one
+     visible — was showing two copies. */
+  body.menu-open .nav-logo{visibility:hidden}
 
   /* Mobile overlay = full-screen */
   #overlay{height:100vh;height:100dvh}
@@ -692,7 +696,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=6">
+<link rel="stylesheet" href="/enhance.css?v=7">
 </head>
 <body>
 
@@ -1503,6 +1507,7 @@ const PROJECTS = {
 
   function open(){
     menu.classList.add('open');
+    document.body.classList.add('menu-open');
     menu.setAttribute('aria-hidden', 'false');
     const [s0, s1] = ham.querySelectorAll('span');
     if (s0) s0.style.transform = 'rotate(45deg) translate(4px, 4px)';
@@ -1510,6 +1515,7 @@ const PROJECTS = {
   }
   function close(){
     menu.classList.remove('open');
+    document.body.classList.remove('menu-open');
     menu.setAttribute('aria-hidden', 'true');
     ham.querySelectorAll('span').forEach(s => s.style.transform = '');
   }
