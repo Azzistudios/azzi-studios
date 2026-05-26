@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Azzi Studios — Campaign Production, Visual Content & VM Display</title>
-<meta name="description" content="Azzi Studios — a Beirut-based creative studio offering Campaign Production, Visual Content and VM & Window Display. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
+<title>Azzi Studios — Campaign Production, Visual Content & Brand Identity</title>
+<meta name="description" content="Azzi Studios — a Beirut-based creative studio offering Campaign Production, Visual Content and Brand Identity. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
 <meta name="keywords" content="Azzi Studios, creative direction, art direction, set design, Beirut, creative studio, campaigns, brand identity">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
@@ -21,8 +21,8 @@
 <!-- Open Graph (WhatsApp / Facebook / LinkedIn / Slack previews) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://azzistudios.com/">
-<meta property="og:title" content="Azzi Studios — Campaign Production, Visual Content & VM Display">
-<meta property="og:description" content="Azzi Studios — a Beirut-based creative studio offering Campaign Production, Visual Content and VM & Window Display. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
+<meta property="og:title" content="Azzi Studios — Campaign Production, Visual Content & Brand Identity">
+<meta property="og:description" content="Azzi Studios — a Beirut-based creative studio offering Campaign Production, Visual Content and Brand Identity. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -31,8 +31,8 @@
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Azzi Studios — Campaign Production, Visual Content & VM Display">
-<meta name="twitter:description" content="Azzi Studios — a Beirut-based creative studio offering Campaign Production, Visual Content and VM & Window Display. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
+<meta name="twitter:title" content="Azzi Studios — Campaign Production, Visual Content & Brand Identity">
+<meta name="twitter:description" content="Azzi Studios — a Beirut-based creative studio offering Campaign Production, Visual Content and Brand Identity. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og-image.png">
 
 <!-- Structured data — helps Google understand the studio -->
@@ -100,7 +100,8 @@ a{color:inherit;text-decoration:none}
 .ll-line{
   display:flex;flex-direction:column;align-items:center;gap:1.6em;
   font-family:'Space Mono',monospace;
-  font-size:clamp(0.34rem,1.15vw,0.55rem);
+  /* +10% from previous clamp(0.34rem, 1.15vw, 0.55rem) */
+  font-size:clamp(0.374rem,1.265vw,0.605rem);
   font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
   line-height:1.35;color:#111;text-align:center;max-width:88vw;
 }
@@ -111,7 +112,8 @@ a{color:inherit;text-decoration:none}
   animation:llDrop 1.3s cubic-bezier(0.22,1,0.36,1) 0.18s forwards;
 }
 .ll-logo{
-  width:88px;height:88px;
+  /* +10% from 88px */
+  width:97px;height:97px;
   opacity:0;transform:scale(0.9);
   animation:llPop 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
 }
@@ -177,8 +179,8 @@ body.ov-open .nav .view-toggle{
 body.ov-open .nav-right{opacity:0;visibility:hidden;pointer-events:none}
 .nav-logo{transition:opacity 0.3s ease}
 body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
-.nav-ham{display:none;flex-direction:column;gap:4px;background:none;border:none;padding:4px}
-.nav-ham span{display:block;width:18px;height:1px;background:#111;transition:all 0.3s}
+.nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:12px;margin:-8px;cursor:pointer}
+.nav-ham span{display:block;width:22px;height:1.5px;background:#111;transition:all 0.3s}
 
 /* mobile overlay */
 .mob-menu{
@@ -201,6 +203,11 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
    and hide the Flow/List toggle (touch users can't really use
    the list-hover preview anyway). */
 @media(max-width:768px){
+  .nav{
+    top:max(1rem, env(safe-area-inset-top));
+    padding:0 1.25rem;
+  }
+  .nav-logo{font-size:0.7rem;letter-spacing:0.22em}
   .nav-center,.nav-right{display:none}
   .nav-ham{display:flex}
   .nav .view-toggle{display:none}
@@ -759,28 +766,37 @@ body.entered .gal-cell{opacity:1;transform:none}
   .stagger-side{padding-top:0}
   .stagger-main,.stagger-mini{aspect-ratio:4/5}
 }
-@media(max-width:480px){
-  .gal-row--2{grid-template-columns:1fr}
-  .gal-row--3,.gal-row--4,.gal-row--6{grid-template-columns:1fr 1fr;gap:2px}
+/* Mobile footer — 481-768px got a broken 3-col grid before because
+   the global .nav-right{display:none} kicks in at 768px but the
+   gal-footer stack rules only kicked in at 480px. Single 768px
+   breakpoint now keeps the footer coherent on every mobile width. */
+@media(max-width:768px){
   .gal-footer{
-    padding:1.75rem 1rem 1.5rem;
+    margin-top:25vh;
+    padding:2rem 1.25rem 1.5rem;
     display:flex;flex-direction:column;
     align-items:center;
-    gap:1rem;text-align:center;
+    gap:1.25rem;text-align:center;
   }
   /* Creative Studio centre label is dropped on phones — keeps the
      footer to: social links → copyright (last line). */
   .gal-footer__center{display:none}
   .gal-footer__copy{
     order:2;                   /* last line */
-    max-width:90vw;line-height:1.4;
+    font-size:0.55rem;letter-spacing:0.16em;
+    max-width:90vw;line-height:1.5;
   }
   /* override the global .nav-right{display:none} mobile rule for the footer */
   .gal-footer .nav-right{
     order:1;
-    display:flex;flex-wrap:wrap;justify-content:center;
-    gap:0.75rem 1rem;max-width:90vw;
+    display:flex !important;flex-wrap:wrap;justify-content:center;
+    gap:0.8rem 1.25rem;max-width:90vw;
+    font-size:0.6rem;
   }
+}
+@media(max-width:480px){
+  .gal-row--2{grid-template-columns:1fr}
+  .gal-row--3,.gal-row--4,.gal-row--6{grid-template-columns:1fr 1fr;gap:2px}
 }
 /* ── Archive grid — projects on a 7-col grid, empty cells = white space ── */
 .archive-grid{
