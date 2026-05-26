@@ -279,7 +279,13 @@ body.ov-open #landing,body.ov-open #room{transform:translateY(55vh)}
 }
 body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s ease 0.15s}
 .ov-close:hover{opacity:0.55}
-.ov-scroll{max-width:1040px;margin:0 auto;padding:2rem 3rem 3rem}
+/* Was: max-width:1040px; margin:0 auto; padding:2rem 3rem 3rem;
+   — content drifted right of the gallery caption line (which sits
+   at 2rem from the viewport edge, aligned with the "A" of "azzi
+   studios"). Now the scroll container starts at the SAME 2rem
+   from the left edge so every line of body text aligns with the
+   project captions (e.g. "Plastik — Asteri Beauty"). */
+.ov-scroll{max-width:none;margin:0;padding:2rem 3rem 3rem 2rem}
 .ov-panel{display:none}
 .ov-panel.active{display:block}
 .ov-eyebrow{
@@ -318,11 +324,16 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 .ov-about .ov-h{font-size:0.6rem;letter-spacing:0.22em;line-height:1;margin-bottom:0.8rem}
 .ov-about .ova-lead{font-size:0.72rem;line-height:1.45;letter-spacing:-0.02em;max-width:22rem}
 .ov-about .ova-lead .s + .s{margin-top:1rem}
-.ov-about .ova-meta{display:block;max-width:none;margin-left:-4rem}
+.ov-about .ova-meta{display:block;max-width:none;margin-left:0}
 .ov-about .ova-meta .ov-body{max-width:22rem}
 .ov-about .ova-meta > div + div{margin-top:2.5rem}
 [data-panel="services"] .ova-meta .ov-body{max-width:26rem}
-.ov-about .ova-col{margin-left:calc(20vw - 7.5rem - max(0px, (100vw - 1040px) / 2))}
+/* Was: calc(20vw - 7.5rem - …) which pushed col1 right to align
+   with the Flow/List toggle at viewport 20%. Now col1 sits flush
+   to the ov-scroll left edge (= 2rem from viewport), aligning
+   the body text with the gallery captions like
+   "Plastik — Asteri Beauty". */
+.ov-about .ova-col{margin-left:0}
 /* About-only: studio facts block sits in col1 under the lead */
 [data-panel="about"] .ova-studio{margin-top:2rem}
 .ova-lead{
