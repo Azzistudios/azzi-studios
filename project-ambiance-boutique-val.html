@@ -672,26 +672,27 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   .proj-footer{
     display:flex;flex-direction:column;align-items:center;
     text-align:center;
-    gap:1rem;
-    padding:2rem 1rem 2rem;
+    gap:1.5rem;
+    padding:2.5rem 1.25rem;
     margin-top:20vh;          /* was 50vh — too much white on a phone */
   }
-  /* Creative Studio label dropped on phones. Order is:
-     1) social links  → 2) copyright (last line). Text size kept
-     identical to desktop. */
+  /* Creative Studio label dropped on phones. Social links stack
+     one per row, copyright on the last line. */
   .proj-footer__center{display:none}
   .proj-footer__right{
     order:1;
-    flex-wrap:wrap;justify-content:center;
-    gap:0.75rem 1rem;max-width:90vw;
+    display:flex;flex-direction:column;align-items:center;
+    gap:0.9rem;
+    font-size:0.65rem;letter-spacing:0.18em;
   }
   .proj-footer__copy{
     order:2;
+    font-size:0.6rem;letter-spacing:0.16em;
     max-width:90vw;line-height:1.4;white-space:normal;
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=5">
+<link rel="stylesheet" href="/enhance.css?v=6">
 </head>
 <body>
 

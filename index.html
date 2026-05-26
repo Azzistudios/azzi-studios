@@ -195,6 +195,17 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   font-size:0.6rem;font-weight:700;letter-spacing:0.24em;
   text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
 }
+/* "azzi studios" pinned to the top centre of the mobile burger
+   menu — matches the project page's mob-menu__top and gives the
+   menu a consistent top-anchor across the site. */
+.mob-menu__top{
+  position:absolute;
+  top:calc(max(1rem, env(safe-area-inset-top)) + 18px);
+  left:50%;transform:translateX(-50%);
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
+}
 .mob-menu .nav-link{background:none;border:none;cursor:pointer;font-family:inherit}
 .mob-menu a:hover,.mob-menu .nav-link:hover{opacity:0.4}
 .mob-close{position:absolute;top:1.5rem;right:2rem;font-size:0.45rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;pointer-events:all}
@@ -210,20 +221,10 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   .nav-logo{font-size:0.7rem;letter-spacing:0.22em}
   .nav-center,.nav-right{display:none}
   .nav-ham{display:flex}
-  /* Flow/List on mobile — exact horizontal center of the nav,
-     between the logo (left) and the hamburger (right). */
-  .nav .view-toggle{
-    display:flex;
-    left:50%;
-    right:auto;
-    top:calc(max(1rem, env(safe-area-inset-top)) + 24px);
-    transform:translate(-50%, -50%);
-    font-size:0.5rem;letter-spacing:0.16em;
-    gap:0.8rem;
-  }
-  /* When the About/Services/Contact panel is open, Flow/List
-     doesn't apply — hide it. */
-  body.ov-open .nav .view-toggle{display:none}
+  /* Flow/List hidden on mobile — the hover-preview behaviour
+     it controls doesn't translate to touch anyway. Mobile nav
+     stays clean: logo (left) and burger (right). */
+  .nav .view-toggle{display:none}
 
   /* Mobile overlay = full-screen, page below slides completely
      off so nothing of index leaks through. */
@@ -789,30 +790,30 @@ body.entered .gal-cell{opacity:1;transform:none}
   .stagger-side{padding-top:0}
   .stagger-main,.stagger-mini{aspect-ratio:4/5}
 }
-/* Mobile footer — unified with .c-footer and .proj-footer behavior.
-   Same layout/typography as everywhere else: social links on top,
-   copyright below, center label hidden. Text size stays identical
-   to desktop so the footer reads the same way on every device.
-   (Single 768px breakpoint — previously the stack rules were at
-   480px but .nav-right hid at 768px, breaking the 481-768 range.) */
+/* Mobile footer — everything stacked on its own line, centered.
+   Order: LinkedIn / Instagram / WhatsApp / Email (each on its own
+   row), then a thin gap, then copyright as the last line. */
 @media(max-width:768px){
   .gal-footer{
-    margin-top:25vh;
-    padding:2rem 1.25rem;
+    margin-top:20vh;
+    padding:2.5rem 1.25rem;
     display:flex;flex-direction:column;
     align-items:center;
-    gap:1rem;text-align:center;
+    gap:1.5rem;text-align:center;
   }
   .gal-footer__center{display:none}
   .gal-footer__copy{
-    order:2;                   /* last line */
+    order:2;
+    font-size:0.6rem;letter-spacing:0.16em;
     max-width:90vw;line-height:1.4;white-space:normal;
   }
-  /* override the global .nav-right{display:none} mobile rule for the footer */
+  /* Override the global .nav-right{display:none} for this footer
+     AND stack each social link on its own line. */
   .gal-footer .nav-right{
     order:1;
-    display:flex !important;flex-wrap:wrap;justify-content:center;
-    gap:0.75rem 1rem;max-width:90vw;
+    display:flex !important;flex-direction:column;align-items:center;
+    gap:0.9rem;
+    font-size:0.65rem;letter-spacing:0.18em;
   }
 }
 @media(max-width:480px){
@@ -967,7 +968,7 @@ body.entered .archive-cell{opacity:1;transform:none}
 }
 .gal-footer .nav-right a:hover{opacity:0.4}
 </style>
-<link rel="stylesheet" href="/enhance.css?v=5">
+<link rel="stylesheet" href="/enhance.css?v=6">
 </head>
 <body>
 
@@ -995,6 +996,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
 <div class="mob-menu" id="mobMenu">
+  <span class="mob-menu__top">azzi studios</span>
   <button class="nav-link" type="button" data-home>Work</button>
   <button class="nav-link" type="button" data-panel="about">About</button>
   <button class="nav-link" type="button" data-panel="services">Services</button>

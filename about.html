@@ -88,6 +88,14 @@ a{color:inherit;text-decoration:none}
 }
 .mob-menu.open{display:flex}
 .mob-menu a{font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase}
+.mob-menu__top{
+  position:absolute;
+  top:calc(max(1rem, env(safe-area-inset-top)) + 18px);
+  left:50%;transform:translateX(-50%);
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
+}
 .mob-close{position:absolute;top:1.5rem;right:2rem;font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer}
 
 @media(max-width:720px){
@@ -263,7 +271,7 @@ a{color:inherit;text-decoration:none}
   font-size:0.5rem;letter-spacing:0.16em;
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=5">
+<link rel="stylesheet" href="/enhance.css?v=6">
 </head>
 <body>
 
@@ -276,6 +284,7 @@ a{color:inherit;text-decoration:none}
   <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
 <div class="mob-menu" id="mobMenu">
+  <span class="mob-menu__top">azzi studios</span>
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
 </div>
