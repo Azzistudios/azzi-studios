@@ -3,7 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+
 <title>Project — Azzi Studios</title>
+<meta name="description" content="Azzi Studios — A creative studio based in Beirut. Set design, art direction and creative direction.">
+<meta name="author" content="Azzi Studios">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://azzistudios.com/project.html" id="canonical-link">
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" href="brand_assets/logo-monogram.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" href="brand_assets/logo-circle-monogram.png" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="brand_assets/logo-circle-monogram.png">
+
+<!-- Open Graph (JS below rewrites these per project) -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://azzistudios.com/project.html" id="og-url">
+<meta property="og:title" content="Project — Azzi Studios" id="og-title">
+<meta property="og:description" content="Set design, art direction and creative direction by Azzi Studios." id="og-description">
+<meta property="og:image" content="brand_assets/logo-circle-full.png" id="og-image">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azzi Studios">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Project — Azzi Studios" id="twitter-title">
+<meta name="twitter:description" content="Set design, art direction and creative direction by Azzi Studios." id="twitter-description">
+<meta name="twitter:image" content="brand_assets/logo-circle-full.png" id="twitter-image">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z8L68HKHEJ');
+</script>
 <style>
 /* =============================================
    AZZI STUDIOS — Single project page
@@ -1146,6 +1182,25 @@ const PROJECTS = {
   }
 
   document.title = `${p.client} — ${p.title} · Azzi Studios`;
+
+  // Update canonical + OG + Twitter meta dynamically so social
+  // previews and Google show the right project info per URL.
+  const url   = `https://azzistudios.com/project.html?id=${id}`;
+  const title = `${p.client} — ${p.title} · Azzi Studios`;
+  const desc  = `${p.client} · ${p.title}. ${p.discipline}.`;
+  const firstImage = (p.media || []).find(s => !isVideo(s)) || '';
+  const setMeta = (sel, attr, val) => {
+    const el = document.querySelector(sel);
+    if (el && val) el.setAttribute(attr, val);
+  };
+  setMeta('#canonical-link',    'href',    url);
+  setMeta('#og-url',            'content', url);
+  setMeta('#og-title',          'content', title);
+  setMeta('#og-description',    'content', desc);
+  if (firstImage) setMeta('#og-image', 'content', firstImage);
+  setMeta('#twitter-title',     'content', title);
+  setMeta('#twitter-description','content', desc);
+  if (firstImage) setMeta('#twitter-image', 'content', firstImage);
 
   // ── Nav-center reads "CLIENT · TITLE" — replaces the
   //    "Creative Studio" label used on every other page. ──

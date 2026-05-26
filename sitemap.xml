@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://azzistudios.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://azzistudios.com/about.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://azzistudios.com/services.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://azzistudios.com/contact.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Project pages -->
+  <url><loc>https://azzistudios.com/project.html?id=plastik-asteri</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=plastik-roadster</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=eloria-launch</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=peachpuff-summer</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-xmas</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-winter</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-summer</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-emozee</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-spring</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-boutique-xmas</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=pinch-moi-garden</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-autumn</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-hue</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=ambiance-boutique-val</loc><priority>0.7</priority></url>
+  <url><loc>https://azzistudios.com/project.html?id=blubay-nightlife</loc><priority>0.7</priority></url>
+
+</urlset>
