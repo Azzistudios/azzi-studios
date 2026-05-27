@@ -278,12 +278,12 @@ body.menu-open .nav-logo{visibility:hidden}
   font-size:0.5rem;letter-spacing:0.16em;
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=24">
+<link rel="stylesheet" href="/enhance.css?v=25">
 </head>
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">azzi studios</a>
+  <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
   <!-- Deep-link to index?panel=X so About/Services/Contact open
        the same overlay dropdown that runs on index + project. -->
   <div class="nav-right">
@@ -293,7 +293,7 @@ body.menu-open .nav-logo{visibility:hidden}
   <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
 <div class="mob-menu" id="mobMenu">
-  <span class="mob-menu__top">azzi studios</span>
+  <a href="index.html" class="mob-menu__top" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
   <a href="index.html">Work</a>
   <a href="index.html?panel=about">About</a>
   <a href="index.html?panel=services">Services</a>

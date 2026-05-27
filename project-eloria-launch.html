@@ -385,17 +385,29 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 
 /* ── MOBILE (≤ 720px) — single column, full-width per cell ── */
 @media (max-width: 720px) {
-  /* Nav-center (project title) hidden on mobile — no room.
-     Info button now sits JUST BELOW the centered "azzi studios"
-     logo (was overlapping it on the same row). When the info
-     panel opens, the centered nav-logo becomes the "Back"
-     trigger — so we HIDE this button entirely on mobile when
-     info is open (previously it was the second "Back" with an
-     underline). */
-  .nav-center{display:none}
+  /* Mobile project nav stacks vertically, top-center:
+       azzi studios       (nav-logo, top:1rem + 24px ≈ 40px)
+       "Project Name"     (nav-center, top:1rem + 50px ≈ 66px)
+       Info               (info-btn-float, top:1rem + 72px ≈ 88px)
+     When the info panel opens, the centered nav-logo becomes
+     the "Back" trigger and the info button is hidden so we
+     don't get two Back labels. */
+  .nav-center{
+    display:block !important;
+    position:fixed !important;
+    top:calc(1rem + 50px) !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    font-family:'Space Mono',monospace;
+    font-size:0.55rem;font-weight:700;letter-spacing:0.18em;
+    text-transform:uppercase;color:#111;line-height:1;
+    white-space:nowrap;
+    z-index:8600;
+    pointer-events:none;
+  }
   .info-btn-float{
-    top:calc(1rem + 48px);            /* below the nav band — clears the centered logo */
-    transform:translateX(-50%);       /* horizontal centre only */
+    top:calc(1rem + 72px);
+    transform:translateX(-50%);
     font-size:0.55rem;
     letter-spacing:0.2em;
   }
@@ -766,7 +778,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=24">
+<link rel="stylesheet" href="/enhance.css?v=25">
 </head>
 <body>
 
@@ -774,7 +786,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
    Info button lives INSIDE the nav so the scroll-aware fade
    catches title + button together. -->
 <nav class="nav" id="nav">
-  <a href="index.html" class="nav-logo">azzi studios</a>
+  <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
   <span class="nav-center" id="navTitle"></span>
   <button type="button" class="info-btn-float" id="infoBtn" aria-expanded="false">Info</button>
   <div class="nav-right">
@@ -788,7 +800,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 
 <!-- ══ MOBILE MENU — opens via the nav hamburger on phones ══ -->
 <div class="mob-menu" id="mobMenu" aria-hidden="true">
-  <span class="mob-menu__top">azzi studios</span>
+  <a href="index.html" class="mob-menu__top" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
   <a href="index.html">Work</a>
   <button class="nav-link" type="button" data-panel="about">About</button>
   <button class="nav-link" type="button" data-panel="services">Services</button>
