@@ -536,21 +536,34 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
     --back-z: -22vmin;
   }
 
-  /* Keep desktop's irregular grid placement on mobile (cells
-     stay in their grid columns/rows for varied layout), but
-     force each cell to one of three target aspect ratios:
-       --34  portrait 3:4
-       --43  square-ish landscape 4:3
-       --169 wide-screen landscape 16:9
-     The cell's grid track allocation defines its width; the
-     aspect-ratio property derives its height. Row height is set
-     to auto so it follows the aspect ratio. */
-  .wall{
-    grid-auto-rows:auto !important;
+  /* Mobile mosaic — 12-col grid with square row tracks so each
+     cell's grid SPAN (driven by its ratio class) produces an
+     exact 3:4 / 4:3 / 16:9 rectangle. No aspect-ratio CSS needed:
+     cells fully fill their grid areas, so adjacent cells touch
+     edge-to-edge AND corner-to-corner. grid-auto-flow:dense
+     packs cells tightly so smaller cells fit into gaps left by
+     bigger ones — that's what produces the corner-touching feel. */
+  .wall-grid{
+    grid-template-columns:repeat(12, 1fr) !important;
+    grid-auto-rows:calc(var(--box-w) / 12) !important;
+    grid-auto-flow:dense !important;
+    gap:0 !important;
   }
-  .wcell--34  { aspect-ratio: 3/4  !important; height:auto !important; }
-  .wcell--43  { aspect-ratio: 4/3  !important; height:auto !important; }
-  .wcell--169 { aspect-ratio: 16/9 !important; height:auto !important; }
+  .wcell{
+    grid-column:auto !important;
+    grid-row:auto !important;
+    aspect-ratio:auto !important;
+    height:auto !important;
+  }
+  .wcell--34  { grid-column: span 3 !important; grid-row: span 4 !important; }  /* 3:4 portrait */
+  .wcell--43  { grid-column: span 4 !important; grid-row: span 3 !important; }  /* 4:3 landscape */
+  .wcell--169 { grid-column: span 8 !important; grid-row: span 4 !important; }  /* ~16:9 (8/4.5 ≈ 16:9 with span 4 rounded) */
+  /* Tiny safety: empty cells just take a 1-col square so they
+     keep the dense pack from misaligning. */
+  .wcell--empty{
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+  }
 }
 
 #room{
@@ -1110,7 +1123,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=19">
+<link rel="stylesheet" href="/enhance.css?v=20">
 </head>
 <body>
 

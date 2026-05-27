@@ -604,10 +604,38 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 .ov-facts b{color:#111;font-weight:700}
 .ov-facts a{color:#111;border-bottom:1px solid rgba(17,17,17,0.3);transition:opacity 0.2s}
 .ov-facts a:hover{opacity:0.45}
-@media(max-width:600px){
-  .ov-scroll{padding:2rem 1.25rem 4rem}
+/* Mobile dropdowns — IDENTICAL to the index page so About,
+   Services and Contact panels read the same on every page. */
+@media(max-width:768px){
+  #overlay{
+    display:flex !important;
+    align-items:center;
+    justify-content:flex-start;
+  }
+  .ov-scroll{
+    max-width:none !important;
+    margin:0 !important;
+    padding:2rem !important;
+    width:100%;
+  }
   .ov-close{top:1rem;right:1.25rem;left:auto;transform:none}
-  .ov-h{margin-left:-0.5rem}
+  .ov-panel.ov-about.active{
+    display:block !important;
+    grid-template-columns:none !important;
+  }
+  .ov-about .ova-col,
+  .ov-about .ova-meta{
+    margin-left:0 !important;
+    margin-right:0 !important;
+    max-width:none !important;
+  }
+  .ov-about .ova-meta{margin-top:2.5rem !important}
+  .ov-about .ov-h{font-size:0.65rem !important;letter-spacing:0.22em !important}
+  .ov-about .ova-lead{font-size:0.85rem !important;line-height:1.55 !important;max-width:none !important;text-align:left !important}
+  .ov-about .ova-meta .ov-label{font-size:0.6rem !important;letter-spacing:0.22em !important}
+  .ov-about .ova-meta .ov-body{font-size:0.85rem !important;line-height:1.55 !important;max-width:none !important;text-align:left !important}
+  .ov-facts{font-size:0.85rem !important;line-height:1.85 !important;white-space:normal !important}
+  .ov-h{margin-left:0 !important}
 }
 .info-close{
   position:absolute;bottom:1.5rem;right:2rem;
@@ -722,7 +750,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=19">
+<link rel="stylesheet" href="/enhance.css?v=20">
 </head>
 <body>
 
