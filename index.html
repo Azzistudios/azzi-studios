@@ -180,6 +180,11 @@ a{color:inherit;text-decoration:none}
 }
 .nav.nav--idle{opacity:0;pointer-events:none}
 .nav.nav--idle *{pointer-events:none}
+/* While the overlay drop-down is open, the nav must stay visible
+   — Flow/List and "Creative Studio" reposition into the panel
+   and would otherwise vanish when the idle timer fired. */
+body.ov-open .nav.nav--idle{opacity:1;pointer-events:auto}
+body.ov-open .nav.nav--idle *{pointer-events:auto}
 .nav *{pointer-events:all}
 .nav-logo{
   /* Loader-style logo (Space Mono, bold, uppercase, spaced) but
@@ -1150,7 +1155,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=42">
+<link rel="stylesheet" href="/enhance.css?v=43">
 </head>
 <body>
 
@@ -2868,7 +2873,10 @@ document.addEventListener('dragstart',   e => { if (e.target.tagName==='IMG') e.
   function show() {
     nav.classList.remove('nav--idle');
     clearTimeout(idleTimer);
-    if (!atTop()) {
+    // Never start the idle fade while the drop-down overlay is
+    // open — Flow/List + Creative Studio live inside the nav and
+    // must stay visible in the panel.
+    if (!atTop() && !document.body.classList.contains('ov-open')) {
       idleTimer = setTimeout(() => nav.classList.add('nav--idle'), IDLE_MS);
     }
   }
@@ -2886,7 +2894,8 @@ document.addEventListener('dragstart',   e => { if (e.target.tagName==='IMG') e.
   // Cursor-in-header trigger
   window.addEventListener('mousemove', e => {
     if (e.clientY <= HOVER_ZONE) showSticky();
-    else if (!nav.classList.contains('nav--idle') && !atTop()) {
+    else if (!nav.classList.contains('nav--idle') && !atTop()
+             && !document.body.classList.contains('ov-open')) {
       clearTimeout(idleTimer);
       idleTimer = setTimeout(() => nav.classList.add('nav--idle'), IDLE_MS);
     }
