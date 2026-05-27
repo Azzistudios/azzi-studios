@@ -1113,7 +1113,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=33">
+<link rel="stylesheet" href="/enhance.css?v=34">
 </head>
 <body>
 
@@ -2329,6 +2329,22 @@ function buildRoom() {
   }
 })();
 
+// ══ Helper — run a fn once the user has entered the work view.
+//    Used to gate carousel tickers so they don't burn cycles or
+//    advance position while the loader is still on screen — the
+//    first section was visibly mid-rotation when the work page
+//    appeared because intervals started at script-load.
+function whenEntered(fn){
+  if (document.body.classList.contains('entered')) { fn(); return; }
+  const mo = new MutationObserver(() => {
+    if (document.body.classList.contains('entered')) {
+      mo.disconnect();
+      fn();
+    }
+  });
+  mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+}
+
 // ══ ASTERI HERO — continuous 3-image preview carousel ════
 // Track scrolls right→left one slide every 3s. The slides are cloned
 // once so the track can keep moving past the original last slide; when
@@ -2379,19 +2395,23 @@ function buildRoom() {
   window.addEventListener('resize', () => place(false));
 
   const TICK = 3000, TRANSITION = 1700;
-  setInterval(() => {
-    cur++;
-    place(true);
-    if (cur === N) {
-      // we've slid into the clone of slide 0 — wait for the transition
-      // to finish, then teleport silently back so the carousel keeps
-      // moving forward forever instead of resetting visibly.
-      setTimeout(() => {
-        cur = 0;
-        place(false);
-      }, TRANSITION);
-    }
-  }, TICK);
+  // Wait until the user has entered the work view so the carousel
+  // doesn't tick while the loader is still on screen.
+  whenEntered(() => {
+    setInterval(() => {
+      cur++;
+      place(true);
+      if (cur === N) {
+        // we've slid into the clone of slide 0 — wait for the transition
+        // to finish, then teleport silently back so the carousel keeps
+        // moving forward forever instead of resetting visibly.
+        setTimeout(() => {
+          cur = 0;
+          place(false);
+        }, TRANSITION);
+      }
+    }, TICK);
+  });
 })();
 
 // ══ ALL PROJECTS — varied editorial layouts ══════════════
@@ -2731,7 +2751,10 @@ function buildRoom() {
     const TICK = 3000, TRANSITION = 1700;
     // Stagger each carousel's first tick so they're not all in sync
     const startDelay = (Math.random() * TICK) | 0;
-    setTimeout(() => {
+    // Wait until the user has entered the work view before any
+    // carousel starts ticking — otherwise reels are mid-motion
+    // when the page is first revealed.
+    whenEntered(() => setTimeout(() => {
       function loop(){
         cur++;
         place(true);
@@ -2741,7 +2764,7 @@ function buildRoom() {
       }
       loop();
       setInterval(loop, TICK);
-    }, startDelay);
+    }, startDelay));
   }
 })();
 
