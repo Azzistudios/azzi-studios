@@ -1113,7 +1113,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=35">
+<link rel="stylesheet" href="/enhance.css?v=36">
 </head>
 <body>
 
@@ -2396,8 +2396,12 @@ function whenEntered(fn){
 
   const TICK = 3000, TRANSITION = 1700;
   // Wait until the user has entered the work view so the carousel
-  // doesn't tick while the loader is still on screen.
+  // doesn't tick while the loader is still on screen. Re-place on
+  // entry too, in case the first image hadn't loaded yet when the
+  // initial init() fired — we want slide 0 visibly centered the
+  // moment the work view appears.
   whenEntered(() => {
+    place(false);
     setInterval(() => {
       cur++;
       place(true);
@@ -2753,8 +2757,11 @@ function whenEntered(fn){
     const startDelay = (Math.random() * TICK) | 0;
     // Wait until the user has entered the work view before any
     // carousel starts ticking — otherwise reels are mid-motion
-    // when the page is first revealed.
-    whenEntered(() => setTimeout(() => {
+    // when the page is first revealed. Re-place on entry so the
+    // slide is visibly centered regardless of image load timing.
+    whenEntered(() => {
+      place(false);
+      return setTimeout(() => {
       function loop(){
         cur++;
         place(true);
@@ -2764,7 +2771,7 @@ function whenEntered(fn){
       }
       loop();
       setInterval(loop, TICK);
-    }, startDelay));
+    }, startDelay);});
   }
 })();
 
