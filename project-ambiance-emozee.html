@@ -804,7 +804,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=36">
+<link rel="stylesheet" href="/enhance.css?v=37">
 </head>
 <body>
 
@@ -1632,14 +1632,13 @@ const PROJECTS = {
     overlay.scrollTop = 0;
   }
   function closeOverlay(){
-    document.body.classList.remove('ov-open');
-    document.body.removeAttribute('data-ov-panel');
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
-    // If the overlay was opened from the mobile burger menu,
-    // re-open the burger on the SAME page so the user lands
-    // back in the menu state — no navigation, no page refresh.
-    if (sessionStorage.getItem('azzi_burger_return') === '1') {
+    // If the overlay was opened from the mobile burger menu, open
+    // the burger FIRST so its full-screen panel covers the screen
+    // BEFORE the overlay slides up and the project page slides
+    // back into view. Without this, the user briefly sees the
+    // project page images during the transition.
+    const fromBurger = sessionStorage.getItem('azzi_burger_return') === '1';
+    if (fromBurger) {
       sessionStorage.removeItem('azzi_burger_return');
       const menu = document.getElementById('mobMenu');
       if (menu) {
@@ -1647,6 +1646,10 @@ const PROJECTS = {
         document.body.classList.add('menu-open');
       }
     }
+    document.body.classList.remove('ov-open');
+    document.body.removeAttribute('data-ov-panel');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
   }
   ovClose.addEventListener('click', closeOverlay);
   document.querySelectorAll('[data-panel]').forEach(el => {
