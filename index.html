@@ -230,7 +230,11 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
     transform:translate(-50%, -50%);
   }
   .nav-center,.nav-right{display:none}
-  .nav-ham{display:flex}
+  /* Burger fills the remaining flex slot at the right — without
+     this, with nav-logo absolute and nav-center/right hidden, the
+     burger is the only flex child and justify-content:space-between
+     parks it at the left edge instead of the right. */
+  .nav-ham{display:flex;margin-left:auto}
   /* Flow/List on mobile: top-LEFT (first flex child in the nav).
      Shows only ONE button at a time — whichever mode you're not
      currently in. body.flow-mode hides the Flow button, leaving
@@ -455,10 +459,43 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   transition:opacity 0.2s;
 }
 .nav-right button.nav-link:hover{opacity:0.4}
-@media(max-width:600px){
-  .ov-scroll{padding:2rem 1.25rem 4rem}
+@media(max-width:768px){
+  /* Mobile dropdowns: text aligned with the gallery captions
+     ('Plastik — Asteri Beauty' starts at 2rem from the screen
+     edge). Container vertically centred in the viewport, content
+     sized for comfortable on-phone reading. */
+  #overlay{
+    display:flex !important;
+    align-items:center;
+    justify-content:flex-start;
+  }
+  .ov-scroll{
+    max-width:none !important;
+    margin:0 !important;
+    padding:2rem !important;
+    width:100%;
+  }
   .ov-close{top:1rem;right:1.25rem}
-  .ov-h{margin-left:-0.5rem}
+  /* Collapse the 2-column About/Services/Contact grid into a
+     single column on mobile so text doesn't get squeezed. */
+  .ov-panel.ov-about.active{
+    display:block !important;
+    grid-template-columns:none !important;
+  }
+  .ov-about .ova-col,
+  .ov-about .ova-meta{
+    margin-left:0 !important;
+    margin-right:0 !important;
+    max-width:none !important;
+  }
+  .ov-about .ova-meta{margin-top:2.5rem !important}
+  /* Readability bumps */
+  .ov-about .ov-h{font-size:0.65rem !important;letter-spacing:0.22em !important}
+  .ov-about .ova-lead{font-size:0.85rem !important;line-height:1.55 !important;max-width:none !important;text-align:left !important}
+  .ov-about .ova-meta .ov-label{font-size:0.6rem !important;letter-spacing:0.22em !important}
+  .ov-about .ova-meta .ov-body{font-size:0.85rem !important;line-height:1.55 !important;max-width:none !important;text-align:left !important}
+  .ov-facts{font-size:0.85rem !important;line-height:1.85 !important;white-space:normal !important}
+  .ov-h{margin-left:0 !important}
 }
 
 /* ══════════════════════════════════════════
@@ -499,32 +536,21 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
     --back-z: -22vmin;
   }
 
-  /* Every wall switches to a single-column flex stack on mobile,
-     and each cell is locked to one of three target aspect ratios
-     (3:4 portrait, 4:3 landscape, 16:9 wide). Cells flow top to
-     bottom in the order they appear in the data — no more grid
-     spans, no more square or 1:2 strips. */
+  /* Keep desktop's irregular grid placement on mobile (cells
+     stay in their grid columns/rows for varied layout), but
+     force each cell to one of three target aspect ratios:
+       --34  portrait 3:4
+       --43  square-ish landscape 4:3
+       --169 wide-screen landscape 16:9
+     The cell's grid track allocation defines its width; the
+     aspect-ratio property derives its height. Row height is set
+     to auto so it follows the aspect ratio. */
   .wall{
-    display:flex !important;
-    flex-direction:column !important;
-    gap:4px !important;
-    padding:6px !important;
+    grid-auto-rows:auto !important;
   }
-  .wcell{
-    grid-column:auto !important;
-    grid-row:auto !important;
-    width:100% !important;
-    height:auto !important;
-  }
-  .wcell--34  { aspect-ratio: 3/4  !important; }
-  .wcell--43  { aspect-ratio: 4/3  !important; }
-  .wcell--169 { aspect-ratio: 16/9 !important; }
-  /* Empty cells (white space) collapse to a thin spacer rather
-     than a full-height ratio block — keeps the stack tight. */
-  .wcell--empty{
-    aspect-ratio:auto !important;
-    height:24px !important;
-  }
+  .wcell--34  { aspect-ratio: 3/4  !important; height:auto !important; }
+  .wcell--43  { aspect-ratio: 4/3  !important; height:auto !important; }
+  .wcell--169 { aspect-ratio: 16/9 !important; height:auto !important; }
 }
 
 #room{
@@ -1084,7 +1110,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=18">
+<link rel="stylesheet" href="/enhance.css?v=19">
 </head>
 <body>
 
@@ -2032,25 +2058,39 @@ function buildRoom() {
   if (!g || !bf || !bl) return;
 
   const KEY = 'azzi_view_mode';
+  // Desktop shows both Flow + List with [+] / [ ] active markers.
+  // Mobile only shows one button at a time (the inactive mode)
+  // so the markers add nothing — plain "Flow" / "List" labels.
+  const mobileMQ = window.matchMedia('(max-width: 768px)');
+  function flowLabel(active){
+    if (mobileMQ.matches) return 'Flow';
+    return (active ? '[+] ' : '[ ] ') + 'Flow';
+  }
+  function listLabel(active){
+    if (mobileMQ.matches) return 'List';
+    return (active ? '[+] ' : '[ ] ') + 'List';
+  }
   function setFlow(persist){
     g.classList.remove('list-view');
-    // No more [+] / [ ] tick markers — labels are plain "Flow" /
-    // "List" in solid black. The .active class stays on for any
-    // future styling hook but doesn't change colour.
-    bf.classList.add('active');    bf.textContent = 'Flow';
-    bl.classList.remove('active'); bl.textContent = 'List';
+    bf.classList.add('active');    bf.textContent = flowLabel(true);
+    bl.classList.remove('active'); bl.textContent = listLabel(false);
     document.body.classList.add('flow-mode');
     document.body.classList.remove('list-mode');
     if (persist !== false) sessionStorage.setItem(KEY, 'flow');
   }
   function setList(persist){
     g.classList.add('list-view');
-    bl.classList.add('active');    bl.textContent = 'List';
-    bf.classList.remove('active'); bf.textContent = 'Flow';
+    bl.classList.add('active');    bl.textContent = listLabel(true);
+    bf.classList.remove('active'); bf.textContent = flowLabel(false);
     document.body.classList.add('list-mode');
     document.body.classList.remove('flow-mode');
     if (persist !== false) sessionStorage.setItem(KEY, 'list');
   }
+  // Update labels when crossing the desktop/mobile breakpoint
+  mobileMQ.addEventListener('change', () => {
+    if (g.classList.contains('list-view')) setList(false);
+    else setFlow(false);
+  });
   bf.addEventListener('click', () => setFlow());
   bl.addEventListener('click', () => setList());
 

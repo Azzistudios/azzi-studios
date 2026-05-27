@@ -161,12 +161,16 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   .nav-center{display:none}
   .nav-ham{display:flex}
   /* Mobile: centre the nav-logo in the nav band so it matches
-     the index page's centered "azzi studios". The burger sits
-     at the right via flex space-between. */
+     the index page's centered "azzi studios". */
   .nav-logo{
     position:absolute;left:50%;top:50%;
     transform:translate(-50%, -50%);
   }
+  /* nav-logo is now out of the flex flow (position:absolute),
+     so the burger becomes the only flex child. justify-content:
+     space-between leaves a single child at the START (left edge)
+     — margin-left:auto pushes it back to the right. */
+  .nav-ham{margin-left:auto}
   /* When the burger is open, hide the centered nav-logo so
      mob-menu__top (also centered) is the only "azzi studios". */
   body.menu-open .nav-logo{visibility:hidden}
@@ -374,9 +378,11 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 @media (max-width: 720px) {
   /* Nav-center (project title) hidden on mobile — no room.
      Info button now sits JUST BELOW the centered "azzi studios"
-     logo (was overlapping it on the same row). Stays visible
-     while the info panel is open so it can act as the close
-     trigger. */
+     logo (was overlapping it on the same row). When the info
+     panel opens, the centered nav-logo becomes the "Back"
+     trigger — so we HIDE this button entirely on mobile when
+     info is open (previously it was the second "Back" with an
+     underline). */
   .nav-center{display:none}
   .info-btn-float{
     top:calc(1rem + 48px);            /* below the nav band — clears the centered logo */
@@ -385,7 +391,7 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
     letter-spacing:0.2em;
   }
   body.info-open .info-btn-float{
-    opacity:1 !important;visibility:visible !important;pointer-events:auto !important;
+    display:none !important;          /* no duplicate Back on mobile */
   }
 
   /* Every section gets enough top room to clear the fixed nav
@@ -717,7 +723,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=18">
+<link rel="stylesheet" href="/enhance.css?v=19">
 </head>
 <body>
 
@@ -1349,18 +1355,19 @@ const PROJECTS = {
   const infoBtn   = document.getElementById('infoBtn');
   const infoPanel = document.getElementById('infoPanel');
   const infoClose = document.getElementById('infoClose');   // may be null — close trigger now lives in nav-center
-  // On mobile, the centered .nav-logo replaces the desktop
-  // nav-center as the "Back" trigger — when the info panel
-  // opens, "azzi studios" becomes "Back" and tapping it closes.
+  // Desktop closes the info panel via the info-btn-float (which
+  // reads "Back" when open). The project title in nav-center
+  // stays put — it's just a label.
+  // Mobile uses the centered .nav-logo as the close trigger;
+  // when info opens, "azzi studios" → "Back".
   const navLogo = document.querySelector('.nav-logo');
   function openInfo(){
     infoPanel.classList.add('open');
     infoBtn.classList.add('is-open');
-    infoBtn.textContent = 'Back';        // also acts as close trigger on mobile
+    infoBtn.textContent = 'Back';        // info-btn-float doubles as close trigger on desktop
     infoBtn.setAttribute('aria-expanded', 'true');
     infoPanel.setAttribute('aria-hidden', 'false');
     document.body.classList.add('info-open');
-    if (navTitle) { navTitle.textContent = 'Back'; navTitle.style.cursor = 'pointer'; }
     if (navLogo) {
       if (!navLogo.dataset.original) navLogo.dataset.original = navLogo.textContent;
       navLogo.textContent = 'Back';
@@ -1374,17 +1381,11 @@ const PROJECTS = {
     infoBtn.setAttribute('aria-expanded', 'false');
     infoPanel.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('info-open');
-    if (navTitle) { navTitle.textContent = fullTitle; navTitle.style.cursor = ''; }
     if (navLogo && navLogo.dataset.original) {
       navLogo.textContent = navLogo.dataset.original;
       navLogo.style.cursor = '';
     }
   }
-  // nav-center (desktop) AND nav-logo (mobile) both act as the
-  // Back trigger while info is open.
-  if (navTitle) navTitle.addEventListener('click', () => {
-    if (infoPanel.classList.contains('open')) closeInfo();
-  });
   if (navLogo) navLogo.addEventListener('click', (e) => {
     if (infoPanel.classList.contains('open')) {
       e.preventDefault();        // don't navigate to index.html
