@@ -693,6 +693,12 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   pointer-events:auto;
   will-change:transform,opacity;
 }
+/* Snap every wall cell to ONE of three allowed ratios. The CSS
+   aspect-ratio drives the cell's height; the grid span still
+   controls horizontal placement on the wall. */
+.wcell--34  { aspect-ratio: 3/4 !important; height: auto !important; }
+.wcell--11  { aspect-ratio: 1/1 !important; height: auto !important; }
+.wcell--43  { aspect-ratio: 4/3 !important; height: auto !important; }
 /* Exact 1.0 scale — cells sit at their true grid size so no border
    overlap between neighbouring pictures. (Was scale(1.012) to mask
    hairline seams; the few-pixel overflow it produced read as a
@@ -1155,7 +1161,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=46">
+<link rel="stylesheet" href="/enhance.css?v=47">
 </head>
 <body>
 <h1 class="sr-only">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1770,7 +1776,16 @@ function buildRoom() {
   //     image MUST be from a different project than the one being
   //     replaced, so hovering never shows the same project twice in
   //     a row for that cell.
-  function pickImage(currentUrl){
+  // Lazily-populated orientation map for every image. Filled as
+  // images load into cells (see the `load` listener below).
+  const IMG_ORI = (window.__azziImgOri = window.__azziImgOri || {});
+  function classifyOri(w, h){
+    const r = w / h;
+    if (r < 0.95) return 'portrait';
+    if (r < 1.1)  return 'square';
+    return 'landscape';
+  }
+  function pickImage(currentUrl, wantOri){
     const currentProject = currentUrl ? projectOf(currentUrl) : null;
     const candidates = [];
     for (const url of IMGS){
@@ -1779,6 +1794,13 @@ function buildRoom() {
       const p = projectOf(url);
       if (currentProject && p === currentProject) continue;  // no same-project swap
       if ((projectCount[p] || 0) >= 2) continue;
+      // Orientation match — known orientations must match the cell's
+      // shape. Unknown orientations are admitted (they get checked
+      // post-load and swapped if mismatched).
+      if (wantOri) {
+        const o = IMG_ORI[url];
+        if (o && o !== wantOri) continue;
+      }
       candidates.push(url);
     }
     if (!candidates.length) {
@@ -1819,16 +1841,20 @@ function buildRoom() {
 
   function makeCell(pos){
     const cell = document.createElement('div');
-    // Bucket each cell into one of three target ratios for mobile:
-    //   --34 portrait (3:4) when the cell is taller than wide
-    //   --43 landscape (4:3) for squares and modest landscapes
-    //   --169 wide-screen for big landscapes (videos, hero strips)
-    // Desktop ignores these classes — they only kick in via the
-    // @media(max-width:600px) rule.
+    // Snap each cell to ONE of three allowed shapes — portrait,
+    // square, or landscape — based on its grid span.
+    //   --34 portrait  (3:4) — taller than wide
+    //   --11 square    (1:1) — w === h
+    //   --43 landscape (4:3) — wider than tall
+    // The class also drives image orientation matching below so
+    // portraits go in portrait cells, landscapes in landscape cells.
     const ratio = pos.w / pos.h;
     let ratioCls = 'wcell--43';
-    if (ratio < 0.9) ratioCls = 'wcell--34';
-    else if (ratio >= 1.5) ratioCls = 'wcell--169';
+    let cellOri  = 'landscape';
+    if (ratio < 0.95)      { ratioCls = 'wcell--34'; cellOri = 'portrait'; }
+    else if (ratio < 1.1)  { ratioCls = 'wcell--11'; cellOri = 'square'; }
+    else                   { ratioCls = 'wcell--43'; cellOri = 'landscape'; }
+    cell.dataset.orientation = cellOri;
     cell.className = 'wcell ' + ratioCls + (pos.empty ? ' wcell--empty' : '');
     cell.style.gridColumn = pos.c + ' / span ' + pos.w;
     cell.style.gridRow    = pos.r + ' / span ' + pos.h;
@@ -1868,7 +1894,7 @@ function buildRoom() {
       cell.appendChild(vid);
     } else {
       // ── Image cell ──
-      const initUrl = pickImage(null);
+      const initUrl = pickImage(null, cellOri);
       commit(cell, initUrl);
       const imgA = document.createElement('img');
       imgA.className = 'img-a';
@@ -1876,6 +1902,13 @@ function buildRoom() {
       imgA.alt = '';
       imgA.loading  = cellSeq < 14 ? 'eager' : 'lazy';
       imgA.decoding = 'async';
+      // Record orientation on load. If it doesn't match this
+      // cell's shape, swap to a better match.
+      imgA.addEventListener('load', () => {
+        const ori = classifyOri(imgA.naturalWidth, imgA.naturalHeight);
+        IMG_ORI[initUrl] = ori;
+        if (ori !== cellOri && cell._swap) cell._swap();
+      }, { once: true });
       cell.appendChild(imgA);
     }
 
@@ -1886,7 +1919,7 @@ function buildRoom() {
     cell._swap = function(){
       if (swapping) return;
       const oldUrl = cellUrl.get(cell) || null;   // null for a video cell
-      const newUrl = pickImage(oldUrl);
+      const newUrl = pickImage(oldUrl, cellOri);
       if (!newUrl || newUrl === oldUrl) return;
       swapping = true;
 
@@ -1895,6 +1928,11 @@ function buildRoom() {
       newImg.src = thumb(newUrl);
       newImg.alt = '';
       newImg.decoding = 'async';
+      // Record orientation on load — populates IMG_ORI lazily so
+      // subsequent picks for this orientation get smarter.
+      newImg.addEventListener('load', () => {
+        IMG_ORI[newUrl] = classifyOri(newImg.naturalWidth, newImg.naturalHeight);
+      }, { once: true });
       cell.appendChild(newImg);
 
       // Crossfade in over whatever's there — picture or video.
