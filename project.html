@@ -239,7 +239,9 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   top:calc(max(1rem, env(safe-area-inset-top)) + 24px);
   left:50%;transform:translate(-50%, -50%);
   font-family:'Space Mono',monospace;
-  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  /* !important so it beats the more-specific .mob-menu a rule
+     above which sets 1.4rem for nav links inside the menu. */
+  font-size:0.6rem !important;font-weight:700;letter-spacing:0.2em !important;
   text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
 }
 
@@ -777,7 +779,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=25">
+<link rel="stylesheet" href="/enhance.css?v=26">
 </head>
 <body>
 
