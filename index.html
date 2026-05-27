@@ -203,14 +203,11 @@ body.ov-open .nav.nav--idle *{pointer-events:auto}
              top 0.65s cubic-bezier(0.16,1,0.3,1),
              left 0.6s cubic-bezier(0.16,1,0.3,1);
 }
-/* When the drop-down panel is open, "Creative Studio" moves to the
-   bottom-middle of the panel, aligned with the Close × button */
-body.ov-open .nav-center{top:calc(55vh - 1.5rem);z-index:8700}
-/* Flow / List drop down with Creative Studio when a panel opens */
-body.ov-open .nav .view-toggle{
-  top:calc(55vh - 1.5rem);left:20%;z-index:8700;
-  font-size:0.6rem;letter-spacing:0.24em;
-}
+/* When the drop-down panel is open, hide "Creative Studio" and
+   Flow/List entirely — they belong to the work-page chrome, not
+   the About/Services/Contact panel. */
+body.ov-open .nav-center{opacity:0;visibility:hidden;pointer-events:none}
+body.ov-open .nav .view-toggle{opacity:0 !important;visibility:hidden !important;pointer-events:none !important}
 .nav-right{
   transition:opacity 0.3s ease;
   display:flex;gap:1.75rem;
@@ -1155,7 +1152,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=43">
+<link rel="stylesheet" href="/enhance.css?v=44">
 </head>
 <body>
 
