@@ -426,7 +426,11 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
      rules (--pair / --grid / --solo-pic / --video-end) override
      padding back to 5vh. Force a generous gap on whichever
      variant lands first. */
-  .proj-section:first-of-type{padding-top:120px !important}
+  /* First section sits well below the stacked nav block
+     (azzi studios + title + Info ≈ 130px from the top). Bumped
+     to 170px so there's clear breathing room between the Info
+     button and the first picture. */
+  .proj-section:first-of-type{padding-top:170px !important}
 
   /* Pairs stack vertically */
   .proj-section--pair{flex-direction:column;gap:4vh;padding:5vh 5vw}
@@ -781,7 +785,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=27">
+<link rel="stylesheet" href="/enhance.css?v=28">
 </head>
 <body>
 
