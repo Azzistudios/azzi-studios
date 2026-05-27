@@ -803,7 +803,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=34">
+<link rel="stylesheet" href="/enhance.css?v=35">
 </head>
 <body>
 
@@ -1635,12 +1635,16 @@ const PROJECTS = {
     document.body.removeAttribute('data-ov-panel');
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
-    // If the overlay was opened from the mobile burger menu, the
-    // user expects to return to the burger (on the index page) on
-    // close — not to the project page they came from.
+    // If the overlay was opened from the mobile burger menu,
+    // re-open the burger on the SAME page so the user lands
+    // back in the menu state — no navigation, no page refresh.
     if (sessionStorage.getItem('azzi_burger_return') === '1') {
       sessionStorage.removeItem('azzi_burger_return');
-      window.location.href = 'index.html?openBurger=1';
+      const menu = document.getElementById('mobMenu');
+      if (menu) {
+        menu.classList.add('open');
+        document.body.classList.add('menu-open');
+      }
     }
   }
   ovClose.addEventListener('click', closeOverlay);
