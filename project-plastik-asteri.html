@@ -12,10 +12,13 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-plastik-asteri.html">
 
-<!-- Favicons -->
-<link rel="icon" type="image/png" href="brand_assets/logo-monogram.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" href="brand_assets/logo-circle-monogram.png" media="(prefers-color-scheme: dark)">
-<link rel="apple-touch-icon" href="brand_assets/logo-circle-monogram.png">
+<!-- Favicons — cropped tight so the monogram fills the tab icon -->
+<link rel="icon" type="image/png" sizes="16x16"  href="/brand_assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32"  href="/brand_assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="96x96"  href="/brand_assets/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand_assets/favicon-192.png">
+<link rel="icon" type="image/png" sizes="256x256" href="/brand_assets/favicon-256.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/brand_assets/favicon-180.png">
 <link rel="manifest" href="/manifest.json">
 
 <!-- Open Graph (JS below rewrites these per project) -->
@@ -805,10 +808,11 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=44">
+<link rel="stylesheet" href="/enhance.css?v=46">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "Plastik Studios — Asteri Beauty Summer", "headline": "Plastik Studios — Asteri Beauty Summer", "description": "Plastik Studios — Plastik Studios — Asteri Beauty Summer. Art direction, production design & props mastering. A project by Azzi Studios, a Beirut-based creative studio.", "url": "https://azzistudios.com/project-plastik-asteri.html", "image": "https://i.ibb.co/Y4xPbBxX/AZZISTUDIOS-Plastik-Studios-Asteri-Beauty-Summer-2025-11.webp", "creator": {"@type": "Organization", "name": "Azzi Studios", "url": "https://azzistudios.com"}, "datePublished": "2025", "inLanguage": "en", "isPartOf": {"@type": "WebSite", "name": "Azzi Studios", "url": "https://azzistudios.com"}}</script>
 </head>
 <body>
+<h1 class="sr-only">Plastik Studios — Asteri Beauty Summer</h1>
 
 <!-- ══ NAV ─ logo · project title (center) · page links ══
    Info button lives INSIDE the nav so the scroll-aware fade
@@ -849,7 +853,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 
     <section class="ov-panel ov-about" data-panel="about">
       <div class="ova-col">
-        <h1 class="ov-h">the studio.</h1>
+        <h2 class="ov-h">the studio.</h2>
         <p class="ova-lead"><span class="s">Azzi Studios is a creative studio based in Beirut.</span><span class="s">We produce campaigns and visual content for luxury, beauty, and lifestyle brands, combining creative direction, set design, and full production from brief to final image.</span><span class="s">Our founder trained as an architect. It shows in the work.</span></p>
 
         <div class="ova-studio">
@@ -875,7 +879,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 
     <section class="ov-panel ov-about" data-panel="services">
       <div class="ova-col">
-        <h1 class="ov-h">what we do.</h1>
+        <h2 class="ov-h">what we do.</h2>
         <p class="ova-lead"><span class="s">We work with brands who need their campaigns to look exactly the way they imagined.</span><span class="s">We handle everything: creative direction, set design, team, and production.</span><span class="s">We craft images worth keeping.</span></p>
       </div>
 
@@ -897,7 +901,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 
     <section class="ov-panel ov-about" data-panel="contact">
       <div class="ova-col">
-        <h1 class="ov-h">reach out.</h1>
+        <h2 class="ov-h">reach out.</h2>
         <p class="ova-lead"><span class="s">Tell us what you are working on.</span><span class="s">We favour long-term collaborations and tailor-made approaches.</span><span class="s">Based in beirut. Available across the region and internationally.</span></p>
       </div>
 
@@ -1328,7 +1332,7 @@ const PROJECTS = {
     // few pairs so they're ready the moment the user starts scrolling.
     const load = eager ? '' : ' loading="lazy"';
     const prio = eager ? ' fetchpriority="high"' : '';
-    return `<img class="${cls}" src="${esc(src)}" alt=""${load}${prio} decoding="async" title="Azzi Studios — Plastik Asteri">`;
+    return `<img class="${cls}" src="${esc(src)}" alt="Plastik Studios — Asteri Beauty Summer — by Azzi Studios"${load}${prio} decoding="async" title="Azzi Studios — Plastik Asteri">`;
   }
 
   const footer = `
