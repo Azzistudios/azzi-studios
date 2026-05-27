@@ -179,8 +179,8 @@ body.ov-open .nav .view-toggle{
 body.ov-open .nav-right{opacity:0;visibility:hidden;pointer-events:none}
 .nav-logo{transition:opacity 0.3s ease}
 body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
-.nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:12px;margin:-8px;cursor:pointer}
-.nav-ham span{display:block;width:16px;height:1.5px;background:#111;transition:all 0.3s}
+.nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:12px;margin:-8px;cursor:pointer;position:relative;z-index:9001}
+.nav-ham span{display:block;width:12px;height:1.5px;background:#111;transition:all 0.3s}
 
 /* mobile overlay */
 .mob-menu{
@@ -666,9 +666,12 @@ body.entered .nav .view-toggle{opacity:1;pointer-events:auto}
 .vt-btn{
   background:none;border:none;padding:0;
   font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:inherit;
-  color:rgba(17,17,17,0.45);cursor:pointer;transition:color 0.2s;
+  /* Always solid black — no more 'active vs inactive' gray since
+     only the inactive label shows on mobile and active+inactive
+     both read fine on desktop without the tick markers. */
+  color:#111;cursor:pointer;transition:opacity 0.2s;
 }
-.vt-btn.active{color:#111}
+.vt-btn:hover{opacity:0.55}
 .back-link{
   font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#111;
   cursor:pointer;
@@ -1057,7 +1060,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=13">
+<link rel="stylesheet" href="/enhance.css?v=14">
 </head>
 <body>
 
@@ -1072,8 +1075,8 @@ body.entered .archive-cell{opacity:1;transform:none}
 <nav class="nav">
   <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
   <div class="view-toggle">
-    <button class="vt-btn active" id="btnFlow">[+] Flow</button>
-    <button class="vt-btn" id="btnList">[ ] List</button>
+    <button class="vt-btn active" id="btnFlow">Flow</button>
+    <button class="vt-btn" id="btnList">List</button>
   </div>
   <a href="index.html" class="nav-center" onclick="sessionStorage.removeItem('azzi_entered')">Creative Studio</a>
   <div class="nav-right">
@@ -1997,18 +2000,19 @@ function buildRoom() {
   const KEY = 'azzi_view_mode';
   function setFlow(persist){
     g.classList.remove('list-view');
-    bf.classList.add('active');    bf.textContent = '[+] Flow';
-    bl.classList.remove('active'); bl.textContent = '[ ] List';
-    // body classes drive the mobile-only "show one button only"
-    // rule — see the .view-toggle CSS in the mobile @media block.
+    // No more [+] / [ ] tick markers — labels are plain "Flow" /
+    // "List" in solid black. The .active class stays on for any
+    // future styling hook but doesn't change colour.
+    bf.classList.add('active');    bf.textContent = 'Flow';
+    bl.classList.remove('active'); bl.textContent = 'List';
     document.body.classList.add('flow-mode');
     document.body.classList.remove('list-mode');
     if (persist !== false) sessionStorage.setItem(KEY, 'flow');
   }
   function setList(persist){
     g.classList.add('list-view');
-    bl.classList.add('active');    bl.textContent = '[+] List';
-    bf.classList.remove('active'); bf.textContent = '[ ] Flow';
+    bl.classList.add('active');    bl.textContent = 'List';
+    bf.classList.remove('active'); bf.textContent = 'Flow';
     document.body.classList.add('list-mode');
     document.body.classList.remove('flow-mode');
     if (persist !== false) sessionStorage.setItem(KEY, 'list');

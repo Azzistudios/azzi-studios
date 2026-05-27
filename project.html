@@ -154,7 +154,7 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   flex-direction:column;gap:5px;padding:6px;
   position:relative;z-index:9001;
 }
-.nav-ham span{display:block;width:16px;height:1.5px;background:#111;transition:transform 0.3s}
+.nav-ham span{display:block;width:12px;height:1.5px;background:#111;transition:transform 0.3s}
 
 @media(max-width:768px){
   .nav-right{display:none}
@@ -372,16 +372,16 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 /* ── MOBILE (≤ 720px) — single column, full-width per cell ── */
 @media (max-width: 720px) {
   /* Nav-center (project title) hidden on mobile — no room.
-     Info button sits ON the same row as the logo and the
-     hamburger, centered between them, at the same font size and
-     letter-spacing as the logo. Stays visible while the info
-     panel is open so it can act as the close trigger. */
+     Info button now sits JUST BELOW the centered "azzi studios"
+     logo (was overlapping it on the same row). Stays visible
+     while the info panel is open so it can act as the close
+     trigger. */
   .nav-center{display:none}
   .info-btn-float{
-    top:calc(1rem + 24px);            /* vertical center of the 48px nav band */
-    transform:translate(-50%, -50%);  /* center on both axes */
-    font-size:0.6rem;                 /* match .nav-logo */
-    letter-spacing:0.2em;             /* match .nav-logo */
+    top:calc(1rem + 48px);            /* below the nav band — clears the centered logo */
+    transform:translateX(-50%);       /* horizontal centre only */
+    font-size:0.55rem;
+    letter-spacing:0.2em;
   }
   body.info-open .info-btn-float{
     opacity:1 !important;visibility:visible !important;pointer-events:auto !important;
@@ -716,7 +716,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=13">
+<link rel="stylesheet" href="/enhance.css?v=14">
 </head>
 <body>
 

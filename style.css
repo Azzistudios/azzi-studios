@@ -173,11 +173,14 @@ a   { color: inherit; text-decoration: none; }
 
 .c-nav__hamburger span {
   display: block;
-  width: 16px;
+  width: 12px;
   height: 1.5px;
   background: var(--text);
   transition: transform 0.3s;
 }
+/* Keep the hamburger / × visible above the menu overlay so it
+   doubles as the close button. */
+.c-nav__hamburger { position: relative; z-index: 9001; }
 /* Hamburger morphs into × when the menu is open. ±3.25px so the
    two spans meet at the geometric centre of the 8px-tall stack. */
 .c-nav.menu-open .c-nav__hamburger span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
