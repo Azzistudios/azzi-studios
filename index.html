@@ -277,9 +277,7 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   #overlay{height:100vh;height:100dvh}
   body.ov-open #landing,
   body.ov-open #room{transform:translateY(100vh);transform:translateY(100dvh)}
-  /* Hide the "Back" text close button on mobile — the burger
-     itself becomes an × that closes the overlay. */
-  .ov-close{display:none !important}
+  /* × close button stays visible on mobile too — pinned top-right. */
   /* Keep ONLY the burger visible above the overlay while open
      (it doubles as the close button via the × morph). The
      nav-logo stays hidden — was showing a duplicate "azzi
@@ -306,6 +304,9 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
 }
 #overlay::-webkit-scrollbar{display:none}
 #overlay.open{opacity:1;pointer-events:all;transform:translateY(0)}
+/* Lock body scroll while the overlay is open so the project /
+   work page underneath doesn't scroll behind the panel. */
+body.ov-open{overflow:hidden !important;touch-action:none !important}
 /* Work page slides fully off when the drop-down opens — no gallery
    should peek behind the overlay. */
 #landing,#room{transition:transform 0.65s cubic-bezier(0.16,1,0.3,1)}
@@ -320,15 +321,21 @@ body.ov-open #landing,body.ov-open #room{transform:translateY(100vh);transform:t
 @media(prefers-reduced-motion:reduce){
   #overlay.open .ov-panel.active > *{animation:none;opacity:1}
 }
+/* × close button — pinned top-right of the full-screen overlay
+   on desktop AND mobile. Larger, glyph-style (×) instead of the
+   old "Back" text. */
 .ov-close{
-  position:fixed;top:calc(55vh - 1.5rem);left:80%;transform:translate(-50%,-50%);z-index:8700;
+  position:fixed;top:1.25rem;right:1.5rem;left:auto;transform:none;z-index:8700;
   background:none;border:none;cursor:pointer;
   font-family:'Space Mono',monospace;
-  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;
+  font-size:1.6rem;line-height:1;font-weight:400;
   color:#111;
+  width:2.5rem;height:2.5rem;padding:0;
+  display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
-  transition:opacity 0.4s ease;
+  transition:opacity 0.4s ease, transform 0.2s ease;
 }
+.ov-close::before{content:'×'}
 body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s ease 0.15s}
 .ov-close:hover{opacity:0.55}
 /* Restored to the project-page reference layout: a centered
@@ -1106,7 +1113,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=30">
+<link rel="stylesheet" href="/enhance.css?v=31">
 </head>
 <body>
 
@@ -1144,7 +1151,7 @@ body.entered .archive-cell{opacity:1;transform:none}
 
 <!-- ══ OVERLAY (About / Services / Contact) ══ -->
 <div id="overlay" aria-hidden="true">
-  <button id="ovClose" class="ov-close" type="button">Back</button>
+  <button id="ovClose" class="ov-close" type="button" aria-label="Close"></button>
   <div class="ov-scroll">
 
     <section class="ov-panel ov-about" data-panel="about">
