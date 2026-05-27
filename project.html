@@ -558,21 +558,18 @@ body.ov-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none;tra
 @media(prefers-reduced-motion:reduce){
   #overlay.open .ov-panel.active > *{animation:none;opacity:1}
 }
-/* × close button — pinned top-right of the full-screen overlay
-   on desktop AND mobile. Larger, glyph-style (×) instead of the
-   old "Back" text. */
+/* Desktop close trigger — original "Back" text in its original
+   position. Mobile hides this and uses the burger morph as the
+   single × in the top-right corner. */
 .ov-close{
-  position:fixed;top:1.25rem;right:1.5rem;left:auto;transform:none;z-index:8700;
+  position:fixed;top:calc(55vh - 1.5rem);left:80%;transform:translate(-50%,-50%);z-index:8700;
   background:none;border:none;cursor:pointer;
   font-family:'Space Mono',monospace;
-  font-size:1.6rem;line-height:1;font-weight:400;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;
   color:#111;
-  width:2.5rem;height:2.5rem;padding:0;
-  display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
-  transition:opacity 0.4s ease, transform 0.2s ease;
+  transition:opacity 0.4s ease;
 }
-.ov-close::before{content:'×'}
 body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s ease 0.15s}
 .ov-close:hover{opacity:0.55}
 .ov-scroll{max-width:1040px;margin:0 auto;padding:2rem 3rem 3rem}
@@ -800,7 +797,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=31">
+<link rel="stylesheet" href="/enhance.css?v=32">
 </head>
 <body>
 
@@ -838,7 +835,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 
 <!-- ══ OVERLAY (About / Services / Contact) — same as index.html ══ -->
 <div id="overlay" aria-hidden="true">
-  <button id="ovClose" class="ov-close" type="button" aria-label="Close"></button>
+  <button id="ovClose" class="ov-close" type="button">Back</button>
   <div class="ov-scroll">
 
     <section class="ov-panel ov-about" data-panel="about">
