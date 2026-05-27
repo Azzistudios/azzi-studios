@@ -1,37 +1,36 @@
 # macOS
 .DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
+**/.DS_Store
 
-# Editor / IDE
+# Dev artefacts
+Screenshots/
+*.log
+.env
+.env.local
+
+# Editor
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# Claude Code session metadata (not for the repo)
+# Vercel
+.vercel
+
+# Claude Code session data
 .claude/
 
-# Local screenshots / scratch
-Screenshots/
 
-# Python / Node artefacts (in case anything sneaks in)
-__pycache__/
-*.pyc
-node_modules/
-
-# Local environment files
-.env
-.env.local
-
-# Large unused source videos — replaced by Cloudinary embeds, not
-# referenced anywhere in the site. One (HERO.MOV) is over the 100 MB
-# GitHub per-file hard limit; the rest are just dead weight.
+# >100MB files — GitHub limit. Keep locally, never commit.
 images/Project03_Ambiance_ChristmasCampaign/AMBIANCE FINAL HERO.MOV
-images/Project03_Ambiance_ChristmasCampaign/AMBIANCE FINAL HERO copy_Resized.mov
-images/Project04_Ambiance_Emozee/2- EMOZEE SHOWROOM.MOV
-images/Project04_Ambiance_Emozee/3- EMOZEE LEBANON.MOV
-images/Project05_Ambiance_HUE/1.MOV
-images/Project05_Ambiance_HUE/4.MOV
+
+
+# Large video originals — keep locally, never commit. Per-project
+# videos are served from Cloudinary (the project pages already point
+# at player.cloudinary.com), so these are off-site referenced.
+*.MOV
+*.mov
+*.MP4
+images/**/*.mov
+images/**/*.MOV

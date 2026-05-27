@@ -1,0 +1,26 @@
+{
+  "name": "Azzi Studios",
+  "short_name": "Azzi Studios",
+  "description": "Beirut-based creative studio — Campaign Production, Visual Content & Brand Identity. Set design, art direction and creative direction for fashion, beauty, lifestyle and hospitality brands.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/brand_assets/logo-circle-monogram.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand_assets/logo-circle-monogram.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

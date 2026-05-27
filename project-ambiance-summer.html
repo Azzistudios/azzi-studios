@@ -16,6 +16,7 @@
 <link rel="icon" type="image/png" href="brand_assets/logo-monogram.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" href="brand_assets/logo-circle-monogram.png" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="brand_assets/logo-circle-monogram.png">
+<link rel="manifest" href="/manifest.json">
 
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
@@ -804,7 +805,8 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=37">
+<link rel="stylesheet" href="/enhance.css?v=41">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "Ambiance — Summer", "headline": "Ambiance — Summer", "description": "Ambiance — Ambiance — Summer. Set design. A project by Azzi Studios, a Beirut-based creative studio.", "url": "https://azzistudios.com/project-ambiance-summer.html", "image": "https://i.ibb.co/mVxk0WGN/010-Medium.jpg", "creator": {"@type": "Organization", "name": "Azzi Studios", "url": "https://azzistudios.com"}, "datePublished": "2024", "inLanguage": "en", "isPartOf": {"@type": "WebSite", "name": "Azzi Studios", "url": "https://azzistudios.com"}}</script>
 </head>
 <body>
 
@@ -1326,7 +1328,7 @@ const PROJECTS = {
     // few pairs so they're ready the moment the user starts scrolling.
     const load = eager ? '' : ' loading="lazy"';
     const prio = eager ? ' fetchpriority="high"' : '';
-    return `<img class="${cls}" src="${esc(src)}" alt=""${load}${prio} decoding="async">`;
+    return `<img class="${cls}" src="${esc(src)}" alt=""${load}${prio} decoding="async" title="Azzi Studios — Ambiance Summer">`;
   }
 
   const footer = `
@@ -1436,23 +1438,29 @@ const PROJECTS = {
   const infoBtn   = document.getElementById('infoBtn');
   const infoPanel = document.getElementById('infoPanel');
   const infoClose = document.getElementById('infoClose');   // may be null — close trigger now lives in nav-center
-  // Desktop closes the info panel via the info-btn-float (which
-  // reads "Back" when open). The project title in nav-center
-  // stays put — it's just a label.
-  // Mobile uses the centered .nav-logo as the close trigger;
-  // when info opens, "azzi studios" → "Back".
+  // When info panel opens:
+  //   • Desktop: nav-center (project title) becomes "Back"; the
+  //     "azzi studios" logo stays as the brand mark top-left.
+  //   • Mobile: nav-logo (centered top) becomes "Back"; the
+  //     project title is hidden via body.info-open .nav-center
+  //     so the screen reads cleanly.
   const navLogo = document.querySelector('.nav-logo');
+  const isMobile = () => window.matchMedia('(max-width: 720px)').matches;
   function openInfo(){
     infoPanel.classList.add('open');
     infoBtn.classList.add('is-open');
-    infoBtn.textContent = 'Back';        // info-btn-float doubles as close trigger on desktop
+    infoBtn.textContent = 'Back';
     infoBtn.setAttribute('aria-expanded', 'true');
     infoPanel.setAttribute('aria-hidden', 'false');
     document.body.classList.add('info-open');
-    if (navLogo) {
-      if (!navLogo.dataset.original) navLogo.dataset.original = navLogo.textContent;
-      navLogo.textContent = 'Back';
-      navLogo.style.cursor = 'pointer';
+    if (isMobile()) {
+      if (navLogo) {
+        if (!navLogo.dataset.original) navLogo.dataset.original = navLogo.textContent;
+        navLogo.textContent = 'Back';
+        navLogo.style.cursor = 'pointer';
+      }
+    } else {
+      if (navTitle) { navTitle.textContent = 'Back'; navTitle.style.cursor = 'pointer'; }
     }
   }
   function closeInfo(){
@@ -1466,12 +1474,16 @@ const PROJECTS = {
       navLogo.textContent = navLogo.dataset.original;
       navLogo.style.cursor = '';
     }
+    if (navTitle) { navTitle.textContent = fullTitle; navTitle.style.cursor = ''; }
   }
   if (navLogo) navLogo.addEventListener('click', (e) => {
     if (infoPanel.classList.contains('open')) {
       e.preventDefault();        // don't navigate to index.html
       closeInfo();
     }
+  });
+  if (navTitle) navTitle.addEventListener('click', () => {
+    if (infoPanel.classList.contains('open')) closeInfo();
   });
   infoBtn.addEventListener('click', () => {
     infoPanel.classList.contains('open') ? closeInfo() : openInfo();
@@ -1632,24 +1644,28 @@ const PROJECTS = {
     overlay.scrollTop = 0;
   }
   function closeOverlay(){
-    // If the overlay was opened from the mobile burger menu, open
-    // the burger FIRST so its full-screen panel covers the screen
-    // BEFORE the overlay slides up and the project page slides
-    // back into view. Without this, the user briefly sees the
-    // project page images during the transition.
     const fromBurger = sessionStorage.getItem('azzi_burger_return') === '1';
+    const doClose = () => {
+      document.body.classList.remove('ov-open');
+      document.body.removeAttribute('data-ov-panel');
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+    };
     if (fromBurger) {
       sessionStorage.removeItem('azzi_burger_return');
       const menu = document.getElementById('mobMenu');
       if (menu) {
+        // Step 1: open the burger menu and wait for its 0.3s fade
+        // to finish so the screen is fully covered.
         menu.classList.add('open');
         document.body.classList.add('menu-open');
+        // Step 2: after the menu is fully opaque, close the
+        // overlay and let the project page slide back behind it.
+        setTimeout(doClose, 320);
+        return;
       }
     }
-    document.body.classList.remove('ov-open');
-    document.body.removeAttribute('data-ov-panel');
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
+    doClose();
   }
   ovClose.addEventListener('click', closeOverlay);
   document.querySelectorAll('[data-panel]').forEach(el => {
