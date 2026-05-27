@@ -174,10 +174,16 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   /* When the burger is open, hide the centered nav-logo so
      mob-menu__top (also centered) is the only "azzi studios". */
   body.menu-open .nav-logo{visibility:hidden}
-  /* Hide the Info button while the burger menu is open — it
-     belongs to the project nav, not the burger menu, and was
-     showing underneath the centered "azzi studios". */
+  /* Hide the project-page nav extras (Info button, project
+     title) while the burger menu is open — they belong to the
+     page nav, not the menu, and were showing through underneath
+     the centered "azzi studios". */
   body.menu-open .info-btn-float{display:none !important}
+  body.menu-open .nav-center{display:none !important}
+  /* Same for the info panel: when Info is open the project title
+     is already shown inside the panel, so hide the nav copy to
+     avoid duplication. */
+  body.info-open .nav-center{display:none !important}
   /* .nav has its own stacking context (z-index:8600); the mobile
      menu opens at z-index:9000 and would cover the nav-ham. We
      raise the entire .nav above the menu when open so the burger
@@ -785,7 +791,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=28">
+<link rel="stylesheet" href="/enhance.css?v=29">
 </head>
 <body>
 
