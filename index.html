@@ -498,6 +498,33 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
     --box-d: min(110vmin, 110vw);
     --back-z: -22vmin;
   }
+
+  /* Every wall switches to a single-column flex stack on mobile,
+     and each cell is locked to one of three target aspect ratios
+     (3:4 portrait, 4:3 landscape, 16:9 wide). Cells flow top to
+     bottom in the order they appear in the data — no more grid
+     spans, no more square or 1:2 strips. */
+  .wall{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:4px !important;
+    padding:6px !important;
+  }
+  .wcell{
+    grid-column:auto !important;
+    grid-row:auto !important;
+    width:100% !important;
+    height:auto !important;
+  }
+  .wcell--34  { aspect-ratio: 3/4  !important; }
+  .wcell--43  { aspect-ratio: 4/3  !important; }
+  .wcell--169 { aspect-ratio: 16/9 !important; }
+  /* Empty cells (white space) collapse to a thin spacer rather
+     than a full-height ratio block — keeps the stack tight. */
+  .wcell--empty{
+    aspect-ratio:auto !important;
+    height:24px !important;
+  }
 }
 
 #room{
@@ -1057,7 +1084,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=17">
+<link rel="stylesheet" href="/enhance.css?v=18">
 </head>
 <body>
 
@@ -1116,7 +1143,7 @@ body.entered .archive-cell{opacity:1;transform:none}
       <div class="ova-meta">
         <div>
           <div class="ov-label">The Work</div>
-          <p class="ov-body">We read every brief twice &mdash; once for what it says, once for what it doesn&rsquo;t.</p>
+          <p class="ov-body">We read every brief twice. Once for what it says, once for what it doesn&rsquo;t.</p>
           <p class="ov-body">The brands that work with us want more than a campaign. They want a visual identity that holds, one that looks considered, not produced.</p>
           <p class="ov-body">We bring the direction, the set, and the team. Every decision is made before the camera arrives.</p>
           <p class="ov-body">We favour long-term collaborations over one-off projects.</p>
@@ -1720,7 +1747,17 @@ function buildRoom() {
 
   function makeCell(pos){
     const cell = document.createElement('div');
-    cell.className = 'wcell' + (pos.empty ? ' wcell--empty' : '');
+    // Bucket each cell into one of three target ratios for mobile:
+    //   --34 portrait (3:4) when the cell is taller than wide
+    //   --43 landscape (4:3) for squares and modest landscapes
+    //   --169 wide-screen for big landscapes (videos, hero strips)
+    // Desktop ignores these classes — they only kick in via the
+    // @media(max-width:600px) rule.
+    const ratio = pos.w / pos.h;
+    let ratioCls = 'wcell--43';
+    if (ratio < 0.9) ratioCls = 'wcell--34';
+    else if (ratio >= 1.5) ratioCls = 'wcell--169';
+    cell.className = 'wcell ' + ratioCls + (pos.empty ? ' wcell--empty' : '');
     cell.style.gridColumn = pos.c + ' / span ' + pos.w;
     cell.style.gridRow    = pos.r + ' / span ' + pos.h;
     cellSeq++;   // used only to decide eager vs lazy image loading
@@ -2046,15 +2083,24 @@ function buildRoom() {
 
   // For each gallery cell, derive its project folder from the
   // first image, then map the project id to the full image list.
+  // hrefMatch handles both the legacy /project.html?id=X format
+  // AND the new /project-X.html static-page format.
+  function projectIdFrom(href){
+    if (!href) return null;
+    let m = href.match(/[?&]id=([a-z0-9-]+)/);
+    if (m) return m[1];
+    m = href.match(/project-([a-z0-9-]+)\.html/);
+    return m ? m[1] : null;
+  }
   const map = {};
   document.querySelectorAll('#gallery .gal-cell').forEach(a => {
-    const idMatch = (a.getAttribute('href') || '').match(/id=([a-z0-9-]+)/);
+    const id = projectIdFrom(a.getAttribute('href'));
     const img = a.querySelector('img');
-    if (!idMatch || !img) return;
+    if (!id || !img) return;
     const src = img.getAttribute('src') || '';
     const folderMatch = src.match(/^images\/([^\/]+)\//);
     const imgs = folderMatch ? (byFolder[folderMatch[1]] || []) : [];
-    map[idMatch[1]] = imgs.length ? imgs : [src];
+    map[id] = imgs.length ? imgs : [src];
   });
 
   // Pre-warm browser cache for every preview image so the first
@@ -2109,8 +2155,7 @@ function buildRoom() {
   }
 
   list.querySelectorAll('a').forEach(row => {
-    const m = (row.getAttribute('href') || '').match(/id=([a-z0-9-]+)/);
-    const id = m && m[1];
+    const id = projectIdFrom(row.getAttribute('href'));
     const imgs = id && map[id];
     if (!imgs || !imgs.length) return;
 

@@ -717,7 +717,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=17">
+<link rel="stylesheet" href="/enhance.css?v=18">
 </head>
 <body>
 
@@ -776,7 +776,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
       <div class="ova-meta">
         <div>
           <div class="ov-label">The Work</div>
-          <p class="ov-body">We read every brief twice &mdash; once for what it says, once for what it doesn&rsquo;t.</p>
+          <p class="ov-body">We read every brief twice. Once for what it says, once for what it doesn&rsquo;t.</p>
           <p class="ov-body">The brands that work with us want more than a campaign. They want a visual identity that holds, one that looks considered, not produced.</p>
           <p class="ov-body">We bring the direction, the set, and the team. Every decision is made before the camera arrives.</p>
           <p class="ov-body">We favour long-term collaborations over one-off projects.</p>
@@ -1349,6 +1349,10 @@ const PROJECTS = {
   const infoBtn   = document.getElementById('infoBtn');
   const infoPanel = document.getElementById('infoPanel');
   const infoClose = document.getElementById('infoClose');   // may be null — close trigger now lives in nav-center
+  // On mobile, the centered .nav-logo replaces the desktop
+  // nav-center as the "Back" trigger — when the info panel
+  // opens, "azzi studios" becomes "Back" and tapping it closes.
+  const navLogo = document.querySelector('.nav-logo');
   function openInfo(){
     infoPanel.classList.add('open');
     infoBtn.classList.add('is-open');
@@ -1357,6 +1361,11 @@ const PROJECTS = {
     infoPanel.setAttribute('aria-hidden', 'false');
     document.body.classList.add('info-open');
     if (navTitle) { navTitle.textContent = 'Back'; navTitle.style.cursor = 'pointer'; }
+    if (navLogo) {
+      if (!navLogo.dataset.original) navLogo.dataset.original = navLogo.textContent;
+      navLogo.textContent = 'Back';
+      navLogo.style.cursor = 'pointer';
+    }
   }
   function closeInfo(){
     infoPanel.classList.remove('open');
@@ -1366,10 +1375,21 @@ const PROJECTS = {
     infoPanel.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('info-open');
     if (navTitle) { navTitle.textContent = fullTitle; navTitle.style.cursor = ''; }
+    if (navLogo && navLogo.dataset.original) {
+      navLogo.textContent = navLogo.dataset.original;
+      navLogo.style.cursor = '';
+    }
   }
-  // nav-center acts as the Back trigger while info is open
+  // nav-center (desktop) AND nav-logo (mobile) both act as the
+  // Back trigger while info is open.
   if (navTitle) navTitle.addEventListener('click', () => {
     if (infoPanel.classList.contains('open')) closeInfo();
+  });
+  if (navLogo) navLogo.addEventListener('click', (e) => {
+    if (infoPanel.classList.contains('open')) {
+      e.preventDefault();        // don't navigate to index.html
+      closeInfo();
+    }
   });
   infoBtn.addEventListener('click', () => {
     infoPanel.classList.contains('open') ? closeInfo() : openInfo();
