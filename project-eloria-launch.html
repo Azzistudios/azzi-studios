@@ -397,7 +397,8 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   .nav-center{
     display:block !important;
     position:fixed !important;
-    top:calc(1rem + 50px) !important;
+    /* More breathing room below 'azzi studios' (was +50px). */
+    top:calc(1rem + 72px) !important;
     left:50% !important;
     transform:translateX(-50%) !important;
     font-family:'Space Mono',monospace;
@@ -408,7 +409,8 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
     pointer-events:none;
   }
   .info-btn-float{
-    top:calc(1rem + 72px);
+    /* Sits one comfortable step below the project title. */
+    top:calc(1rem + 96px);
     transform:translateX(-50%);
     font-size:0.55rem;
     letter-spacing:0.2em;
@@ -780,7 +782,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=26">
+<link rel="stylesheet" href="/enhance.css?v=27">
 </head>
 <body>
 
