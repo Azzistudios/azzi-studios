@@ -526,7 +526,10 @@ body.ov-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none;tra
 }
 body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s ease 0.15s}
 .ov-close:hover{opacity:0.55}
-.ov-scroll{max-width:1040px;margin:0 auto;padding:2rem 3rem 3rem}
+/* Match the index reference: content flows from the left edge
+   of the overlay (3rem padding) instead of being centered in a
+   1040px column. */
+.ov-scroll{max-width:none;margin:0;padding:2rem 3rem 3rem 3rem}
 .ov-panel{display:none}
 .ov-panel.active{display:block}
 .ov-h{
@@ -553,11 +556,15 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 .ov-about .ov-h{font-size:0.6rem;letter-spacing:0.22em;line-height:1;margin-bottom:0.8rem}
 .ov-about .ova-lead{font-size:0.72rem;line-height:1.45;letter-spacing:-0.02em;max-width:22rem}
 .ov-about .ova-lead .s + .s{margin-top:1rem}
-.ov-about .ova-meta{display:block;max-width:none;margin-left:-4rem}
+/* Match the index reference: no negative pull on the meta
+   column and no calc()-based push on the lead column. Both
+   start at their grid cell's left edge so text aligns with
+   the gallery captions ('Plastik — Asteri Beauty'). */
+.ov-about .ova-meta{display:block;max-width:none;margin-left:0}
 .ov-about .ova-meta .ov-body{max-width:22rem}
 .ov-about .ova-meta > div + div{margin-top:2.5rem}
 [data-panel="services"] .ova-meta .ov-body{max-width:26rem}
-.ov-about .ova-col{margin-left:calc(20vw - 7.5rem - max(0px, (100vw - 1040px) / 2))}
+.ov-about .ova-col{margin-left:0}
 [data-panel="about"] .ova-studio{margin-top:2rem}
 .ova-lead{
   font-family:'Space Mono',monospace;
@@ -717,7 +724,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=14">
+<link rel="stylesheet" href="/enhance.css?v=15">
 </head>
 <body>
 
