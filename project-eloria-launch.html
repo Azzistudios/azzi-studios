@@ -565,12 +565,9 @@ body.ov-open .nav-logo,
 body.ov-open .nav-center,
 body.ov-open .nav-right,
 body.ov-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s ease}
-@keyframes ovIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-#overlay.open .ov-panel.active > *{opacity:0;animation:ovIn 0.9s cubic-bezier(0.22,1,0.36,1) forwards}
-#overlay.open .ov-panel.active > *:nth-child(1){animation-delay:0.18s}
-#overlay.open .ov-panel.active > *:nth-child(2){animation-delay:0.26s}
-#overlay.open .ov-panel.active > *:nth-child(3){animation-delay:0.34s}
-#overlay.open .ov-panel.active > *:nth-child(4){animation-delay:0.42s}
+/* Panel content appears with the panel — no staggered fade-in
+   that makes the drop feel like two separate motions. */
+#overlay.open .ov-panel.active > *{opacity:1}
 @media(prefers-reduced-motion:reduce){
   #overlay.open .ov-panel.active > *{animation:none;opacity:1}
 }
@@ -813,7 +810,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=51">
+<link rel="stylesheet" href="/enhance.css?v=52">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "Eloria — Launch", "headline": "Eloria — Launch", "description": "Eloria — Eloria — Launch. Creative direction, set design, art direction. A project by Azzi Studios, a Beirut-based creative studio.", "url": "https://azzistudios.com/project-eloria-launch.html", "image": "https://i.ibb.co/Z1zMTRZX/image00024.png", "creator": {"@type": "Organization", "name": "Azzi Studios", "url": "https://azzistudios.com"}, "datePublished": "2025", "inLanguage": "en", "isPartOf": {"@type": "WebSite", "name": "Azzi Studios", "url": "https://azzistudios.com"}}</script>
 </head>
 <body>
