@@ -540,9 +540,14 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   position:fixed;top:0;left:0;right:0;height:100vh;height:100dvh;
   z-index:8500;background:#fff;
   opacity:0;pointer-events:none;transform:translateY(-100%);
-  transition:opacity 0.4s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1);
+  /* Smoother, longer transition — was 0.4s/0.65s with a snappy
+     bezier; now the slide eases in over a full second and the
+     opacity holds back a touch so the motion reads as one piece. */
+  transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1) 0.05s,
+             transform 0.95s cubic-bezier(0.22,1,0.36,1);
   overflow-y:auto;overflow-x:hidden;
   -ms-overflow-style:none;scrollbar-width:none;
+  will-change:transform,opacity;
 }
 #overlay::-webkit-scrollbar{display:none}
 #overlay.open{opacity:1;pointer-events:all;transform:translateY(0)}
@@ -550,7 +555,7 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
    work page underneath doesn't scroll behind the panel. */
 body.ov-open{overflow:hidden !important;touch-action:none !important}
 /* Project main content slides down to make room for the panel */
-.proj{transition:transform 0.65s cubic-bezier(0.16,1,0.3,1)}
+.proj{transition:transform 0.95s cubic-bezier(0.22,1,0.36,1)}
 body.ov-open .proj{transform:translateY(55vh)}
 /* Hide individual nav elements (NOT the .nav container) so the
    .nav-ham — which becomes the × close trigger — stays visible.
@@ -560,12 +565,12 @@ body.ov-open .nav-logo,
 body.ov-open .nav-center,
 body.ov-open .nav-right,
 body.ov-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s ease}
-@keyframes ovIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-#overlay.open .ov-panel.active > *{opacity:0;animation:ovIn 0.7s cubic-bezier(0.16,1,0.3,1) forwards}
-#overlay.open .ov-panel.active > *:nth-child(1){animation-delay:0.06s}
-#overlay.open .ov-panel.active > *:nth-child(2){animation-delay:0.15s}
-#overlay.open .ov-panel.active > *:nth-child(3){animation-delay:0.24s}
-#overlay.open .ov-panel.active > *:nth-child(4){animation-delay:0.33s}
+@keyframes ovIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#overlay.open .ov-panel.active > *{opacity:0;animation:ovIn 0.9s cubic-bezier(0.22,1,0.36,1) forwards}
+#overlay.open .ov-panel.active > *:nth-child(1){animation-delay:0.18s}
+#overlay.open .ov-panel.active > *:nth-child(2){animation-delay:0.26s}
+#overlay.open .ov-panel.active > *:nth-child(3){animation-delay:0.34s}
+#overlay.open .ov-panel.active > *:nth-child(4){animation-delay:0.42s}
 @media(prefers-reduced-motion:reduce){
   #overlay.open .ov-panel.active > *{animation:none;opacity:1}
 }
@@ -808,7 +813,7 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=49">
+<link rel="stylesheet" href="/enhance.css?v=50">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "Peachpuff — Summer", "headline": "Peachpuff — Summer", "description": "Peachpuff — Peachpuff — Summer. Set design. A project by Azzi Studios, a Beirut-based creative studio.", "url": "https://azzistudios.com/project-peachpuff-summer.html", "image": "https://i.ibb.co/Pswts4hG/IMG-7884.jpg", "creator": {"@type": "Organization", "name": "Azzi Studios", "url": "https://azzistudios.com"}, "datePublished": "2024", "inLanguage": "en", "isPartOf": {"@type": "WebSite", "name": "Azzi Studios", "url": "https://azzistudios.com"}}</script>
 </head>
 <body>
