@@ -342,11 +342,9 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
   position:fixed;top:0;left:0;right:0;height:100vh;height:100dvh;
   z-index:8500;background:#fff;
   opacity:0;pointer-events:none;transform:translateY(-100%);
-  /* Smoother, longer transition — was 0.4s/0.65s with a snappy
-     bezier; now the slide eases in over a full second and the
-     opacity holds back a touch so the motion reads as one piece. */
-  transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1) 0.05s,
-             transform 0.95s cubic-bezier(0.22,1,0.36,1);
+  /* Natural drop — single smooth slide, content appears with the
+     panel. ~500ms feels deliberate without dragging. */
+  transition:opacity 0.35s ease-out, transform 0.5s cubic-bezier(0.16,1,0.3,1);
   overflow-y:auto;overflow-x:hidden;
   -ms-overflow-style:none;scrollbar-width:none;
   will-change:transform,opacity;
@@ -356,20 +354,12 @@ body.ov-open .nav-logo{opacity:0;visibility:hidden;pointer-events:none}
 /* Lock body scroll while the overlay is open so the project /
    work page underneath doesn't scroll behind the panel. */
 body.ov-open{overflow:hidden !important;touch-action:none !important}
-/* Work page slides fully off when the drop-down opens — matched
-   timing so the gallery slide-out finishes alongside the panel
-   slide-in (was 0.65s, now 0.95s with the same smoother bezier). */
-#landing,#room{transition:transform 0.95s cubic-bezier(0.22,1,0.36,1)}
+/* Page slides off in lockstep with the panel slide-in. */
+#landing,#room{transition:transform 0.5s cubic-bezier(0.16,1,0.3,1)}
 body.ov-open #landing,body.ov-open #room{transform:translateY(100vh);transform:translateY(100dvh)}
-/* Overlay content reveals with a soft stagger — slowed and
-   eased so it reads as one continuous motion with the panel
-   itself, not a separate snap-in. */
-@keyframes ovIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-#overlay.open .ov-panel.active > *{opacity:0;animation:ovIn 0.9s cubic-bezier(0.22,1,0.36,1) forwards}
-#overlay.open .ov-panel.active > *:nth-child(1){animation-delay:0.18s}
-#overlay.open .ov-panel.active > *:nth-child(2){animation-delay:0.26s}
-#overlay.open .ov-panel.active > *:nth-child(3){animation-delay:0.34s}
-#overlay.open .ov-panel.active > *:nth-child(4){animation-delay:0.42s}
+/* Panel content appears with the panel — no staggered fade-in
+   that makes the drop feel like two separate motions. */
+#overlay.open .ov-panel.active > *{opacity:1}
 @media(prefers-reduced-motion:reduce){
   #overlay.open .ov-panel.active > *{animation:none;opacity:1}
 }
@@ -1170,7 +1160,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=50">
+<link rel="stylesheet" href="/enhance.css?v=51">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
