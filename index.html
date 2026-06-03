@@ -693,12 +693,13 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
   pointer-events:auto;
   will-change:transform,opacity;
 }
-/* Snap every wall cell to ONE of three allowed ratios. The CSS
-   aspect-ratio drives the cell's height; the grid span still
-   controls horizontal placement on the wall. */
-.wcell--34  { aspect-ratio: 3/4 !important; height: auto !important; }
-.wcell--11  { aspect-ratio: 1/1 !important; height: auto !important; }
-.wcell--43  { aspect-ratio: 4/3 !important; height: auto !important; }
+/* The .wcell--34 / --11 / --43 classes are kept as orientation
+   tags (used by pickImage to match portrait / square / landscape
+   images to portrait / square / landscape cells). We DON'T set
+   aspect-ratio on the cell itself — the grid span already
+   defines its shape, and a CSS aspect-ratio override fights with
+   the row span (causing cells to overflow into the row below
+   when the ratio demands more height than the span allows). */
 /* Exact 1.0 scale — cells sit at their true grid size so no border
    overlap between neighbouring pictures. (Was scale(1.012) to mask
    hairline seams; the few-pixel overflow it produced read as a
@@ -1161,7 +1162,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=47">
+<link rel="stylesheet" href="/enhance.css?v=48">
 </head>
 <body>
 <h1 class="sr-only">Azzi Studios — Creative Studio in Beirut</h1>
@@ -2676,7 +2677,7 @@ function whenEntered(fn){
           media = '<img src="' + esc(thumb(p.imgs[imgSeq % p.imgs.length])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios" loading="lazy" decoding="async" title="' + esc(p.title) + '">';
         } else {
           href  = pick.p.href; title = pick.p.title;
-          media = '<img src="' + esc(thumb(pick.img)) + '" alt="' + esc(pick.title || p.title) + ' — a project by Azzi Studios" loading="lazy" decoding="async" title="' + esc(pick.title || p.title) + '">';
+          media = '<img src="' + esc(thumb(pick.img)) + '" alt="' + esc(pick.p.title) + ' — a project by Azzi Studios" loading="lazy" decoding="async" title="' + esc(pick.p.title) + '">';
         }
         imgSeq++;
       }
