@@ -591,17 +591,18 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
    box dimensions changes. */
 @media(max-width:600px){
   :root{
-    /* Box fills the phone screen exactly. The back wall's grid
-       stays 10 columns wide (col width = 10vw) and rows are
-       generated to tile the same-size cells down the longer
-       phone screen — no stretching, no white space. */
-    --box-w: 100vw;
+    /* Box overflows ~30% wider than the viewport (#room has
+       overflow:hidden so the sides clip cleanly). Each of the
+       back wall's 10 columns is 13vw — 30% larger than the
+       previous 10vw — so cells read bigger on a phone instead
+       of tiling into many tiny squares. */
+    --box-w: 130vw;
     /* vh fallback for browsers without dvh support — without it
        the cascade falls back to the desktop --box-h (~335px on
        a 390×844 phone), which left half the screen empty. */
     --box-h: 100vh;
     --box-h: 100dvh;
-    --box-d: 100vw;
+    --box-d: 130vw;
     --back-z: calc(var(--box-h) * -0.2);
   }
   /* Back wall: rows are sized to match column width so every
@@ -1177,7 +1178,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=59">
+<link rel="stylesheet" href="/enhance.css?v=60">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1996,10 +1997,10 @@ function buildRoom() {
     if (!isMobileMQ.matches) return;
     const back = WALL_LAYOUTS.back;
     const startRow = back.rows + 1;
-    /* 18 rows is plenty for any modern phone (18 × 10vw ≈ 175vw,
-       taller than even the tallest viewport) without exhausting
-       the unique-image pool. */
-    const endRow   = 18;
+    /* 14 rows × 13vw ≈ 182vw of vertical content — plenty for any
+       phone viewport once cells are scaled up 30%. Fewer rows ×
+       sparser fill keeps the picture count manageable. */
+    const endRow   = 14;
     const occupied = new Set();
     // Mark existing cells' positions as occupied so we don't collide
     back.cells.forEach(p => {
@@ -2011,7 +2012,7 @@ function buildRoom() {
       let c = 1;
       while (c <= back.cols) {
         const roll = Math.random();
-        if (roll < 0.42) { c++; continue; }     // 42% white space
+        if (roll < 0.58) { c++; continue; }     // 58% white space (was 42%)
         let w = 1, h = 1;
         const fits = (W, H) => {
           if (c + W - 1 > back.cols) return false;
@@ -2020,9 +2021,11 @@ function buildRoom() {
               if (occupied.has((r + dr) + ',' + (c + dc))) return false;
           return true;
         };
-        if      (roll < 0.55 && fits(1, 2)) h = 2;
-        else if (roll < 0.70 && fits(2, 1)) w = 2;
-        else if (roll < 0.78 && fits(2, 2)) { w = 2; h = 2; }
+        if      (roll < 0.70 && fits(1, 2)) h = 2;
+        else if (roll < 0.82 && fits(2, 1)) w = 2;
+        /* 2×2 dropped — at the bigger cell scale a 2×2 took half
+           the viewport, which read as a hero shot rather than a
+           mosaic tile. */
         for (let dr = 0; dr < h; dr++)
           for (let dc = 0; dc < w; dc++)
             occupied.add((r + dr) + ',' + (c + dc));
