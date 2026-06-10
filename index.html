@@ -162,6 +162,9 @@ a{color:inherit;text-decoration:none}
   font-size:1.1em;font-weight:400;
   opacity:0;transform:translateY(3.2em);
   animation:llRise 1.3s cubic-bezier(0.22,1,0.36,1) 0.42s forwards;
+  /* 4 services stacked vertically, one per line. Generous
+     line-height so the list breathes. */
+  display:flex;flex-direction:column;gap:0.4em;line-height:1;
 }
 @keyframes llDrop { to { opacity:1; transform:translateY(0); } }
 @keyframes llRise { to { opacity:1; transform:translateY(0); } }
@@ -1167,7 +1170,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=56">
+<link rel="stylesheet" href="/enhance.css?v=57">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1175,7 +1178,7 @@ body.entered .archive-cell{opacity:1;transform:none}
 <div id="loader" role="status" aria-label="Loading Azzi Studios">
   <div class="ll-line">
     <span class="ll-top">azzi studios</span>
-    <span class="ll-bot">Campaign Production / Visual Content / VM &amp; Window Display / Visual Identity</span>
+    <span class="ll-bot"><span>Campaign Production</span><span>Visual Content</span><span>VM &amp; Window Display</span><span>Visual Identity</span></span>
   </div>
 </div>
 
