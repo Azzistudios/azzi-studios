@@ -1177,7 +1177,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=58">
+<link rel="stylesheet" href="/enhance.css?v=59">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1915,6 +1915,12 @@ function buildRoom() {
     } else {
       // ── Image cell ──
       const initUrl = pickImage(null, cellOri);
+      // Safety: pickImage returns null when every IMGS entry is
+      // already on screen (can happen on mobile where we generate
+      // many extra cells). thumb(null) would throw, killing the
+      // entire buildRoom and leaving the loader stuck. Skip the
+      // image and let the cell render as plain background.
+      if (!initUrl) return cell;
       commit(cell, initUrl);
       const imgA = document.createElement('img');
       imgA.className = 'img-a';
@@ -1990,7 +1996,10 @@ function buildRoom() {
     if (!isMobileMQ.matches) return;
     const back = WALL_LAYOUTS.back;
     const startRow = back.rows + 1;
-    const endRow   = 30;                        // covers tallest phones
+    /* 18 rows is plenty for any modern phone (18 × 10vw ≈ 175vw,
+       taller than even the tallest viewport) without exhausting
+       the unique-image pool. */
+    const endRow   = 18;
     const occupied = new Set();
     // Mark existing cells' positions as occupied so we don't collide
     back.cells.forEach(p => {
