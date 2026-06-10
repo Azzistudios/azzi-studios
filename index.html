@@ -584,17 +584,22 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
    box dimensions changes. */
 @media(max-width:600px){
   :root{
-    /* Fill the phone screen vertically — box-h matches the
-       viewport, and box-w follows at the back wall's 10:6 ratio
-       so cells stay roughly square (matches the desktop
-       proportion: 1×1 square, 1×2 portrait, 2×1 landscape).
-       The wider box-w overflows horizontally and #room's
-       overflow:hidden clips the sides, so the user sees a
-       centered slice of the wider mosaic with no white space. */
+    /* Box fills the phone screen exactly. The back wall's grid
+       stays 10 columns wide (col width = 10vw) but adds more
+       rows dynamically (see buildRoom() in JS) so cells stay the
+       same size as desktop and tile down the longer phone
+       screen — no stretching, no white space. */
+    --box-w: 100vw;
     --box-h: 100dvh;
-    --box-w: calc(var(--box-h) * 10 / 6);
-    --box-d: var(--box-w);
+    --box-d: 100vw;
     --back-z: calc(var(--box-h) * -0.2);
+  }
+  /* Back wall: rows are sized to match column width so every
+     cell stays square. grid-auto-rows takes over once the row
+     count exceeds the inline grid-template-rows setting. */
+  .wall-back .wall-grid{
+    grid-template-rows: none !important;
+    grid-auto-rows: calc(var(--box-w) / 10) !important;
   }
 }
 
@@ -1162,7 +1167,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=55">
+<link rel="stylesheet" href="/enhance.css?v=56">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1964,6 +1969,51 @@ function buildRoom() {
 
     return cell;
   }
+
+  // On phones, the back wall is much taller than the desktop
+  // 10×6 grid would fill, so we generate additional rows of
+  // cells (same span pattern: 1×1 / 1×2 / 2×1 / 2×2 with ~40%
+  // white space) so the same cell SIZE tiles down the screen
+  // instead of cells stretching to fit.
+  const isMobileMQ = window.matchMedia('(max-width: 600px)');
+  function extendBackForMobile() {
+    if (!isMobileMQ.matches) return;
+    const back = WALL_LAYOUTS.back;
+    const startRow = back.rows + 1;
+    const endRow   = 30;                        // covers tallest phones
+    const occupied = new Set();
+    // Mark existing cells' positions as occupied so we don't collide
+    back.cells.forEach(p => {
+      for (let dr = 0; dr < p.h; dr++)
+        for (let dc = 0; dc < p.w; dc++)
+          occupied.add((p.r + dr) + ',' + (p.c + dc));
+    });
+    for (let r = startRow; r <= endRow; r++) {
+      let c = 1;
+      while (c <= back.cols) {
+        const roll = Math.random();
+        if (roll < 0.42) { c++; continue; }     // 42% white space
+        let w = 1, h = 1;
+        const fits = (W, H) => {
+          if (c + W - 1 > back.cols) return false;
+          for (let dr = 0; dr < H; dr++)
+            for (let dc = 0; dc < W; dc++)
+              if (occupied.has((r + dr) + ',' + (c + dc))) return false;
+          return true;
+        };
+        if      (roll < 0.55 && fits(1, 2)) h = 2;
+        else if (roll < 0.70 && fits(2, 1)) w = 2;
+        else if (roll < 0.78 && fits(2, 2)) { w = 2; h = 2; }
+        for (let dr = 0; dr < h; dr++)
+          for (let dc = 0; dc < w; dc++)
+            occupied.add((r + dr) + ',' + (c + dc));
+        back.cells.push({ c, r, w, h });
+        c += w;
+      }
+    }
+    back.rows = endRow;
+  }
+  extendBackForMobile();
 
   // ── Build all 5 walls ──
   const backCells = [];   // back-wall cells — for the geometric hover detector
