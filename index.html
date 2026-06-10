@@ -584,15 +584,17 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
    box dimensions changes. */
 @media(max-width:600px){
   :root{
-    --box-w: min(180vmin, 110vw);
-    /* Tie box-h to box-w × 0.6 so the back wall's 10×6 grid
-       produces roughly square cells — matches the desktop
-       proportion. Was 110vh which on a portrait phone made each
-       row ~3.5× taller than each column, turning 1×1 cells into
-       tall slivers and 2×1 cells into stretched portraits. */
-    --box-h: calc(var(--box-w) * 0.6);
-    --box-d: min(110vmin, 110vw);
-    --back-z: -22vmin;
+    /* Fill the phone screen vertically — box-h matches the
+       viewport, and box-w follows at the back wall's 10:6 ratio
+       so cells stay roughly square (matches the desktop
+       proportion: 1×1 square, 1×2 portrait, 2×1 landscape).
+       The wider box-w overflows horizontally and #room's
+       overflow:hidden clips the sides, so the user sees a
+       centered slice of the wider mosaic with no white space. */
+    --box-h: 100dvh;
+    --box-w: calc(var(--box-h) * 10 / 6);
+    --box-d: var(--box-w);
+    --back-z: calc(var(--box-h) * -0.2);
   }
 }
 
@@ -1160,7 +1162,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=54">
+<link rel="stylesheet" href="/enhance.css?v=55">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
