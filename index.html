@@ -1178,7 +1178,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=60">
+<link rel="stylesheet" href="/enhance.css?v=61">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1814,7 +1814,7 @@ function buildRoom() {
       if (liveUrls.has(url)) continue;
       const p = projectOf(url);
       if (currentProject && p === currentProject) continue;  // no same-project swap
-      if ((projectCount[p] || 0) >= 2) continue;
+      if ((projectCount[p] || 0) >= 2) continue;             // ≤ 2 per project, always
       // Orientation match — known orientations must match the cell's
       // shape. Unknown orientations are admitted (they get checked
       // post-load and swapped if mismatched).
@@ -1825,19 +1825,16 @@ function buildRoom() {
       candidates.push(url);
     }
     if (!candidates.length) {
-      // Fallback 1: relax the per-project cap, still avoid same project
+      // Fallback: relax ORIENTATION matching only. The per-project
+      // cap of 2 still holds — we never let a project appear more
+      // than twice on screen even when candidates get tight.
       for (const url of IMGS){
         if (url === currentUrl) continue;
         if (liveUrls.has(url)) continue;
-        if (currentProject && projectOf(url) === currentProject) continue;
+        const p = projectOf(url);
+        if (currentProject && p === currentProject) continue;
+        if ((projectCount[p] || 0) >= 2) continue;
         candidates.push(url);
-      }
-    }
-    if (!candidates.length) {
-      // Fallback 2: anything not on screen and not the current URL
-      for (const url of IMGS){
-        if (url === currentUrl) continue;
-        if (!liveUrls.has(url)) candidates.push(url);
       }
     }
     return candidates.length
