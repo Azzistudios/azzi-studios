@@ -162,9 +162,13 @@ a{color:inherit;text-decoration:none}
   font-size:1.1em;font-weight:400;
   opacity:0;transform:translateY(3.2em);
   animation:llRise 1.3s cubic-bezier(0.22,1,0.36,1) 0.42s forwards;
-  /* 4 services stacked vertically, one per line. Generous
-     line-height so the list breathes. */
-  display:flex;flex-direction:column;gap:0.4em;line-height:1;
+}
+/* Desktop: services inline, ' / ' separator drawn between them. */
+.ll-bot > span + span::before{ content:' / '; }
+/* Mobile: services stacked one per line. */
+@media(max-width:600px){
+  .ll-bot{ display:flex;flex-direction:column;gap:0.4em;line-height:1; }
+  .ll-bot > span + span::before{ content:none; }
 }
 @keyframes llDrop { to { opacity:1; transform:translateY(0); } }
 @keyframes llRise { to { opacity:1; transform:translateY(0); } }
@@ -588,11 +592,14 @@ body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s eas
 @media(max-width:600px){
   :root{
     /* Box fills the phone screen exactly. The back wall's grid
-       stays 10 columns wide (col width = 10vw) but adds more
-       rows dynamically (see buildRoom() in JS) so cells stay the
-       same size as desktop and tile down the longer phone
-       screen — no stretching, no white space. */
+       stays 10 columns wide (col width = 10vw) and rows are
+       generated to tile the same-size cells down the longer
+       phone screen — no stretching, no white space. */
     --box-w: 100vw;
+    /* vh fallback for browsers without dvh support — without it
+       the cascade falls back to the desktop --box-h (~335px on
+       a 390×844 phone), which left half the screen empty. */
+    --box-h: 100vh;
     --box-h: 100dvh;
     --box-d: 100vw;
     --back-z: calc(var(--box-h) * -0.2);
@@ -1170,7 +1177,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=57">
+<link rel="stylesheet" href="/enhance.css?v=58">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
