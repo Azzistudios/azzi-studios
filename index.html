@@ -1178,7 +1178,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=62">
+<link rel="stylesheet" href="/enhance.css?v=63">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -2020,7 +2020,7 @@ function buildRoom() {
       let c = 1;
       while (c <= back.cols) {
         const roll = Math.random();
-        if (roll < 0.58) { c++; continue; }     // 58% white space (was 42%)
+        if (roll < 0.55) { c++; continue; }     // 55% white space
         let w = 1, h = 1;
         const fits = (W, H) => {
           if (c + W - 1 > back.cols) return false;
@@ -2029,11 +2029,14 @@ function buildRoom() {
               if (occupied.has((r + dr) + ',' + (c + dc))) return false;
           return true;
         };
-        if      (roll < 0.70 && fits(1, 2)) h = 2;
-        else if (roll < 0.82 && fits(2, 1)) w = 2;
-        /* 2×2 dropped — at the bigger cell scale a 2×2 took half
-           the viewport, which read as a hero shot rather than a
-           mosaic tile. */
+        /* Favour portraits and landscapes over 1×1 squares — the
+           grid was reading as too many small squares. Of the
+           filled cells: ~44% portrait (1×2), ~33% landscape (2×1),
+           ~11% big square (2×2), only ~12% small square. fits()
+           falls back to 1×1 near edges/occupied slots. */
+        if      (roll < 0.75 && fits(1, 2)) h = 2;          // portrait 3:4
+        else if (roll < 0.90 && fits(2, 1)) w = 2;          // landscape 4:3
+        else if (roll < 0.95 && fits(2, 2)) { w = 2; h = 2; } // large square
         for (let dr = 0; dr < h; dr++)
           for (let dc = 0; dc < w; dc++)
             occupied.add((r + dr) + ',' + (c + dc));
