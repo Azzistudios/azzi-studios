@@ -1178,7 +1178,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=61">
+<link rel="stylesheet" href="/enhance.css?v=62">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1785,6 +1785,16 @@ function buildRoom() {
   const liveUrls     = new Set();
   const cellUrl      = new WeakMap();
 
+  // Per-project on-screen cap. Desktop keeps 2 for tight variety.
+  // Mobile generates many more cells to fill a tall phone screen,
+  // so a cap of 2 (≤ 28 images total across 14 projects) starved
+  // the fill and left the bottom of the screen empty. liveUrls
+  // still guarantees no single PHOTO appears more than once on
+  // screen — the user's "don't repeat images" rule — so a higher
+  // project cap just lets more DISTINCT photos from each project
+  // populate the extra cells. 155 unique images in the pool.
+  const MAX_PER_PROJECT = window.matchMedia('(max-width: 600px)').matches ? 12 : 2;
+
   function bump(p, delta){
     projectCount[p] = (projectCount[p] || 0) + delta;
     if (projectCount[p] <= 0) delete projectCount[p];
@@ -1814,7 +1824,7 @@ function buildRoom() {
       if (liveUrls.has(url)) continue;
       const p = projectOf(url);
       if (currentProject && p === currentProject) continue;  // no same-project swap
-      if ((projectCount[p] || 0) >= 2) continue;             // ≤ 2 per project, always
+      if ((projectCount[p] || 0) >= MAX_PER_PROJECT) continue;
       // Orientation match — known orientations must match the cell's
       // shape. Unknown orientations are admitted (they get checked
       // post-load and swapped if mismatched).
@@ -1833,7 +1843,7 @@ function buildRoom() {
         if (liveUrls.has(url)) continue;
         const p = projectOf(url);
         if (currentProject && p === currentProject) continue;
-        if ((projectCount[p] || 0) >= 2) continue;
+        if ((projectCount[p] || 0) >= MAX_PER_PROJECT) continue;
         candidates.push(url);
       }
     }
@@ -1994,10 +2004,11 @@ function buildRoom() {
     if (!isMobileMQ.matches) return;
     const back = WALL_LAYOUTS.back;
     const startRow = back.rows + 1;
-    /* 14 rows × 13vw ≈ 182vw of vertical content — plenty for any
-       phone viewport once cells are scaled up 30%. Fewer rows ×
-       sparser fill keeps the picture count manageable. */
-    const endRow   = 14;
+    /* 18 rows × 13vw ≈ 234vw of vertical content — covers even the
+       tallest phone viewports (≈2.3 aspect) so the sparse mosaic
+       reaches the bottom of the screen instead of stopping short
+       and leaving the lower half empty. */
+    const endRow   = 18;
     const occupied = new Set();
     // Mark existing cells' positions as occupied so we don't collide
     back.cells.forEach(p => {
