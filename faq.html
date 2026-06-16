@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+
+<title>FAQ — Azzi Studios | Beirut Creative Studio</title>
+<meta name="description" content="Answers to common questions about Azzi Studios — a Beirut creative studio. Services, locations, project process and how to start working with us.">
+<meta name="author" content="Azzi Studios">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://azzistudios.com/faq.html">
+
+<!-- Favicons — cropped tight so the monogram fills the tab icon -->
+<link rel="icon" type="image/png" sizes="16x16"  href="/brand_assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32"  href="/brand_assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="96x96"  href="/brand_assets/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand_assets/favicon-192.png">
+<link rel="icon" type="image/png" sizes="256x256" href="/brand_assets/favicon-256.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/brand_assets/favicon-180.png">
+<link rel="manifest" href="/manifest.json">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://azzistudios.com/faq.html">
+<meta property="og:title" content="FAQ — Azzi Studios">
+<meta property="og:description" content="Common questions about Azzi Studios — a Beirut creative studio. Services, locations, process and how to start a project.">
+<meta property="og:image" content="https://azzistudios.com/brand_assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azzi Studios">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FAQ — Azzi Studios">
+<meta name="twitter:description" content="Common questions about Azzi Studios — a Beirut creative studio. Services, locations, process and how to start a project.">
+<meta name="twitter:image" content="https://azzistudios.com/brand_assets/og-image.png">
+
+<!-- FAQ structured data — surfaces as rich results in Google and
+     is among the content types most cited by AI search engines. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Where is Azzi Studios based, and do you work internationally?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Azzi Studios is a creative studio based in Beirut, Lebanon. We produce work across the region and travel internationally for campaigns, shoots and installations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What services does Azzi Studios offer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Four. Campaign Production — creative direction, art direction, photography, videography and set design. Visual Content — product photography, lookbooks, reels and monthly content. VM & Window Display — window display, visual merchandising, retail environments and pop-ups. Visual Identity — logo, typography, colour systems, brand guidelines and packaging."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What kinds of brands do you work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We work with fashion, beauty, lifestyle and hospitality brands — from established names to new labels launching their first campaign."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a typical project look like?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Every project starts with a brief and a conversation. We handle creative direction, set, team and production from end to end, so you get one studio with full creative ownership from concept to final delivery."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer monthly or ongoing content production?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Alongside one-off campaigns we produce monthly visual content on retainer — product photography, reels and social-ready assets — for brands that need a consistent stream of imagery."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do we start a project with Azzi Studios?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Email hello@azzistudios.com or message us on WhatsApp at +961 78 90 26 28 with a few words about what you are working on. We favour long-term collaborations and tailor-made approaches."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z8L68HKHEJ');
+</script>
+
+<link rel="stylesheet" href="style.css?v=64">
+<style>
+.c-nav { background: var(--bg); }
+
+/* ── FAQ PAGE ───────────────────────────────── */
+.faq-header {
+  padding: calc(var(--nav-h) + 3.5rem) var(--margin) 3rem;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+}
+
+.faq-header__title {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.faq-header__intro {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+.faq-list { padding: 1rem 0 2rem; }
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.75rem var(--margin);
+  display: grid;
+  grid-template-columns: 180px 1fr 24px;
+  gap: 4rem;
+  align-items: start;
+  transition: opacity 0.2s;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { opacity: 0.6; }
+
+.faq-item__num {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  padding-top: 0.35rem;
+}
+
+.faq-item__q {
+  font-size: clamp(1.05rem, 1.8vw, 1.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.faq-item__sign {
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 400;
+  justify-self: end;
+  padding-top: 0.2rem;
+  transition: transform 0.3s var(--ease-out);
+}
+.faq-item[open] .faq-item__sign { transform: rotate(45deg); }
+
+.faq-item__a {
+  padding: 0 var(--margin) 2rem;
+  display: grid;
+  grid-template-columns: 180px 1fr 24px;
+  gap: 4rem;
+}
+.faq-item__a p {
+  grid-column: 2;
+  font-size: 0.9375rem;
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 620px;
+  color: var(--text-light);
+}
+.faq-item__a a {
+  border-bottom: 1px solid var(--text);
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+.faq-item__a a:hover { opacity: 0.55; }
+
+/* ── CLOSING ────────────────────────────────── */
+.faq-closing {
+  padding: 4rem var(--margin);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.faq-closing__text {
+  font-size: clamp(1.25rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.faq-closing__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--text);
+  padding-bottom: 2px;
+  white-space: nowrap;
+  transition: gap 0.25s var(--ease-out);
+}
+.faq-closing__cta:hover { gap: 1rem; }
+
+@media (max-width: 768px) {
+  .faq-header { grid-template-columns: 1fr; }
+  .faq-item summary,
+  .faq-item__a { grid-template-columns: 1fr 24px; gap: 1.25rem; }
+  .faq-item__num { display: none; }
+  .faq-item__a p { grid-column: 1; }
+}
+</style>
+<link rel="stylesheet" href="/enhance.css?v=64">
+</head>
+<body>
+
+<nav class="c-nav" id="nav">
+  <a href="index.html" class="c-nav__logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <!-- Deep-link to index with ?panel=X so About/Services/Contact
+       open the same dropdown overlay as on index + project pages. -->
+  <ul class="c-nav__links">
+    <li><a href="index.html">Work</a></li>
+    <li><a href="index.html?panel=services">Services</a></li>
+    <li><a href="index.html?panel=about">About</a></li>
+    <li><a href="faq.html" class="active">FAQ</a></li>
+    <li><a href="index.html?panel=contact">Contact</a></li>
+  </ul>
+  <div class="c-nav__right">
+    <a href="index.html?panel=contact" class="c-nav__cta">Start a project</a>
+  </div>
+  <button class="c-nav__hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span>
+  </button>
+</nav>
+
+<div class="c-layout">
+
+  <!-- HEADER -->
+  <div class="faq-header">
+    <h1 class="faq-header__title reveal">Questions.</h1>
+    <p class="faq-header__intro reveal reveal-delay-1">
+      The things brands ask us most — where we work, what we do, and how a project comes together.
+    </p>
+  </div>
+
+  <!-- FAQ LIST -->
+  <div class="faq-list">
+
+    <details class="faq-item reveal">
+      <summary>
+        <span class="faq-item__num">01</span>
+        <span class="faq-item__q">Where is Azzi Studios based, and do you work internationally?</span>
+        <span class="faq-item__sign">+</span>
+      </summary>
+      <div class="faq-item__a">
+        <p>Azzi Studios is a creative studio based in Beirut, Lebanon. We produce work across the region and travel internationally for campaigns, shoots and installations.</p>
+      </div>
+    </details>
+
+    <details class="faq-item reveal">
+      <summary>
+        <span class="faq-item__num">02</span>
+        <span class="faq-item__q">What services does Azzi Studios offer?</span>
+        <span class="faq-item__sign">+</span>
+      </summary>
+      <div class="faq-item__a">
+        <p>Four. <strong>Campaign Production</strong> — creative direction, art direction, photography, videography and set design. <strong>Visual Content</strong> — product photography, lookbooks, reels and monthly content. <strong>VM &amp; Window Display</strong> — window display, visual merchandising, retail environments and pop-ups. <strong>Visual Identity</strong> — logo, typography, colour systems, brand guidelines and packaging.</p>
+      </div>
+    </details>
+
+    <details class="faq-item reveal">
+      <summary>
+        <span class="faq-item__num">03</span>
+        <span class="faq-item__q">What kinds of brands do you work with?</span>
+        <span class="faq-item__sign">+</span>
+      </summary>
+      <div class="faq-item__a">
+        <p>We work with fashion, beauty, lifestyle and hospitality brands — from established names to new labels launching their first campaign.</p>
+      </div>
+    </details>
+
+    <details class="faq-item reveal">
+      <summary>
+        <span class="faq-item__num">04</span>
+        <span class="faq-item__q">What does a typical project look like?</span>
+        <span class="faq-item__sign">+</span>
+      </summary>
+      <div class="faq-item__a">
+        <p>Every project starts with a brief and a conversation. We handle creative direction, set, team and production from end to end, so you get one studio with full creative ownership from concept to final delivery.</p>
+      </div>
+    </details>
+
+    <details class="faq-item reveal">
+      <summary>
+        <span class="faq-item__num">05</span>
+        <span class="faq-item__q">Do you offer monthly or ongoing content production?</span>
+        <span class="faq-item__sign">+</span>
+      </summary>
+      <div class="faq-item__a">
+        <p>Yes. Alongside one-off campaigns we produce monthly visual content on retainer — product photography, reels and social-ready assets — for brands that need a consistent stream of imagery.</p>
+      </div>
+    </details>
+
+    <details class="faq-item reveal">
+      <summary>
+        <span class="faq-item__num">06</span>
+        <span class="faq-item__q">How do we start a project with Azzi Studios?</span>
+        <span class="faq-item__sign">+</span>
+      </summary>
+      <div class="faq-item__a">
+        <p>Email <a href="mailto:hello@azzistudios.com">hello@azzistudios.com</a> or message us on <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a> with a few words about what you are working on. We favour long-term collaborations and tailor-made approaches.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <!-- CLOSING -->
+  <div class="faq-closing reveal">
+    <p class="faq-closing__text">Still have a question?</p>
+    <a href="index.html?panel=contact" class="faq-closing__cta">Get in touch →</a>
+  </div>
+
+  <!-- FOOTER — unified across every page -->
+  <footer class="c-footer">
+    <span class="c-footer__copy">&copy; 2026 Azzi Studios — All rights reserved</span>
+    <span class="c-footer__center">Creative Studio</span>
+    <div class="c-footer__right">
+      <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="mailto:hello@azzistudios.com">Email</a>
+    </div>
+  </footer>
+
+</div>
+
+<script src="main.js"></script>
+<script defer src="/enhance.js"></script>
+</body>
+</html>
