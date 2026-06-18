@@ -1178,7 +1178,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=65">
+<link rel="stylesheet" href="/enhance.css?v=66">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
@@ -1772,14 +1772,16 @@ function buildRoom() {
 
   const projectOf = url => decodeURIComponent(url).split('/')[1];
 
-  // The mosaic loads small thumbnails (in thumbs/, ~16 MB total vs
-  // ~1.9 GB of originals) so the whole box paints in well under 3s.
-  // Remote URLs (ImgBB / any https://) and .webp originals already
-  // small enough are used as-is.
+  // The mosaic loads small JPG thumbnails (in thumbs/, ~4.4 MB
+  // total for the whole 155-image pool vs ~95 MB of originals).
+  // EVERY local image — jpg, png AND webp — maps to a 440px JPG
+  // thumbnail, so nothing loads at full size. Remote URLs (ImgBB)
+  // are used as-is. This swap took the mosaic from ~18 MB of
+  // effective load (full-size webp + 0.4-1 MB PNG "thumbs") down
+  // to a few hundred KB on screen at a time.
   const thumb = url =>
     /^https?:\/\//.test(url) ? url :
-    url.endsWith('.webp')     ? url :
-    'thumbs/' + url.slice('images/'.length);
+    'thumbs/' + url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
 
   // ── Bookkeeping ──
   // projectCount: project name → how many cells currently show it
