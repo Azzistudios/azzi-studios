@@ -375,7 +375,7 @@ body.ov-open #landing,body.ov-open #room{transform:translateY(100vh);transform:t
    mobile @media block) and uses the burger morph as the single
    × in the top-right corner. */
 .ov-close{
-  position:fixed;top:calc(55vh + 0.5rem);left:80%;transform:translate(-50%,-50%);z-index:8700;
+  position:fixed;top:calc(55vh - 1.5rem);left:80%;transform:translate(-50%,-50%);z-index:8700;
   background:none;border:none;cursor:pointer;
   font-family:'Space Mono',monospace;
   font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;
@@ -385,6 +385,10 @@ body.ov-open #landing,body.ov-open #room{transform:translateY(100vh);transform:t
 }
 body.ov-open .ov-close{opacity:1;pointer-events:auto;transition:opacity 0.4s ease 0.15s}
 .ov-close:hover{opacity:0.55}
+/* Services panel is taller (5 rows) — drop the Back button a
+   touch so it clears the content. Other panels keep the
+   original position. */
+body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
 /* Restored to the project-page reference layout: a centered
    1040px column. Earlier full-width experiment threw off the
    desktop reading rhythm. */
@@ -1178,7 +1182,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=67">
+<link rel="stylesheet" href="/enhance.css?v=68">
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Azzi Studios — Creative Studio in Beirut</h1>
