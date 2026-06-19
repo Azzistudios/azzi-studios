@@ -25,6 +25,36 @@
   </url>
 
   <url>
+    <loc>https://azzistudios.com/campaign-production.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://azzistudios.com/visual-content.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://azzistudios.com/vm-window-display.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://azzistudios.com/visual-identity.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://azzistudios.com/social-media.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://azzistudios.com/faq.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
