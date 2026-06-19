@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /images/
-Disallow: /thumbs/
+
+# Image directories are intentionally crawlable — this is a visual
+# portfolio and we want Google Images to index the work.
 
 Sitemap: https://azzistudios.com/sitemap.xml
