@@ -12,7 +12,6 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/vm-window-display.html">
 
-<!-- Favicons -->
 <link rel="icon" type="image/png" sizes="16x16"  href="/brand_assets/favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32"  href="/brand_assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="96x96"  href="/brand_assets/favicon-96.png">
@@ -21,7 +20,6 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand_assets/favicon-180.png">
 <link rel="manifest" href="/manifest.json">
 
-<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://azzistudios.com/vm-window-display.html">
 <meta property="og:title" content="VM & Window Display in Beirut — Azzi Studios">
@@ -31,8 +29,6 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
-
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="VM & Window Display in Beirut — Azzi Studios">
 <meta name="twitter:description" content="Visual merchandising, window display, retail environments, pop-ups and brand activations in Beirut and across Lebanon. Azzi Studios.">
@@ -111,7 +107,6 @@
 }
 </script>
 
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -120,76 +115,99 @@
   gtag('config', 'G-Z8L68HKHEJ');
 </script>
 
-<link rel="stylesheet" href="style.css?v=68">
+<link rel="stylesheet" href="style.css?v=69">
 <style>
+/* Service page — uses the exact index brand type scale:
+   Space Mono, uppercase headings, 0.72rem justified body,
+   0.6rem/0.22em labels. Mirrors the About/Services overlay. */
 .c-nav { background: var(--bg); }
+.svc-wrap { font-family: 'Space Mono', monospace; color: #111; }
+
 .svc-hero {
-  padding: calc(var(--nav-h) + 4rem) var(--margin) 3rem;
+  padding: calc(var(--nav-h) + 4rem) var(--margin) 2.75rem;
   border-bottom: 1px solid var(--border);
 }
 .svc-eyebrow {
-  font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--text-light); margin-bottom: 1.25rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem; font-weight: 700; letter-spacing: 0.28em;
+  text-transform: uppercase; color: rgba(17,17,17,0.4); margin-bottom: 1.1rem;
 }
-.svc-hero h1 {
-  font-size: clamp(2.25rem, 5.5vw, 4.5rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.02; max-width: 14ch; margin-bottom: 1.5rem;
+.svc-eyebrow a { color: inherit; transition: opacity 0.2s; }
+.svc-eyebrow a:hover { opacity: 0.6; }
+.svc-h1 {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.6rem, 4.8vw, 2.72rem); line-height: 1.15;
+  letter-spacing: 0.02em; text-transform: uppercase; font-weight: 700;
+  color: #111; max-width: 20ch; margin-bottom: 1.6rem;
 }
-.svc-hero__intro {
-  font-size: 1rem; font-weight: 300; line-height: 1.7; max-width: 540px;
-  color: var(--text);
+.svc-lead {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.6rem, 1.2vw, 0.85rem); font-weight: 400;
+  line-height: 1.5; letter-spacing: -0.01em; color: #111;
+  max-width: 46rem; text-align: justify;
 }
+
 .svc-block {
-  padding: 3.5rem var(--margin); border-bottom: 1px solid var(--border);
-  display: grid; grid-template-columns: 200px 1fr; gap: 4rem; align-items: start;
+  padding: 2.75rem var(--margin); border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 12rem 1fr; gap: 3rem; align-items: start;
 }
-.svc-block__label {
-  font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--text-light); padding-top: 0.35rem;
-}
-.svc-deliverables {
-  font-size: clamp(1rem, 1.8vw, 1.4rem); font-weight: 700; letter-spacing: -0.01em;
-  line-height: 1.5;
+.svc-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #111; line-height: 1; padding-top: 0.15rem;
 }
 .svc-body {
-  font-size: 0.9375rem; font-weight: 300; line-height: 1.75; max-width: 620px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem; line-height: 1.45; letter-spacing: -0.02em;
+  color: #111; max-width: 40rem; text-align: justify;
 }
-.svc-body + .svc-body { margin-top: 1.1rem; }
+.svc-body + .svc-body { margin-top: 1rem; }
+.svc-deliverables {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem; line-height: 1.85; letter-spacing: 0.02em;
+  text-transform: uppercase; font-weight: 700; color: #111; max-width: 40rem;
+}
 .svc-audience {
-  font-size: 0.875rem; font-style: italic; font-weight: 400; color: var(--text-light);
-  border-left: 2px solid var(--border); padding-left: 1.25rem; max-width: 620px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem; line-height: 1.45; letter-spacing: -0.02em;
+  color: rgba(17,17,17,0.55); max-width: 40rem; text-align: justify;
 }
-.svc-related { padding: 3.5rem var(--margin); border-bottom: 1px solid var(--border); }
-.svc-related__title {
-  font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--text-light); margin-bottom: 1.75rem;
-}
-.svc-related__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.25rem; }
-.svc-related__item {
-  display: flex; flex-direction: column; gap: 0.4rem; padding: 1.1rem 0;
+
+.svc-related { padding: 2.75rem var(--margin); border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 12rem 1fr; gap: 3rem; align-items: start; }
+.svc-related__list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+.svc-rel {
+  display: flex; flex-direction: column; gap: 0.45rem; padding: 0.9rem 0;
   border-top: 1px solid var(--border); transition: opacity 0.2s;
 }
-.svc-related__item:hover { opacity: 0.55; }
-.svc-related__num { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-light); }
-.svc-related__name { font-size: 0.9375rem; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; }
+.svc-rel:hover { opacity: 0.55; }
+.svc-rel__num { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(17,17,17,0.4); }
+.svc-rel__name { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+
 .svc-cta {
-  padding: 4.5rem var(--margin); display: flex; align-items: center;
+  padding: 4rem var(--margin); display: flex; align-items: baseline;
   justify-content: space-between; gap: 2rem; flex-wrap: wrap;
 }
-.svc-cta__text { font-size: clamp(1.4rem, 3.2vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; max-width: 16ch; }
-.svc-cta__btn {
-  display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem;
-  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  border-bottom: 1px solid var(--text); padding-bottom: 2px; white-space: nowrap;
-  transition: gap 0.25s var(--ease-out);
+.svc-cta__text {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.1rem, 3vw, 2rem); font-weight: 700; letter-spacing: 0.02em;
+  text-transform: uppercase; line-height: 1.2; max-width: 20ch;
 }
-.svc-cta__btn:hover { gap: 1rem; }
+.svc-cta__btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--text);
+  padding-bottom: 2px; white-space: nowrap; transition: opacity 0.2s;
+}
+.svc-cta__btn:hover { opacity: 0.55; }
+
 @media (max-width: 768px) {
-  .svc-block { grid-template-columns: 1fr; gap: 1.25rem; }
-  .svc-related__grid { grid-template-columns: 1fr; }
+  .svc-block, .svc-related { grid-template-columns: 1fr; gap: 1.1rem; }
+  .svc-related__list { grid-template-columns: 1fr; }
+  .svc-lead, .svc-body, .svc-audience { text-align: left; }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=68">
+<link rel="stylesheet" href="/enhance.css?v=69">
 </head>
 <body>
 
@@ -208,21 +226,21 @@
   <button class="c-nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span></button>
 </nav>
 
-<div class="c-layout">
+<div class="c-layout svc-wrap">
 
   <div class="svc-hero">
-    <p class="svc-eyebrow"><a href="services.html">Services</a> &nbsp;/&nbsp; Service 03</p>
-    <h1>VM &amp; Window Display in Beirut</h1>
-    <p class="svc-hero__intro">We design and install the spaces a customer steps into — windows, retail environments, pop-ups and activations — from concept and props to on-site supervision across multiple locations.</p>
+    <p class="svc-eyebrow"><a href="services.html">Services</a> &nbsp;&middot;&nbsp; Service 03</p>
+    <h1 class="svc-h1">VM &amp; Window Display in Beirut</h1>
+    <p class="svc-lead">We design and install the spaces a customer steps into — windows, retail environments, pop-ups and activations — from concept and props to on-site supervision across multiple locations.</p>
   </div>
 
   <div class="svc-block">
-    <p class="svc-block__label">What&rsquo;s included</p>
+    <p class="svc-label">What&rsquo;s included</p>
     <p class="svc-deliverables">Window Display &middot; Visual Merchandising &middot; Brand Activations &middot; Retail Environments &middot; Pop-Up Design</p>
   </div>
 
   <div class="svc-block">
-    <p class="svc-block__label">Approach</p>
+    <p class="svc-label">Approach</p>
     <div>
       <p class="svc-body">A window is the first thing a customer sees, so we treat it as a campaign in three dimensions: concept, props, spatial direction and the on-site supervision that makes sure it's built exactly as designed.</p>
       <p class="svc-body">Our founder trained as an architect — it shows in how we handle space, structure and installation. We design retail environments and seasonal windows that are as buildable as they are beautiful.</p>
@@ -231,17 +249,17 @@
   </div>
 
   <div class="svc-block">
-    <p class="svc-block__label">Who it&rsquo;s for</p>
+    <p class="svc-label">Who it&rsquo;s for</p>
     <p class="svc-audience">For retail, fashion and hospitality brands in Beirut and across Lebanon that need their physical spaces — windows, stores, pop-ups, activations — to look as considered as their campaigns.</p>
   </div>
 
   <div class="svc-related">
-    <p class="svc-related__title">Other services</p>
-    <div class="svc-related__grid">
-        <a href="/campaign-production.html" class="svc-related__item"><span class="svc-related__num">Service 01</span><span class="svc-related__name">Campaign Production</span></a>
-        <a href="/visual-content.html" class="svc-related__item"><span class="svc-related__num">Service 02</span><span class="svc-related__name">Visual Content</span></a>
-        <a href="/visual-identity.html" class="svc-related__item"><span class="svc-related__num">Service 04</span><span class="svc-related__name">Visual Identity</span></a>
-        <a href="/social-media.html" class="svc-related__item"><span class="svc-related__num">Service 05</span><span class="svc-related__name">Social Media Management</span></a>
+    <p class="svc-label">Other services</p>
+    <div class="svc-related__list">
+      <a class="svc-rel" href="/campaign-production.html"><span class="svc-rel__num">Service 01</span><span class="svc-rel__name">Campaign Production</span></a>
+      <a class="svc-rel" href="/visual-content.html"><span class="svc-rel__num">Service 02</span><span class="svc-rel__name">Product Photography & Visual Content</span></a>
+      <a class="svc-rel" href="/visual-identity.html"><span class="svc-rel__num">Service 04</span><span class="svc-rel__name">Visual Identity & Branding</span></a>
+      <a class="svc-rel" href="/social-media.html"><span class="svc-rel__num">Service 05</span><span class="svc-rel__name">Social Media Management</span></a>
     </div>
   </div>
 
