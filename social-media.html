@@ -107,6 +107,22 @@
 }
 </script>
 
+<script>
+  /* Self-exclusion from Google Analytics. Visit any page with
+     ?noga=1 once on a device (phone or laptop) and that browser
+     is opted out for good (stored in localStorage). ?noga=0 undoes
+     it. Uses GA4's official window['ga-disable-<ID>'] kill switch,
+     set BEFORE gtag.js loads so no hit is ever sent. */
+  (function(){
+    try {
+      var p = new URLSearchParams(location.search);
+      if (p.get('noga') === '1') localStorage.setItem('azzi_noga','1');
+      if (p.get('noga') === '0') localStorage.removeItem('azzi_noga');
+      if (localStorage.getItem('azzi_noga') === '1')
+        window['ga-disable-G-Z8L68HKHEJ'] = true;
+    } catch(e){}
+  })();
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
