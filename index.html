@@ -200,13 +200,9 @@ a{color:inherit;text-decoration:none}
   font-size:1.1em;font-weight:400;
   opacity:0;transform:translateY(3.2em);
   animation:llRise 1.3s cubic-bezier(0.22,1,0.36,1) 0.42s forwards;
-}
-/* Desktop: services inline, ' / ' separator drawn between them. */
-.ll-bot > span + span::before{ content:' / '; }
-/* Mobile: services stacked one per line. */
-@media(max-width:600px){
-  .ll-bot{ display:flex;flex-direction:column;gap:0.4em;line-height:1; }
-  .ll-bot > span + span::before{ content:none; }
+  /* Services stacked one per line — all viewports. */
+  display:flex;flex-direction:column;align-items:center;
+  gap:0.4em;line-height:1;
 }
 @keyframes llDrop { to { opacity:1; transform:translateY(0); } }
 @keyframes llRise { to { opacity:1; transform:translateY(0); } }
@@ -1457,7 +1453,7 @@ body.entered .archive-cell{opacity:1;transform:none}
         <div class="gal-cell-cap">Peachpuff — Summer</div>
       </a>
       <a href="project-ambiance-beirut-living.html" class="gal-cell">
-        <div class="gal-cell-img"><img src="images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01.jpg" alt="Ambiance — Beirut Living — brand activation with sculptural smiley spheres, a project by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
+        <div class="gal-cell-img"><img src="images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01b.jpg" alt="Ambiance — Beirut Living — brand activation with sculptural smiley spheres, a project by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
         <div class="gal-cell-cap">Ambiance — Beirut Living</div>
       </a>
     </div>
@@ -1648,8 +1644,8 @@ const IMGS = [
   'images/Project18_Plastik_Roadster/529160533_18517432447057114_3963628044403323556_n.jpg',
   'images/Project18_Plastik_Roadster/529514908_18517432669057114_3525830708845009008_n.jpg',
   'images/Project18_Plastik_Roadster/529839148_18517432648057114_1648346591603768476_n.jpg',
-  'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01.jpg',
-  'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_02.jpg',
+  'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01b.jpg',
+  'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_02b.jpg',
   'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_03.jpg',
   'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_04.jpg',
   'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_05.jpg',
