@@ -152,8 +152,8 @@
 <!-- Preload the asteri hero #1 (largest contentful paint after the
      loader) and a couple of the early mosaic thumbnails so they
      paint at the same instant the loader fades out. -->
-<link rel="preload" as="image" href="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp" fetchpriority="high">
-<link rel="preload" as="image" href="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp">
+<link rel="preload" as="image" href="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp" fetchpriority="low">
+<link rel="preload" as="image" href="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp" fetchpriority="low">
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Squada+One&display=swap" rel="stylesheet">
 <style>
@@ -662,16 +662,23 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
   overflow:hidden;
   transition:opacity 0.55s ease;
 }
-/* White vignette — corners feather to solid #fff */
+/* White vignette — corners feather to solid #fff.
+   The extra top layer feathers the strip under the nav: the tilted
+   top wall's near cells used to ride straight over the nav text. */
 #room::after{
   content:'';
   position:absolute;inset:0;
   pointer-events:none;z-index:7;
-  background: radial-gradient(ellipse 92% 88% at center,
-                transparent 52%,
-                rgba(255,255,255,0.55) 72%,
-                rgba(255,255,255,0.92) 88%,
-                #fff 97%);
+  background:
+    linear-gradient(to bottom,
+      rgba(255,255,255,0.95) 0,
+      rgba(255,255,255,0.55) 3.5rem,
+      transparent 8rem),
+    radial-gradient(ellipse 92% 88% at center,
+      transparent 52%,
+      rgba(255,255,255,0.55) 72%,
+      rgba(255,255,255,0.92) 88%,
+      #fff 97%);
 }
 #room-persp{
   position:absolute;inset:0;
@@ -744,7 +751,11 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
   position:relative;
   overflow:hidden;
   background:#f1efe9;
-  opacity:0;transform:translateY(14px) scale(0.9);
+  /* Reveal via opacity + scale ONLY — a scale below 1 always stays
+     inside the cell's own grid area, so an appearing cell can never
+     slide over its neighbour (the old translateY(14px) visually
+     overlapped the cell below for the whole 0.8s transition). */
+  opacity:0;transform:scale(0.94);
   transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1) var(--d,0s),
              transform 0.8s cubic-bezier(0.22,1,0.36,1) var(--d,0s);
   cursor:pointer;
@@ -1660,7 +1671,7 @@ const WALL_LAYOUTS = {
   // so there's no need to declare empty cells explicitly.
   back:   { cols:10, rows:6, cells: [
     // BIG landscape anchored lower-left — a video tile
-    {c:2,  r:4, w:3, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video.mp4'},
+    {c:2,  r:4, w:3, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4'},
 
     // ── Top band ──
     {c:1,  r:1, w:1, h:1},   // small square (top-left corner)
@@ -1695,7 +1706,7 @@ const WALL_LAYOUTS = {
     {c:1, r:1, w:1, h:2},   // portrait
     {c:3, r:1, w:1, h:1},   // square
     {c:5, r:1, w:2, h:1},   // landscape
-    {c:2, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym.mp4'},
+    {c:2, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym_loop.mp4'},
     {c:5, r:2, w:1, h:2},   // portrait
     {c:1, r:4, w:1, h:1},   // square
     {c:6, r:4, w:1, h:2},   // portrait
@@ -1708,7 +1719,7 @@ const WALL_LAYOUTS = {
     {c:4, r:1, w:1, h:2},   // portrait
     {c:6, r:1, w:1, h:1},   // square
     {c:1, r:3, w:1, h:2},   // portrait
-    {c:3, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office.mp4'},
+    {c:3, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office_loop.mp4'},
     {c:6, r:3, w:1, h:2},   // portrait
     {c:1, r:5, w:1, h:1},   // square
     {c:5, r:5, w:1, h:1},   // square
@@ -1722,7 +1733,7 @@ const WALL_LAYOUTS = {
     {c:8,  r:1, w:1, h:1},   // square
     {c:10, r:1, w:1, h:2},   // portrait
     {c:1,  r:2, w:1, h:2},   // portrait
-    {c:3,  r:3, w:3, h:2, video:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01.mp4'},
+    {c:3,  r:3, w:3, h:2, video:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01_loop.mp4'},
     {c:7,  r:3, w:1, h:1},   // square
     {c:9,  r:3, w:1, h:2},   // portrait
     {c:1,  r:5, w:2, h:1},   // landscape
@@ -1739,7 +1750,7 @@ const WALL_LAYOUTS = {
     {c:10, r:1, w:1, h:1},   // square
     {c:3,  r:2, w:1, h:1},   // square
     {c:1,  r:3, w:1, h:1},   // square
-    {c:6,  r:3, w:2, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video.mp4'},
+    {c:6,  r:3, w:2, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4'},
     {c:9,  r:3, w:1, h:2},   // portrait
     {c:3,  r:4, w:1, h:2},   // portrait
     {c:1,  r:5, w:2, h:1},   // landscape
@@ -1757,6 +1768,10 @@ const WALL_LAYOUTS = {
 // fallback fires so it can never get stuck), holds a brief floor so
 // it never just flashes, then cleanly tears itself out of the layout
 // while the room builds beneath it.
+// The room DOM is built IMMEDIATELY (hidden under the loader) so all
+// thumbnail downloads start at t≈0 instead of after the loader —
+// teardown only triggers the reveal animation on already-loading cells.
+let revealRoom = null;   // set by buildRoom(); fired at loader teardown
 (function startLoader(){
   const loader  = document.getElementById('loader');
   const landing = document.getElementById('landing');
@@ -1779,10 +1794,14 @@ const WALL_LAYOUTS = {
   const t0 = performance.now();
   let done = false, built = false;
 
+  // Build the room NOW — the loader sits on top while every thumbnail
+  // fetch gets a ~1-2s head start, so the reveal shows painted cells.
+  buildRoom();
+
   function teardown(){
     if (built) return;
     built = true;
-    buildRoom();
+    if (revealRoom) revealRoom();
     requestAnimationFrame(() => loader.classList.add('out'));
     let finished = false;
     const finish = () => { if (!finished){ finished = true; loader.classList.add('gone'); } };
@@ -1832,6 +1851,9 @@ function buildRoom() {
   const projectCount = {};
   const liveUrls     = new Set();
   const cellUrl      = new WeakMap();
+  // Deferred video kick-offs — filled by video cells in makeCell,
+  // flushed by revealRoom once the mosaic is on screen.
+  const videoStarters = [];
 
   // Per-project on-screen cap. Desktop keeps 2 for tight variety.
   // Mobile generates many more cells to fill a tall phone screen,
@@ -1934,39 +1956,47 @@ function buildRoom() {
     cell.className = 'wcell ' + ratioCls + (pos.empty ? ' wcell--empty' : '');
     cell.style.gridColumn = pos.c + ' / span ' + pos.w;
     cell.style.gridRow    = pos.r + ' / span ' + pos.h;
-    cellSeq++;   // used only to decide eager vs lazy image loading
+    cellSeq++;   // used only to decide image fetch priority
 
     // Empty cell = white space, no image, no interaction
     if (pos.empty) return cell;
 
     // ── Video cell — muted 3-second loop ──
+    // The mp4s are the heaviest assets in the room, so they're kept
+    // OUT of the critical path: the cell paints its poster (a 440px
+    // thumbnail, same weight as any picture cell) immediately, and
+    // the video src is only attached after the room has revealed —
+    // see the videoStarters flush in revealRoom. Until then zero
+    // video bytes compete with the mosaic thumbnails.
     if (pos.video) {
       cell.classList.add('wcell--video');
       const vid = document.createElement('video');
-      vid.src = pos.video;
       // Poster: paint a still frame from the same project so the
       // cell never shows a black box before the video can play.
       const VIDEO_POSTERS = {
-        'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video.mp4':
+        'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4':
           'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp',
-        'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym.mp4':
+        'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym_loop.mp4':
           'images/Project14_Eloria_Launch/image00023.png',
-        'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office.mp4':
+        'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office_loop.mp4':
           'images/Project14_Eloria_Launch/image00024.png',
-        'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01.mp4':
+        'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01_loop.mp4':
           'images/Project14_Eloria_Launch/image00028.png'
       };
-      if (VIDEO_POSTERS[pos.video]) vid.poster = VIDEO_POSTERS[pos.video];
-      vid.muted = true; vid.loop = true; vid.autoplay = true;
-      vid.playsInline = true; vid.preload = 'metadata';
+      if (VIDEO_POSTERS[pos.video]) vid.poster = thumb(VIDEO_POSTERS[pos.video]);
+      vid.muted = true; vid.loop = true;
+      vid.playsInline = true; vid.preload = 'none';
       vid.setAttribute('muted', '');
       vid.setAttribute('playsinline', '');
       vid.addEventListener('timeupdate', () => {
         if (vid.currentTime >= 3) vid.currentTime = 0;   // loop first 3s
       });
-      const play = () => { const p = vid.play(); if (p && p.catch) p.catch(() => {}); };
-      vid.addEventListener('canplay', play, { once: true });
-      play();
+      videoStarters.push(() => {
+        vid.src = pos.video;
+        const play = () => { const p = vid.play(); if (p && p.catch) p.catch(() => {}); };
+        vid.addEventListener('canplay', play, { once: true });
+        play();
+      });
       cell.appendChild(vid);
     } else {
       // ── Image cell ──
@@ -1982,7 +2012,13 @@ function buildRoom() {
       imgA.className = 'img-a';
       imgA.src = thumb(initUrl);
       imgA.alt = '';
-      imgA.loading  = cellSeq < 14 ? 'eager' : 'lazy';
+      // ALL cells load eagerly: loading="lazy" inside a 3D-transformed
+      // scene is unreliable (browsers mis-judge the projected viewport
+      // intersection) and left cells filling in seconds late. The whole
+      // pool of on-screen thumbs is ~1.5-2 MB — cheaper than one video.
+      // First cells get priority so the centre of the room paints first.
+      imgA.loading  = 'eager';
+      imgA.setAttribute('fetchpriority', cellSeq < 14 ? 'high' : 'auto');
       imgA.decoding = 'async';
       // Record orientation on load. If it doesn't match this
       // cell's shape, swap to a better match.
@@ -2137,20 +2173,31 @@ function buildRoom() {
   // Every cell is shuffled first so each batch lights up spread
   // across the WHOLE box (never wall-by-wall), then the batches are
   // revealed one after another — a domino of groups.
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    const cells = Array.from(scene.querySelectorAll('.wcell'));
-    for (let i = cells.length - 1; i > 0; i--){          // Fisher–Yates shuffle
-      const j = Math.floor(Math.random() * (i + 1));
-      [cells[i], cells[j]] = [cells[j], cells[i]];
-    }
-    const BATCHES = 6, STAGGER = 165;                    // ms between groups
-    const per = Math.ceil(cells.length / BATCHES);
-    for (let b = 0; b < BATCHES; b++){
-      const group = cells.slice(b * per, (b + 1) * per);
-      setTimeout(() => group.forEach(c => c.classList.add('in')),
-                 80 + b * STAGGER);
-    }
-  }));
+  // NOT fired here: the room is built while the loader still covers
+  // it (so thumbnails download during the loader), and the loader's
+  // teardown calls revealRoom() the moment it starts fading.
+  revealRoom = () => {
+    revealRoom = null;   // fire once
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const cells = Array.from(scene.querySelectorAll('.wcell'));
+      for (let i = cells.length - 1; i > 0; i--){        // Fisher–Yates shuffle
+        const j = Math.floor(Math.random() * (i + 1));
+        [cells[i], cells[j]] = [cells[j], cells[i]];
+      }
+      const BATCHES = 6, STAGGER = 165;                  // ms between groups
+      const per = Math.ceil(cells.length / BATCHES);
+      for (let b = 0; b < BATCHES; b++){
+        const group = cells.slice(b * per, (b + 1) * per);
+        setTimeout(() => group.forEach(c => c.classList.add('in')),
+                   80 + b * STAGGER);
+      }
+      // Videos join AFTER the mosaic is up — staggered so the four
+      // mp4s never burst-download over each other or the thumbs.
+      setTimeout(() => {
+        videoStarters.forEach((start, i) => setTimeout(start, i * 500));
+      }, 1400);
+    }));
+  };
 
   // ── Mouse parallax + ambient idle ──
   let curX = -2.2, curY = -3.6;   // settle in from a slight offset
@@ -2231,6 +2278,8 @@ function buildRoom() {
     if (entering) return;
     entering = true;
     sessionStorage.setItem('azzi_entered', '1');
+    // The landing is about to fade in — start its loop videos now.
+    if (window.__startLandingVideos) window.__startLandingVideos();
 
     // Dissolve the 3D room (box keeps floating underneath the fade).
     room.style.transition = 'opacity 1.3s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -2738,10 +2787,10 @@ function whenEntered(fn){
   // First block's grid carries the muted autoplay videos; later
   // blocks are image-only. Unfilled cells are white space.
   const V = {
-    asteri:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video.mp4',
-    gym:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym.mp4',
-    office:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office.mp4',
-    winter:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01.mp4',
+    asteri:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4',
+    gym:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym_loop.mp4',
+    office:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office_loop.mp4',
+    winter:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01_loop.mp4',
   };
   // Two distinct irregular patterns — grid 1 carries the videos,
   // grid 2 is image-only and uses a different layout but keeps the
@@ -2797,8 +2846,11 @@ function whenEntered(fn){
         const asteri = slot.vid === 'asteri';
         href  = asteri ? 'project-plastik-asteri.html' : 'project-eloria-launch.html';
         title = asteri ? 'Plastik — Asteri' : 'Eloria — Launch';
-        media = '<video src="' + esc(V[slot.vid]) + '" muted loop autoplay ' +
-                'playsinline preload="metadata"></video>';
+        // data-src, not src — the landing sits hidden under the 3D room,
+        // so its videos must not compete with the mosaic thumbnails.
+        // startLandingVideos() attaches the src when the user enters.
+        media = '<video data-src="' + esc(V[slot.vid]) + '" muted loop ' +
+                'playsinline preload="none"></video>';
       } else {
         const pick = pickFreshImage(list, imgSeq);
         if (!pick) {
@@ -2831,11 +2883,23 @@ function whenEntered(fn){
         '</div>';
       g.appendChild(a);
     });
-    g.querySelectorAll('video').forEach(v => {
-      const pl = v.play(); if (pl && pl.catch) pl.catch(() => {});
-    });
     return g;
   }
+
+  // Kick off the landing's loop videos. Safe to call more than once —
+  // a video with its src already attached is skipped. Fired when the
+  // user enters the work page (or immediately on the skip-intro path).
+  window.__startLandingVideos = function(){
+    document.querySelectorAll('#gallery video[data-src]').forEach(v => {
+      if (v.src) return;
+      v.src = v.dataset.src;
+      v.autoplay = true;
+      const pl = v.play(); if (pl && pl.catch) pl.catch(() => {});
+    });
+  };
+  // Already past the intro (Back from a project, or ?panel deep link):
+  // the landing is visible right away, so start them now.
+  if (document.body.classList.contains('entered')) window.__startLandingVideos();
 
   // ── Build the repeating blocks ──
   let ptr = 0, block = 0;
