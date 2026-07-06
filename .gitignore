@@ -34,3 +34,7 @@ images/Project03_Ambiance_ChristmasCampaign/AMBIANCE FINAL HERO.MOV
 *.MP4
 images/**/*.mov
 images/**/*.MOV
+
+# EXCEPTION: the tiny 3.6s loop files ARE served by the site (3D room
+# + landing grid) — ~2 MB each, safe to commit.
+!images/**/*_loop.mp4
