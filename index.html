@@ -24,7 +24,7 @@
 <!-- Open Graph (WhatsApp / Facebook / LinkedIn / Slack previews) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://azzistudios.com/">
-<meta property="og:title" content="Azzi Studios — Campaigns, Content, VM & Visual Identity">
+<meta property="og:title" content="Beirut Creative Studio — Campaigns & Branding | Azzi Studios">
 <meta property="og:description" content="Azzi Studios — Beirut creative studio. Campaign Production, Visual Content, VM & Window Display, Visual Identity for fashion, beauty, lifestyle & hospitality brands.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -34,7 +34,7 @@
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Azzi Studios — Campaigns, Content, VM & Visual Identity">
+<meta name="twitter:title" content="Beirut Creative Studio — Campaigns & Branding | Azzi Studios">
 <meta name="twitter:description" content="Azzi Studios — Beirut creative studio. Campaign Production, Visual Content, VM & Window Display, Visual Identity for fashion, beauty, lifestyle & hospitality brands.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og-image.png">
 
@@ -1445,10 +1445,6 @@ body.entered .archive-cell{opacity:1;transform:none}
         <div class="gal-cell-img"><img src="images/Project11_Blubay_Shoot/IMG_7884.JPG" alt="Peachpuff — Summer — a project by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
         <div class="gal-cell-cap">Peachpuff — Summer</div>
       </a>
-      <a href="project-blubay-nightlife.html" class="gal-cell">
-        <div class="gal-cell-img"><img src="images/Project10_Blubay_Nightlife/20c47669-339f-4487-88f6-bf0924e53105_rw_1920.jpeg" alt="Blubay — Nightlife — a project by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
-        <div class="gal-cell-cap">Blubay — Nightlife</div>
-      </a>
       <a href="project-ambiance-beirut-living.html" class="gal-cell">
         <div class="gal-cell-img"><img src="images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01.jpg" alt="Ambiance — Beirut Living — brand activation with sculptural smiley spheres, a project by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
         <div class="gal-cell-cap">Ambiance — Beirut Living</div>
@@ -1471,7 +1467,6 @@ body.entered .archive-cell{opacity:1;transform:none}
       <a href="project-ambiance-boutique-val.html"><span>Boutique — Valentine</span><span class="cat">Set Design</span></a>
       <a href="project-pinch-moi-garden.html"><span>Pinch Moi — The Garden</span><span class="cat">Art Direction</span></a>
       <a href="project-peachpuff-summer.html"><span>Peachpuff — Summer</span><span class="cat">Set Design</span></a>
-      <a href="project-blubay-nightlife.html"><span>Blubay — Nightlife</span><span class="cat">Art Direction</span></a>
       <a href="project-ambiance-beirut-living.html"><span>Ambiance — Beirut Living</span><span class="cat">Set Design</span></a>
     </div>
 
@@ -1577,11 +1572,6 @@ const IMGS = [
   'images/Project09_Ambiance_WinterShoot/DSC03086.jpg',
   'images/Project09_Ambiance_WinterShoot/DSC03099.jpg',
   'images/Project09_Ambiance_WinterShoot/DSC03133.jpg',
-  'images/Project10_Blubay_Nightlife/029443a1-ea64-49c4-8503-fa4501d52a13_rw_1920.jpg',
-  'images/Project10_Blubay_Nightlife/061582b2-45d0-4629-80fb-66700bbd64ae_rw_1920.jpeg',
-  'images/Project10_Blubay_Nightlife/20c47669-339f-4487-88f6-bf0924e53105_rw_1920.jpeg',
-  'images/Project10_Blubay_Nightlife/6bc5740d-8be5-4b0c-aa21-1a32e118513e_rw_1920.jpeg',
-  'images/Project10_Blubay_Nightlife/e7b0cb5f-df67-40fa-aef5-69989a1fe917_rw_1920.jpeg',
   'images/Project11_Blubay_Shoot/IMG_7880.JPG',
   'images/Project11_Blubay_Shoot/IMG_7881.JPG',
   'images/Project11_Blubay_Shoot/IMG_7882.JPG',
@@ -2714,7 +2704,7 @@ function whenEntered(fn){
   const thumb = u  =>
     /^https?:\/\//.test(u) ? u :
     u.endsWith('.webp')    ? u :
-    'thumbs/' + u.slice('images/'.length);
+    'thumbs/' + u.slice('images/'.length).replace(/\.(jpe?g|png)$/i, '.jpg');
 
   // Eloria leads — it's block 1's full picture.
   const eIdx = projects.findIndex(p =>

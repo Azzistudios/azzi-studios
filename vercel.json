@@ -44,10 +44,13 @@
       "destination": "/project-ambiance-hue.html" },
     { "source": "/project.html",
       "has": [{ "type": "query", "key": "id", "value": "ambiance-boutique-val" }],
-      "destination": "/project-ambiance-boutique-val.html" },
+      "destination": "/project-ambiance-boutique-val.html" }
+  ],
+  "redirects": [
+    { "source": "/project-blubay-nightlife", "destination": "/", "permanent": true },
     { "source": "/project.html",
       "has": [{ "type": "query", "key": "id", "value": "blubay-nightlife" }],
-      "destination": "/project-blubay-nightlife.html" }
+      "destination": "/", "permanent": true }
   ],
   "headers": [
     {
