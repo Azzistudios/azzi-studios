@@ -2000,9 +2000,13 @@ function buildRoom() {
       // Safety: pickImage returns null when every IMGS entry is
       // already on screen (can happen on mobile where we generate
       // many extra cells). thumb(null) would throw, killing the
-      // entire buildRoom and leaving the loader stuck. Skip the
-      // image and let the cell render as plain background.
-      if (!initUrl) return cell;
+      // entire buildRoom and leaving the loader stuck. Render the
+      // cell as WHITE SPACE — the old plain-background fallback
+      // left a permanent grey box in the grid.
+      if (!initUrl) {
+        cell.classList.add('wcell--empty');
+        return cell;
+      }
       commit(cell, initUrl);
       const imgA = document.createElement('img');
       imgA.className = 'img-a';
@@ -2023,6 +2027,13 @@ function buildRoom() {
         IMG_ORI[initUrl] = ori;
         if (ori !== cellOri && cell._swap) cell._swap();
       }, { once: true });
+      // A thumb that fails outright must not leave a grey box: turn
+      // the cell into white space and let it join the reveal.
+      imgA.addEventListener('error', () => {
+        imgA.remove();
+        cell.classList.add('wcell--empty');
+        cell.classList.add('in');
+      }, { once: true });
       cell.appendChild(imgA);
     }
 
@@ -2042,32 +2053,44 @@ function buildRoom() {
       newImg.src = thumb(newUrl);
       newImg.alt = '';
       newImg.decoding = 'async';
-      // Record orientation on load — populates IMG_ORI lazily so
-      // subsequent picks for this orientation get smarter.
-      newImg.addEventListener('load', () => {
-        IMG_ORI[newUrl] = classifyOri(newImg.naturalWidth, newImg.naturalHeight);
-      }, { once: true });
       cell.appendChild(newImg);
 
-      // Crossfade in over whatever's there — picture or video.
-      requestAnimationFrame(() => {
-        newImg.style.opacity = '1';
-        const oldImg = cell.querySelector('img.img-a');
-        if (oldImg) oldImg.style.opacity = '0';
-        const oldVid = cell.querySelector('video');
-        if (oldVid) oldVid.style.opacity = '0';
-      });
-      setTimeout(() => {
-        const oldImg = cell.querySelector('img.img-a');
-        if (oldImg) oldImg.remove();
-        const oldVid = cell.querySelector('video');
-        if (oldVid) { try { oldVid.pause(); } catch (e) {} oldVid.remove(); }
-        cell.classList.remove('wcell--video');
-        newImg.className = 'img-a';
-        newImg.style.opacity = '';
-        commit(cell, newUrl);
-        swapping = false;
-      }, SWAP_MS);
+      // The current picture stays up until the replacement has
+      // actually LOADED — this was the grey-cells bug: the old
+      // fixed 600ms timer stripped the old image whether or not the
+      // new thumb had arrived, and orientation-mismatch swaps fire
+      // in bursts right after first paint. On error the swap is
+      // abandoned and the old picture kept.
+      const begin = () => {
+        IMG_ORI[newUrl] = classifyOri(newImg.naturalWidth, newImg.naturalHeight);
+        // Crossfade in over whatever's there — picture or video.
+        requestAnimationFrame(() => {
+          newImg.style.opacity = '1';
+          const oldImg = cell.querySelector('img.img-a');
+          if (oldImg) oldImg.style.opacity = '0';
+          const oldVid = cell.querySelector('video');
+          if (oldVid) oldVid.style.opacity = '0';
+        });
+        setTimeout(() => {
+          const oldImg = cell.querySelector('img.img-a');
+          if (oldImg) oldImg.remove();
+          const oldVid = cell.querySelector('video');
+          if (oldVid) { try { oldVid.pause(); } catch (e) {} oldVid.remove(); }
+          cell.classList.remove('wcell--video');
+          newImg.className = 'img-a';
+          newImg.style.opacity = '';
+          commit(cell, newUrl);
+          swapping = false;
+        }, SWAP_MS);
+      };
+      if (newImg.complete && newImg.naturalWidth > 0) begin();
+      else {
+        newImg.addEventListener('load', begin, { once: true });
+        newImg.addEventListener('error', () => {
+          newImg.remove();
+          swapping = false;
+        }, { once: true });
+      }
     };
     cell.addEventListener('mouseenter', cell._swap);
 
