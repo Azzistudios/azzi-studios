@@ -761,13 +761,12 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
 
 /* ── CASE STUDY — written brief / approach / outcome. Lives in the
    static HTML (crawlable); the renderer moves the block into the
-   info panel below the credits, so the written story sits with the
-   rest of the project details. Type matches the info panel: black
+   info panel between Services and Credits. Type matches the info panel: black
    0.6rem uppercase labels, centered single column. ── */
 .proj-case{
   display:flex;flex-direction:column;align-items:center;
   text-align:center;
-  margin-top:2.4rem;
+  margin:0.65rem 0;
 }
 .proj-case__row{max-width:36em;margin-bottom:2rem}
 .proj-case__row:last-child{margin-bottom:0}
@@ -1537,11 +1536,17 @@ const PROJECTS = {
         <span class="info-row__label">Credits</span>
         <ul class="info-credits__list">${creditsHTML}</ul>
       </div>`;
-    // Re-home the static case-study block (crawlable text baked into
-    // #proj-root) below the credits — it must move OUT of proj-root
-    // before the gallery render wipes it.
+    // Case study (when this page ships one) slots between Services
+    // and Credits — panel order: Project, Client, Services, Brief,
+    // Approach, Outcome, Credits.
     const caseEl = document.getElementById('proj-case');
-    if (caseEl) infoContent.appendChild(caseEl);
+    if (caseEl) {
+      const creditsList = infoContent.querySelector('.info-credits__list');
+      const creditsRow  = creditsList ? creditsList.closest('.info-row') : null;
+      if (creditsRow) infoContent.insertBefore(caseEl, creditsRow);
+      else infoContent.appendChild(caseEl);
+    }
+
   }
 
   // Info button toggles the panel
