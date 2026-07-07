@@ -760,26 +760,16 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
 .info-credits__list .n{color:#888;text-transform:uppercase}
 
 /* ── CASE STUDY — written brief / approach / outcome. Lives in the
-   static HTML (crawlable), lifted by the renderer to sit between
-   the gallery and the footer. Type matches the info panel: black
+   static HTML (crawlable); the renderer moves the block into the
+   info panel below the credits, so the written story sits with the
+   rest of the project details. Type matches the info panel: black
    0.6rem uppercase labels, centered single column. ── */
 .proj-case{
-  background:#fff;
-  padding:8rem 2rem 9rem;
   display:flex;flex-direction:column;align-items:center;
   text-align:center;
+  margin-top:2.4rem;
 }
-.proj-case__title{
-  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
-  text-transform:uppercase;color:#111;
-  margin-bottom:0.4rem;
-}
-.proj-case__meta{
-  font-size:0.6rem;font-weight:400;letter-spacing:0.18em;
-  text-transform:uppercase;color:#888;
-  margin-bottom:3.5rem;
-}
-.proj-case__row{max-width:36em;margin-bottom:2.8rem}
+.proj-case__row{max-width:36em;margin-bottom:2rem}
 .proj-case__row:last-child{margin-bottom:0}
 .proj-case__label{
   font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
@@ -793,7 +783,6 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
 
 @media(max-width:768px){
   .info-panel{padding:6rem 1.25rem 2.5rem}
-  .proj-case{padding:5.5rem 1.5rem 6.5rem}
 }
 
 /* Not-found fallback */
@@ -1019,19 +1008,17 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
        The renderer lifts this section and re-appends it between the
        gallery sections and the footer. -->
   <section class="proj-case" id="proj-case" aria-label="Case study">
-    <p class="proj-case__title">Asteri Beauty — Summer Campaign</p>
-    <p class="proj-case__meta">Plastik Studios · Beirut · 2025</p>
     <div class="proj-case__row">
       <h2 class="proj-case__label">Brief</h2>
-      <p class="proj-case__body">Plastik Studios brought us in for Asteri Beauty&rsquo;s summer 2025 campaign: art direction, production design and props mastering for a beauty line that wanted its products photographed in real summer light &mdash; warm, sun-bleached, editorial &mdash; not a flat studio look.</p>
+      <p class="proj-case__body">Plastik Studios, the production agency behind Asteri Beauty&rsquo;s summer 2025 campaign, brought us in as art director, set designer and prop master &mdash; for a beauty line that wanted its products photographed in real summer light &mdash; warm, sun-bleached, editorial &mdash; not a flat studio look.</p>
     </div>
     <div class="proj-case__row">
       <h2 class="proj-case__label">Approach</h2>
-      <p class="proj-case__body">We developed the visual direction first: a palette pulled from late-summer light and a set language built around still-life compositions the products could own. Every set piece and prop was designed and mastered in-house in Beirut, and every frame was decided before the camera arrived &mdash; so the shoot itself was execution, not exploration.</p>
+      <p class="proj-case__body">We developed the visual direction first: a palette pulled from late-summer light and a set language built around still-life compositions the products could own. Every set piece and prop was designed and mastered in-house in Beirut, and the art direction of every frame was locked before the camera arrived &mdash; so the shoot itself was execution, not exploration.</p>
     </div>
     <div class="proj-case__row">
       <h2 class="proj-case__label">Outcome</h2>
-      <p class="proj-case__body">A sixteen-image campaign suite and a campaign film &mdash; product still lifes, lifestyle frames and golden-hour compositions consistent enough to run as one system across social, e-commerce and print. One team carried concept, set design and art direction from brief to final image: campaign production as we practice it at Azzi Studios.</p>
+      <p class="proj-case__body">A sixteen-image campaign suite and a campaign film &mdash; product still lifes, lifestyle frames and golden-hour compositions consistent enough to run as one system across social, e-commerce and print. Art direction, set design and props mastering by Azzi Studios; produced by Plastik Studios.</p>
     </div>
   </section>
 </main>
@@ -1548,6 +1535,11 @@ const PROJECTS = {
         <span class="info-row__label">Credits</span>
         <ul class="info-credits__list">${creditsHTML}</ul>
       </div>`;
+    // Re-home the static case-study block (crawlable text baked into
+    // #proj-root) below the credits — it must move OUT of proj-root
+    // before the gallery render wipes it.
+    const caseEl = document.getElementById('proj-case');
+    if (caseEl) infoContent.appendChild(caseEl);
   }
 
   // Info button toggles the panel
@@ -1679,11 +1671,7 @@ const PROJECTS = {
     return `<section class="proj-section proj-section--solo-pic">${cellHTML(s.items[0], eager)}</section>`;
   }).join('');
 
-  // Preserve the static case-study block (crawlable content baked
-  // into the HTML) — re-slot it between the gallery and the footer.
-  const caseEl   = document.getElementById('proj-case');
-  const caseHTML = caseEl ? caseEl.outerHTML : '';
-  root.innerHTML = sectionsHTML + caseHTML + footer;
+  root.innerHTML = sectionsHTML + footer;
 
   // ── Aggressively prefetch every still image so scrolling between
   //    sections never blocks on a fresh download. ──
