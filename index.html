@@ -847,12 +847,16 @@ body.entered .nav .view-toggle{opacity:1;pointer-events:auto}
 
 /* Row-based gallery */
 .gal{padding:0}
+/* No gallery image may force the page wider than its container —
+   a single unconstrained img was stretching the whole mobile page
+   to ~500px and clipping the archive grid's right column. */
+#gallery img{max-width:100%}
 .gal-row{display:grid;gap:6px;margin-bottom:6px}
-.gal-row--1{grid-template-columns:1fr}
-.gal-row--2{grid-template-columns:1fr 1fr}
-.gal-row--3{grid-template-columns:repeat(3,1fr)}
-.gal-row--4{grid-template-columns:repeat(4,1fr)}
-.gal-row--6{grid-template-columns:repeat(6,1fr)}
+.gal-row--1{grid-template-columns:minmax(0,1fr)}
+.gal-row--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.gal-row--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gal-row--4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.gal-row--6{grid-template-columns:repeat(6,minmax(0,1fr))}
 
 .gal-cell{
   display:block;position:relative;
@@ -1023,6 +1027,10 @@ body.entered .gal-cell{opacity:1;transform:none}
   /* Hero row reduces padding so the asteri reel fits without
      a giant empty band at the top under the nav. */
   .gal-row--hero{padding:1rem 0 0.5rem}
+  /* Cap the hero so a 3:4 slide is always narrower than the phone
+     viewport — at 72vh a slide hit ~455px and stretched the whole
+     page to ~500px, clipping the archive grid's right column. */
+  .asteri-window{height:min(56vh,440px)}
 
   /* SOLO — shorter aspect on phones so it doesn't dominate */
   .gal-row--solo{padding:1rem 0 0.5rem}
@@ -1042,13 +1050,13 @@ body.entered .gal-cell{opacity:1;transform:none}
    further down — defining them here was being overridden by the
    later desktop rules.) */
 @media(max-width:480px){
-  .gal-row--2{grid-template-columns:1fr}
-  .gal-row--3,.gal-row--4,.gal-row--6{grid-template-columns:1fr 1fr;gap:2px}
+  .gal-row--2{grid-template-columns:minmax(0,1fr)}
+  .gal-row--3,.gal-row--4,.gal-row--6{grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}
 }
 /* ── Archive grid — projects on a 7-col grid, empty cells = white space ── */
 .archive-grid{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+  grid-template-columns:repeat(7,minmax(0,1fr));
   gap:1.6rem;
   padding:5rem 5% 6rem;
 }
@@ -1109,7 +1117,11 @@ body.entered .archive-cell{opacity:1;transform:none}
   .solo-window{aspect-ratio:4/3}
   .stagger-main{aspect-ratio:3/4}
   /* explicit slot placement only works wide — collapse to 2-col flow */
-  .archive-grid{grid-template-columns:repeat(2,1fr);gap:1rem;padding:3rem 5% 4rem}
+  .archive-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;padding:3rem 5% 4rem}
+  .archive-cell{min-width:0}
+  /* nowrap captions were forcing the column wider than its track —
+     let them wrap on phones so both columns stay equal */
+  .archive-cell-cap{white-space:normal}
   .archive-cell{grid-column:auto !important;grid-row:auto !important}
   .archive-cell-cap{font-size:0.5rem}
 }
@@ -1134,7 +1146,6 @@ body.entered .archive-cell{opacity:1;transform:none}
   animation:clientsScroll 114s linear infinite;
   will-change:transform;
 }
-.clients__strip:hover .clients__track{animation-play-state:paused}
 .clients__set{display:flex;align-items:center}
 .clients__logo{
   display:block;flex:none;
@@ -1144,8 +1155,8 @@ body.entered .archive-cell{opacity:1;transform:none}
   mask:var(--m) no-repeat center / contain;
   transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);
 }
-/* Hover: the logo swells 20% with the site's spring easing (the
-   ribbon itself is already paused by .clients__strip:hover). */
+/* Hover: the logo swells 20% with the site's spring easing while
+   the ribbon keeps drifting. */
 .clients__logo:hover{transform:scale(1.2)}
 /* Optical balance: wordmarks run shorter, emblems taller. Widths
    from each file's true aspect ratio at its display height. */
@@ -1280,7 +1291,7 @@ body.entered .archive-cell{opacity:1;transform:none}
 /* Footer strip — mirrors the top nav exactly:
    copyright (left) · Creative Studio (centered) · social links (right) */
 .gal-footer{
-  margin-top:50vh;            /* breathe — half a viewport above the footer */
+  margin-top:0;               /* desktop: footer sits right under the last section */
   padding:2.5rem 2rem 0;
   /* 3-column grid: copyright | Creative Studio | nav-right — all
      three sit on the same row, vertically centered together. */
