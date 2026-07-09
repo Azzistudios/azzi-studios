@@ -2924,6 +2924,27 @@ function buildRoom() {
   const btns = ['All', ...cats].map(mk);
   btns[0].classList.add('on');
   list.insertBefore(bar, list.firstChild);
+  // Lock the list to its full-roster height so the logo rotation and
+  // the reviews below never shift up when a filter leaves fewer rows.
+  // Rows are uniform single-liners, so full height = bar + N x row.
+  function lockHeight(){
+    if (list.offsetParent === null) return;   // hidden — measured on reveal
+    const visible = rows.filter(r => !r.classList.contains('gf-hide'));
+    const rowH = visible.length ? visible[0].offsetHeight : 0;
+    if (!rowH) return;
+    list.style.minHeight = '';                // natural height of current state
+    const natural = list.offsetHeight;
+    // full-roster height = current + one row for each hidden entry
+    list.style.minHeight = (natural + rowH * (rows.length - visible.length)) + 'px';
+  }
+  lockHeight();
+  window.addEventListener('resize', lockHeight);
+  // The list is display:none until list view is toggled on — measure
+  // again the first time it becomes visible (offsetHeight is 0 while
+  // hidden).
+  new MutationObserver(() => {
+    if (list.offsetParent !== null && !parseFloat(list.style.minHeight || '')) lockHeight();
+  }).observe(document.querySelector('.gal') || document.body, { attributes: true, attributeFilter: ['class'] });
   bar.addEventListener('click', e => {
     const b = e.target.closest('button');
     if (!b) return;
