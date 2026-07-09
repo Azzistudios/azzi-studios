@@ -1187,7 +1187,7 @@ body.entered .archive-cell{opacity:1;transform:none}
 }
 .reviews__grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:3.5rem;
+  gap:5.5rem;
 }
 .reviews__card{
   position:relative;
@@ -1202,7 +1202,9 @@ body.entered .archive-cell{opacity:1;transform:none}
 .reviews.in .reviews__card:nth-child(3){transition-delay:0.24s}
 .reviews__slide{
   position:absolute;inset:0;
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  /* Top-aligned: all three quotes start on the same line regardless
+     of length; only their bottoms differ. */
+  display:flex;flex-direction:column;justify-content:flex-start;align-items:center;
   opacity:0;transform:translateY(0.9rem);
   transition:opacity 0.45s cubic-bezier(0.4,0,0.2,1),
              transform 0.8s cubic-bezier(0.22,1,0.36,1);
