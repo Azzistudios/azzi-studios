@@ -1165,6 +1165,42 @@ body.entered .archive-cell{opacity:1;transform:none}
   .clients__track{animation:none}
 }
 
+/* ── REVIEWS — three quotes scattered through the white space after
+   the client marquee: left, right, then center, each popping in on
+   scroll with the site's spring easing. Type = site system: sentence
+   body, uppercase 0.6rem name label. ── */
+.reviews{
+  max-width:1200px;margin:0 auto;
+  padding:7rem 2rem 9rem;
+}
+.reviews__item{
+  max-width:26em;
+  opacity:0;transform:translateY(1.6rem) scale(0.985);
+  transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),
+             transform 1s cubic-bezier(0.22,1,0.36,1);
+}
+.reviews__item.in{opacity:1;transform:none}
+.reviews__item + .reviews__item{margin-top:8rem}
+.reviews__item--l{margin-right:auto;text-align:left}
+.reviews__item--r{margin-left:auto;text-align:right}
+.reviews__item--c{margin-left:auto;margin-right:auto;text-align:center}
+.reviews__quote{
+  font-size:0.8rem;font-weight:400;letter-spacing:0.01em;
+  line-height:1.85;color:#111;
+}
+.reviews__name{
+  display:block;margin-top:1.1rem;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
+  text-transform:uppercase;color:#888;
+}
+@media(max-width:600px){
+  .reviews{padding:4.5rem 1.5rem 6rem}
+  .reviews__item + .reviews__item{margin-top:5rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .reviews__item{opacity:1;transform:none;transition:none}
+}
+
 .gal.list-view .gal-list-mode{display:block}
 .gal-list-mode{display:none;padding:0 2rem 3rem}
 .gal-list-mode a{
@@ -1501,6 +1537,10 @@ body.entered .archive-cell{opacity:1;transform:none}
         <div class="gal-cell-img"><img src="thumbs/Project11_Blubay_Shoot/IMG_7884.jpg" alt="Peachpuff — Summer — a project by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
         <div class="gal-cell-cap">Peachpuff — Summer</div>
       </a>
+      <a href="project-eirene-identity.html" class="gal-cell">
+        <div class="gal-cell-img"><img src="thumbs/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_01.jpg" alt="Eiréné — Visual Identity — Mediterranean Seal logo and brand system by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
+        <div class="gal-cell-cap">Eiréné — Visual Identity</div>
+      </a>
       <a href="project-ambiance-beirut-living.html" class="gal-cell">
         <div class="gal-cell-img"><img src="thumbs/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01b.jpg" alt="Ambiance — Beirut Living — brand activation with sculptural smiley spheres, a project by Azzi Studios, Beirut-based creative studio" loading="lazy" title="Azzi Studios — Creative Studio"></div>
         <div class="gal-cell-cap">Ambiance — Beirut Living</div>
@@ -1524,6 +1564,7 @@ body.entered .archive-cell{opacity:1;transform:none}
       <a href="project-pinch-moi-garden.html"><span>Pinch Moi — The Garden</span><span class="cat">Campaign Production</span></a>
       <a href="project-peachpuff-summer.html"><span>Peachpuff — Summer</span><span class="cat">Visual Content</span></a>
       <a href="project-ambiance-beirut-living.html"><span>Ambiance — Beirut Living</span><span class="cat">VM &amp; Window Display</span></a>
+      <a href="project-eirene-identity.html"><span>Eiréné — Visual Identity</span><span class="cat">Visual Identity</span></a>
     </div>
 
   </div>
@@ -1583,6 +1624,23 @@ body.entered .archive-cell{opacity:1;transform:none}
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- REVIEWS — scattered through the blank space below the client
+       marquee; each block reveals on scroll (see reviews observer). -->
+  <section class="reviews" aria-label="Client reviews">
+    <blockquote class="reviews__item reviews__item--l">
+      <p class="reviews__quote">&ldquo;I had a beautiful experience with Azzi Studios team! Marc has such an avant-garde vision, he catches very easily my ideas and transforms them into something way more upgraded! So professional, creative&hellip; recommended experience!&rdquo;</p>
+      <cite class="reviews__name">Elissa L.</cite>
+    </blockquote>
+    <blockquote class="reviews__item reviews__item--r">
+      <p class="reviews__quote">&ldquo;Marc has a rare ability to understand what a brand needs visually before you can even articulate it yourself. The set he designed for our shoot elevated everything. Highly recommend!&rdquo;</p>
+      <cite class="reviews__name">Nour K.</cite>
+    </blockquote>
+    <blockquote class="reviews__item reviews__item--c">
+      <p class="reviews__quote">&ldquo;Huge thanks to Azzi Studios for completely transforming our brand image. From art direction to visual production and campaign creation, every detail was handled with an exceptional level of care and professionalism. Truly beyond our expectations, highly recommended. Thank you again!&rdquo;</p>
+      <cite class="reviews__name">Daniel B.</cite>
+    </blockquote>
   </section>
 
   <div class="gal-footer">
@@ -1755,6 +1813,16 @@ const IMGS = [
   'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_03b.jpg',
   'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_04b.jpg',
   'images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_05b.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_01.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_02.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_03.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_04.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_05.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_06.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_07.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_08.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_09.jpg',
+  'images/Project21_Eirene_VisualIdentity/AZZISTUDIOS_Eirene_VisualIdentity_2026_10.jpg',
 ];
 
 // ══ WALL LAYOUTS ══════════════════════════════════════════
@@ -2685,6 +2753,23 @@ function buildRoom() {
       preview.classList.remove('swapping');
     });
   });
+})();
+
+
+// ══ REVIEWS — pop in on scroll ═══════════════════════════
+(function(){
+  const items = document.querySelectorAll('.reviews__item');
+  if (!items.length) return;
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.35 });
+  items.forEach(el => io.observe(el));
 })();
 
 // ══ BACK LINK ════════════════════════════════════════════
