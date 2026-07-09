@@ -1139,7 +1139,11 @@ body.entered .archive-cell{opacity:1;transform:none}
   background:#111;
   -webkit-mask:var(--m) no-repeat center / contain;
   mask:var(--m) no-repeat center / contain;
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);
 }
+/* Hover: the logo swells 20% with the site's spring easing (the
+   ribbon itself is already paused by .clients__strip:hover). */
+.clients__logo:hover{transform:scale(1.2)}
 /* Optical balance: wordmarks run shorter, emblems taller. Widths
    from each file's true aspect ratio at its display height. */
 .clients__logo--ambiance{height:46px;width:46px}
