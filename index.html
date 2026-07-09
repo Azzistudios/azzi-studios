@@ -1128,6 +1128,9 @@ body.entered .archive-cell{opacity:1;transform:none}
 .clients__strip{overflow:hidden;width:100%}
 .clients__track{
   display:flex;align-items:center;width:max-content;
+  /* Vertical headroom so a logo scaled 1.2 on hover never clips
+     against the strip's overflow:hidden. */
+  padding:0.7rem 0;
   animation:clientsScroll 114s linear infinite;
   will-change:transform;
 }
@@ -1190,15 +1193,22 @@ body.entered .archive-cell{opacity:1;transform:none}
   position:relative;
   max-width:34em;margin:0 auto;
   min-height:11em;
-  cursor:pointer;
 }
 .reviews__slide{
   position:absolute;inset:0;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  opacity:0;transform:translateY(0.9rem);
-  transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1),
-             transform 0.85s cubic-bezier(0.22,1,0.36,1);
+  /* Directional hand-off: the incoming quote drifts in from the side
+     of travel, the outgoing one slips out the opposite way. --dx is
+     set by the rotator before each swap. Fade-out runs quicker than
+     fade-in so the two never visually stack. */
+  opacity:0;transform:translateX(var(--dx,1.6rem));
+  transition:opacity 0.5s cubic-bezier(0.4,0,0.2,1),
+             transform 0.9s cubic-bezier(0.22,1,0.36,1);
   pointer-events:none;
+}
+.reviews__slide.is-on{
+  transition:opacity 0.85s cubic-bezier(0.22,1,0.36,1) 0.12s,
+             transform 1s cubic-bezier(0.22,1,0.36,1) 0.12s;
 }
 .reviews__slide.is-on{opacity:1;transform:none}
 .reviews__stage:hover .reviews__slide.is-on{transform:translateY(-5px)}
@@ -1211,14 +1221,24 @@ body.entered .archive-cell{opacity:1;transform:none}
   font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
   text-transform:uppercase;color:#888;
 }
-.reviews__counter{
-  margin-top:1.8rem;
-  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
-  text-transform:uppercase;color:#888;
+.reviews__arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:none;border:0;padding:0.6rem;cursor:pointer;
+  font-family:'Space Mono',monospace;font-size:0.85rem;line-height:1;
+  color:#888;
+  transition:color 0.25s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1);
 }
+.reviews__arrow--prev{left:-3.5rem}
+.reviews__arrow--next{right:-3.5rem}
+.reviews__arrow--prev:hover{color:#111;transform:translateY(-50%) translateX(-3px)}
+.reviews__arrow--next:hover{color:#111;transform:translateY(-50%) translateX(3px)}
+.reviews__arrow:focus-visible{outline:1px solid #111;outline-offset:3px;color:#111}
+.reviews__arrow:active{opacity:0.5}
 @media(max-width:600px){
   .reviews{padding:3rem 1.5rem 2.5rem}
-  .reviews__stage{min-height:17em}
+  .reviews__stage{min-height:17em;padding:0 2.2rem}
+  .reviews__arrow--prev{left:-0.4rem}
+  .reviews__arrow--next{right:-0.4rem}
 }
 @media(prefers-reduced-motion:reduce){
   .reviews{opacity:1;transform:none;transition:none}
@@ -1684,8 +1704,9 @@ body.entered .archive-cell{opacity:1;transform:none}
         <p class="reviews__quote">&ldquo;They built our identity from scratch: logo, colors, guidelines. A year later, everything we put out still feels like us. That&rsquo;s the real test.&rdquo;</p>
         <cite class="reviews__name">Joelle R.</cite>
       </blockquote>
+      <button class="reviews__arrow reviews__arrow--prev" id="revPrev" aria-label="Previous review">&larr;</button>
+      <button class="reviews__arrow reviews__arrow--next" id="revNext" aria-label="Next review">&rarr;</button>
     </div>
-    <p class="reviews__counter"><span id="revIdx">01</span> &mdash; 06</p>
   </section>
 
   <div class="gal-footer">
@@ -2797,19 +2818,28 @@ function buildRoom() {
   if (!sec) return;
   const slides = Array.from(sec.querySelectorAll('.reviews__slide'));
   const stage  = document.getElementById('reviewsStage');
-  const idxEl  = document.getElementById('revIdx');
+  const prev   = document.getElementById('revPrev');
+  const next   = document.getElementById('revNext');
   if (!slides.length) return;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cur = 0, timer = 0;
-  function show(i){
-    slides[cur].classList.remove('is-on');
+  // dir: +1 flows right-to-left (next), -1 the other way. The
+  // incoming slide starts on the side of travel; the outgoing one
+  // exits through the opposite side.
+  function show(i, dir){
+    const d = dir || 1;
+    const out = slides[cur];
+    out.style.setProperty('--dx', (d > 0 ? '-1.6rem' : '1.6rem'));
+    out.classList.remove('is-on');
     cur = (i + slides.length) % slides.length;
-    slides[cur].classList.add('is-on');
-    if (idxEl) idxEl.textContent = String(cur + 1).padStart(2, '0');
+    const inc = slides[cur];
+    inc.style.setProperty('--dx', (d > 0 ? '1.6rem' : '-1.6rem'));
+    inc.classList.add('is-on');
   }
   const HOLD = 6000;
-  const play = () => { if (!timer && !reduced) timer = setInterval(() => show(cur + 1), HOLD); };
+  const play = () => { if (!timer && !reduced) timer = setInterval(() => show(cur + 1, 1), HOLD); };
   const stop = () => { if (timer) { clearInterval(timer); timer = 0; } };
+  const jump = d => { show(cur + d, d); stop(); play(); };
   // Scroll: reveal once, rotate only while the section is on screen.
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => entries.forEach(en => {
@@ -2818,12 +2848,13 @@ function buildRoom() {
     }), { threshold: 0.3 });
     io.observe(sec);
   } else { sec.classList.add('in'); play(); }
-  // Hover pauses (CSS floats the quote); click advances immediately.
+  // Hover pauses (CSS floats the quote); arrows step through.
   if (stage) {
     stage.addEventListener('mouseenter', stop);
     stage.addEventListener('mouseleave', play);
-    stage.addEventListener('click', () => { show(cur + 1); stop(); play(); });
   }
+  if (prev) prev.addEventListener('click', e => { e.stopPropagation(); jump(-1); });
+  if (next) next.addEventListener('click', e => { e.stopPropagation(); jump(1); });
 })();
 
 // ══ BACK LINK ════════════════════════════════════════════
