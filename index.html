@@ -1116,6 +1116,52 @@ body.entered .archive-cell{opacity:1;transform:none}
 
 /* LIST view */
 .gal.list-view .gal-row{display:none}
+/* ── CLIENTS — quiet monochrome marquee before the footer.
+   Every logo is rendered in the site's ink via CSS mask (only the
+   logo's alpha is used), so brand colors never fight the b/w
+   identity. Transform-only animation; pauses on hover. ── */
+.clients{
+  padding:5rem 0 4.5rem;
+  text-align:center;
+  overflow:hidden;
+}
+.clients__label{
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
+  text-transform:uppercase;color:#111;
+  margin-bottom:2.6rem;
+}
+.clients__strip{overflow:hidden;width:100%}
+.clients__track{
+  display:flex;align-items:center;width:max-content;
+  animation:clientsScroll 38s linear infinite;
+  will-change:transform;
+}
+.clients__strip:hover .clients__track{animation-play-state:paused}
+.clients__set{display:flex;align-items:center}
+.clients__logo{
+  display:block;flex:none;
+  margin-right:5.5rem;
+  background:#111;
+  -webkit-mask:var(--m) no-repeat center / contain;
+  mask:var(--m) no-repeat center / contain;
+}
+/* Optical balance: wordmarks run shorter, emblems taller. Widths
+   from each file's true aspect ratio at its display height. */
+.clients__logo--ambiance{height:46px;width:46px}
+.clients__logo--eloria{height:22px;width:142px}
+.clients__logo--roadster{height:38px;width:83px}
+@keyframes clientsScroll{to{transform:translateX(-50%)}}
+@media(max-width:600px){
+  .clients{padding:3.5rem 0 3rem}
+  .clients__logo{margin-right:3.25rem}
+  .clients__logo--ambiance{height:38px;width:38px}
+  .clients__logo--eloria{height:18px;width:116px}
+  .clients__logo--roadster{height:31px;width:68px}
+}
+@media(prefers-reduced-motion:reduce){
+  .clients__track{animation:none}
+}
+
 .gal.list-view .gal-list-mode{display:block}
 .gal-list-mode{display:none;padding:0 2rem 3rem}
 .gal-list-mode a{
@@ -1478,6 +1524,34 @@ body.entered .archive-cell{opacity:1;transform:none}
     </div>
 
   </div>
+
+  <!-- CLIENTS — monochrome marquee. Each set holds the roster twice
+       for density; the track holds two identical sets and animates
+       -50%, so the loop is seamless. Logos render via CSS mask in
+       the site ink (see .clients__logo). -->
+  <section class="clients" aria-label="Selected clients">
+    <p class="clients__label">Selected Clients</p>
+    <div class="clients__strip">
+      <div class="clients__track">
+        <div class="clients__set">
+          <span class="clients__logo clients__logo--ambiance" role="img" aria-label="Ambiance" style="--m:url('/brand_assets/clients/ambiance.png')"></span>
+          <span class="clients__logo clients__logo--eloria" role="img" aria-label="Eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
+          <span class="clients__logo clients__logo--roadster" role="img" aria-label="Roadster Diner" style="--m:url('/brand_assets/clients/roadster-diner.png')"></span>
+          <span class="clients__logo clients__logo--ambiance" aria-hidden="true" style="--m:url('/brand_assets/clients/ambiance.png')"></span>
+          <span class="clients__logo clients__logo--eloria" aria-hidden="true" style="--m:url('/brand_assets/clients/eloria.png')"></span>
+          <span class="clients__logo clients__logo--roadster" aria-hidden="true" style="--m:url('/brand_assets/clients/roadster-diner.png')"></span>
+        </div>
+        <div class="clients__set" aria-hidden="true">
+          <span class="clients__logo clients__logo--ambiance" style="--m:url('/brand_assets/clients/ambiance.png')"></span>
+          <span class="clients__logo clients__logo--eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
+          <span class="clients__logo clients__logo--roadster" style="--m:url('/brand_assets/clients/roadster-diner.png')"></span>
+          <span class="clients__logo clients__logo--ambiance" style="--m:url('/brand_assets/clients/ambiance.png')"></span>
+          <span class="clients__logo clients__logo--eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
+          <span class="clients__logo clients__logo--roadster" style="--m:url('/brand_assets/clients/roadster-diner.png')"></span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="gal-footer">
     <span class="gal-footer__copy">&copy; 2026 Azzi Studios — All rights reserved</span>
