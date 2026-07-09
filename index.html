@@ -1169,25 +1169,35 @@ body.entered .archive-cell{opacity:1;transform:none}
   .clients__track{animation:none}
 }
 
-/* ── REVIEWS — three quotes scattered through the white space after
-   the client marquee: left, right, then center, each popping in on
-   scroll with the site's spring easing. Type = site system: sentence
-   body, uppercase 0.6rem name label. ── */
+/* ── REVIEWS — one quote at a time, centered and compact. The
+   section reveals on scroll and only rotates while on screen;
+   hovering pauses the cycle and floats the quote; click advances.
+   Crossfade + drift are transform/opacity only. ── */
 .reviews{
   max-width:1200px;margin:0 auto;
-  padding:4.5rem 2rem 3rem;
-}
-.reviews__item{
-  max-width:26em;
-  opacity:0;transform:translateY(1.6rem) scale(0.985);
+  padding:4.5rem 2rem 3.5rem;
+  text-align:center;
+  opacity:0;transform:translateY(2rem) scale(0.99);
   transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),
              transform 1s cubic-bezier(0.22,1,0.36,1);
 }
-.reviews__item.in{opacity:1;transform:none}
-.reviews__item + .reviews__item{margin-top:4rem}
-.reviews__item--l{margin-right:auto;text-align:left}
-.reviews__item--r{margin-left:auto;text-align:right}
-.reviews__item--c{margin-left:auto;margin-right:auto;text-align:center}
+.reviews.in{opacity:1;transform:none}
+.reviews__stage{
+  position:relative;
+  max-width:34em;margin:0 auto;
+  min-height:11em;
+  cursor:pointer;
+}
+.reviews__slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  opacity:0;transform:translateY(0.9rem);
+  transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+             transform 0.85s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
+.reviews__slide.is-on{opacity:1;transform:none}
+.reviews__stage:hover .reviews__slide.is-on{transform:translateY(-5px)}
 .reviews__quote{
   font-size:0.8rem;font-weight:400;letter-spacing:0.01em;
   line-height:1.85;color:#111;
@@ -1197,14 +1207,19 @@ body.entered .archive-cell{opacity:1;transform:none}
   font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
   text-transform:uppercase;color:#888;
 }
+.reviews__counter{
+  margin-top:1.8rem;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
+  text-transform:uppercase;color:#888;
+}
 @media(max-width:600px){
-  .reviews{padding:3rem 1.5rem 2rem}
-  .reviews__item + .reviews__item{margin-top:3rem}
+  .reviews{padding:3rem 1.5rem 2.5rem}
+  .reviews__stage{min-height:17em}
 }
 @media(prefers-reduced-motion:reduce){
-  .reviews__item{opacity:1;transform:none;transition:none}
+  .reviews{opacity:1;transform:none;transition:none}
+  .reviews__slide{transition:none}
 }
-
 .gal.list-view .gal-list-mode{display:block}
 .gal-list-mode{display:none;padding:0 2rem 3rem}
 .gal-list-mode a{
@@ -1637,33 +1652,36 @@ body.entered .archive-cell{opacity:1;transform:none}
     </div>
   </section>
 
-  <!-- REVIEWS — scattered through the blank space below the client
-       marquee; each block reveals on scroll (see reviews observer). -->
+  <!-- REVIEWS — rotating single quote. Reveals + starts cycling on
+       scroll; hover pauses and floats the quote; click advances. -->
   <section class="reviews" aria-label="Client reviews">
-    <blockquote class="reviews__item reviews__item--l">
-      <p class="reviews__quote">&ldquo;I had a beautiful experience with Azzi Studios team! Marc has such an avant-garde vision, he catches very easily my ideas and transforms them into something way more upgraded! So professional, creative&hellip; recommended experience!&rdquo;</p>
-      <cite class="reviews__name">Elissa L.</cite>
-    </blockquote>
-    <blockquote class="reviews__item reviews__item--r">
-      <p class="reviews__quote">&ldquo;Marc has a rare ability to understand what a brand needs visually before you can even articulate it yourself. The set he designed for our shoot elevated everything. Highly recommend!&rdquo;</p>
-      <cite class="reviews__name">Nour K.</cite>
-    </blockquote>
-    <blockquote class="reviews__item reviews__item--c">
-      <p class="reviews__quote">&ldquo;Huge thanks to Azzi Studios for completely transforming our brand image. From art direction to visual production and campaign creation, every detail was handled with an exceptional level of care and professionalism. Truly beyond our expectations, highly recommended. Thank you again!&rdquo;</p>
-      <cite class="reviews__name">Daniel B.</cite>
-    </blockquote>
-    <blockquote class="reviews__item reviews__item--r">
-      <p class="reviews__quote">&ldquo;We handed them our boutique windows for the season and the street noticed. Designed, produced and installed without us lifting a finger. The most painless collaboration we&rsquo;ve had.&rdquo;</p>
-      <cite class="reviews__name">Karim H.</cite>
-    </blockquote>
-    <blockquote class="reviews__item reviews__item--l">
-      <p class="reviews__quote">&ldquo;Three months of monthly content and our feed finally looks like one brand. Planned, shot and delivered on time, every time. It shows in the numbers.&rdquo;</p>
-      <cite class="reviews__name">Maya S.</cite>
-    </blockquote>
-    <blockquote class="reviews__item reviews__item--c">
-      <p class="reviews__quote">&ldquo;They built our identity from scratch: logo, colors, guidelines. A year later, everything we put out still feels like us. That&rsquo;s the real test.&rdquo;</p>
-      <cite class="reviews__name">Joelle R.</cite>
-    </blockquote>
+    <div class="reviews__stage" id="reviewsStage">
+      <blockquote class="reviews__slide is-on">
+        <p class="reviews__quote">&ldquo;I had a beautiful experience with Azzi Studios team! Marc has such an avant-garde vision, he catches very easily my ideas and transforms them into something way more upgraded! So professional, creative&hellip; recommended experience!&rdquo;</p>
+        <cite class="reviews__name">Elissa L.</cite>
+      </blockquote>
+      <blockquote class="reviews__slide">
+        <p class="reviews__quote">&ldquo;Marc has a rare ability to understand what a brand needs visually before you can even articulate it yourself. The set he designed for our shoot elevated everything. Highly recommend!&rdquo;</p>
+        <cite class="reviews__name">Nour K.</cite>
+      </blockquote>
+      <blockquote class="reviews__slide">
+        <p class="reviews__quote">&ldquo;Huge thanks to Azzi Studios for completely transforming our brand image. From art direction to visual production and campaign creation, every detail was handled with an exceptional level of care and professionalism. Truly beyond our expectations, highly recommended. Thank you again!&rdquo;</p>
+        <cite class="reviews__name">Daniel B.</cite>
+      </blockquote>
+      <blockquote class="reviews__slide">
+        <p class="reviews__quote">&ldquo;We handed them our boutique windows for the season and the street noticed. Designed, produced and installed without us lifting a finger. The most painless collaboration we&rsquo;ve had.&rdquo;</p>
+        <cite class="reviews__name">Karim H.</cite>
+      </blockquote>
+      <blockquote class="reviews__slide">
+        <p class="reviews__quote">&ldquo;Three months of monthly content and our feed finally looks like one brand. Planned, shot and delivered on time, every time. It shows in the numbers.&rdquo;</p>
+        <cite class="reviews__name">Maya S.</cite>
+      </blockquote>
+      <blockquote class="reviews__slide">
+        <p class="reviews__quote">&ldquo;They built our identity from scratch: logo, colors, guidelines. A year later, everything we put out still feels like us. That&rsquo;s the real test.&rdquo;</p>
+        <cite class="reviews__name">Joelle R.</cite>
+      </blockquote>
+    </div>
+    <p class="reviews__counter"><span id="revIdx">01</span> &mdash; 06</p>
   </section>
 
   <div class="gal-footer">
@@ -2769,20 +2787,39 @@ function buildRoom() {
 })();
 
 
-// ══ REVIEWS — pop in on scroll ═══════════════════════════
+// ══ REVIEWS — rotating quote: reveal + cycle on scroll ═══
 (function(){
-  const items = document.querySelectorAll('.reviews__item');
-  if (!items.length) return;
-  if (!('IntersectionObserver' in window)) {
-    items.forEach(el => el.classList.add('in'));
-    return;
+  const sec = document.querySelector('.reviews');
+  if (!sec) return;
+  const slides = Array.from(sec.querySelectorAll('.reviews__slide'));
+  const stage  = document.getElementById('reviewsStage');
+  const idxEl  = document.getElementById('revIdx');
+  if (!slides.length) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = 0, timer = 0;
+  function show(i){
+    slides[cur].classList.remove('is-on');
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('is-on');
+    if (idxEl) idxEl.textContent = String(cur + 1).padStart(2, '0');
   }
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-    });
-  }, { threshold: 0.35 });
-  items.forEach(el => io.observe(el));
+  const HOLD = 6000;
+  const play = () => { if (!timer && !reduced) timer = setInterval(() => show(cur + 1), HOLD); };
+  const stop = () => { if (timer) { clearInterval(timer); timer = 0; } };
+  // Scroll: reveal once, rotate only while the section is on screen.
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => entries.forEach(en => {
+      if (en.isIntersecting) { sec.classList.add('in'); play(); }
+      else stop();
+    }), { threshold: 0.3 });
+    io.observe(sec);
+  } else { sec.classList.add('in'); play(); }
+  // Hover pauses (CSS floats the quote); click advances immediately.
+  if (stage) {
+    stage.addEventListener('mouseenter', stop);
+    stage.addEventListener('mouseleave', play);
+    stage.addEventListener('click', () => { show(cur + 1); stop(); play(); });
+  }
 })();
 
 // ══ BACK LINK ════════════════════════════════════════════
