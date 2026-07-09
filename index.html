@@ -1233,6 +1233,8 @@ body.entered .archive-cell{opacity:1;transform:none}
   .reviews{padding:3rem 1.5rem 2.5rem}
   .reviews__grid{flex-direction:column;align-items:center;gap:2.5rem}
   .reviews__card{flex:none;width:100%;max-width:28em;min-height:12em}
+  /* Phones show a single card (tap still swaps its quote). */
+  .reviews__card:nth-child(n+2){display:none}
   .reviews.in .reviews__card:nth-child(2),
   .reviews.in .reviews__card:nth-child(3){transition-delay:0s}
 }
