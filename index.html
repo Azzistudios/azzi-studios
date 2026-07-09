@@ -1176,73 +1176,63 @@ body.entered .archive-cell{opacity:1;transform:none}
   .clients__track{animation:none}
 }
 
-/* ── REVIEWS — one quote at a time, centered and compact. The
-   section reveals on scroll and only rotates while on screen;
-   hovering pauses the cycle and floats the quote; click advances.
-   Crossfade + drift are transform/opacity only. ── */
+/* ── REVIEWS — three quotes side by side. The section reveals on
+   scroll with a small stagger per card; hovering (or tapping) a
+   card crossfades it to its alternate quote — same hover-swap
+   language as the 3D mosaic cells. ── */
 .reviews{
   max-width:1200px;margin:0 auto;
   padding:4.5rem 2rem 3.5rem;
   text-align:center;
-  opacity:0;transform:translateY(2rem) scale(0.99);
+}
+.reviews__grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:3.5rem;
+}
+.reviews__card{
+  position:relative;
+  min-height:17em;
+  cursor:pointer;
+  opacity:0;transform:translateY(1.6rem);
   transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),
              transform 1s cubic-bezier(0.22,1,0.36,1);
 }
-.reviews.in{opacity:1;transform:none}
-.reviews__stage{
-  position:relative;
-  max-width:34em;margin:0 auto;
-  min-height:11em;
-}
+.reviews.in .reviews__card{opacity:1;transform:none}
+.reviews.in .reviews__card:nth-child(2){transition-delay:0.12s}
+.reviews.in .reviews__card:nth-child(3){transition-delay:0.24s}
 .reviews__slide{
   position:absolute;inset:0;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  /* Directional hand-off: the incoming quote drifts in from the side
-     of travel, the outgoing one slips out the opposite way. --dx is
-     set by the rotator before each swap. Fade-out runs quicker than
-     fade-in so the two never visually stack. */
-  opacity:0;transform:translateX(var(--dx,1.6rem));
-  transition:opacity 0.5s cubic-bezier(0.4,0,0.2,1),
-             transform 0.9s cubic-bezier(0.22,1,0.36,1);
+  opacity:0;transform:translateY(0.9rem);
+  transition:opacity 0.45s cubic-bezier(0.4,0,0.2,1),
+             transform 0.8s cubic-bezier(0.22,1,0.36,1);
   pointer-events:none;
 }
 .reviews__slide.is-on{
-  transition:opacity 0.85s cubic-bezier(0.22,1,0.36,1) 0.12s,
-             transform 1s cubic-bezier(0.22,1,0.36,1) 0.12s;
+  opacity:1;transform:none;
+  transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s,
+             transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s;
 }
-.reviews__slide.is-on{opacity:1;transform:none}
-.reviews__stage:hover .reviews__slide.is-on{transform:translateY(-5px)}
+.reviews__card:hover .reviews__slide.is-on{transform:translateY(-4px)}
 .reviews__quote{
-  font-size:0.8rem;font-weight:400;letter-spacing:0.01em;
-  line-height:1.85;color:#111;
+  font-size:0.72rem;font-weight:400;letter-spacing:0.01em;
+  line-height:1.8;color:#111;
 }
 .reviews__name{
-  display:block;margin-top:1.1rem;
+  display:block;margin-top:1rem;
   font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
   text-transform:uppercase;color:#888;
 }
-.reviews__arrow{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:none;border:0;padding:0.6rem;cursor:pointer;
-  font-family:'Space Mono',monospace;font-size:0.85rem;line-height:1;
-  color:#888;
-  transition:color 0.25s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1);
-}
-.reviews__arrow--prev{left:-3.5rem}
-.reviews__arrow--next{right:-3.5rem}
-.reviews__arrow--prev:hover{color:#111;transform:translateY(-50%) translateX(-3px)}
-.reviews__arrow--next:hover{color:#111;transform:translateY(-50%) translateX(3px)}
-.reviews__arrow:focus-visible{outline:1px solid #111;outline-offset:3px;color:#111}
-.reviews__arrow:active{opacity:0.5}
-@media(max-width:600px){
+@media(max-width:768px){
   .reviews{padding:3rem 1.5rem 2.5rem}
-  .reviews__stage{min-height:17em;padding:0 2.2rem}
-  .reviews__arrow--prev{left:-0.4rem}
-  .reviews__arrow--next{right:-0.4rem}
+  .reviews__grid{grid-template-columns:1fr;gap:2.2rem}
+  .reviews__card{min-height:12em}
+  .reviews.in .reviews__card:nth-child(2),
+  .reviews.in .reviews__card:nth-child(3){transition-delay:0s}
 }
 @media(prefers-reduced-motion:reduce){
-  .reviews{opacity:1;transform:none;transition:none}
-  .reviews__slide{transition:none}
+  .reviews__card,.reviews__slide{transition:none}
+  .reviews__card{opacity:1;transform:none}
 }
 .gal.list-view .gal-list-mode{display:block}
 .gal-list-mode{display:none;padding:0 2rem 3rem}
@@ -1676,36 +1666,40 @@ body.entered .archive-cell{opacity:1;transform:none}
     </div>
   </section>
 
-  <!-- REVIEWS — rotating single quote. Reveals + starts cycling on
-       scroll; hover pauses and floats the quote; click advances. -->
+  <!-- REVIEWS — three quotes side by side; hover/tap a card and it
+       crossfades to its alternate quote (mosaic-style swap). -->
   <section class="reviews" aria-label="Client reviews">
-    <div class="reviews__stage" id="reviewsStage">
-      <blockquote class="reviews__slide is-on">
-        <p class="reviews__quote">&ldquo;I had a beautiful experience with Azzi Studios team! Marc has such an avant-garde vision, he catches very easily my ideas and transforms them into something way more upgraded! So professional, creative&hellip; recommended experience!&rdquo;</p>
-        <cite class="reviews__name">Elissa L.</cite>
-      </blockquote>
-      <blockquote class="reviews__slide">
-        <p class="reviews__quote">&ldquo;Marc has a rare ability to understand what a brand needs visually before you can even articulate it yourself. The set he designed for our shoot elevated everything. Highly recommend!&rdquo;</p>
-        <cite class="reviews__name">Nour K.</cite>
-      </blockquote>
-      <blockquote class="reviews__slide">
-        <p class="reviews__quote">&ldquo;Huge thanks to Azzi Studios for completely transforming our brand image. From art direction to visual production and campaign creation, every detail was handled with an exceptional level of care and professionalism. Truly beyond our expectations, highly recommended. Thank you again!&rdquo;</p>
-        <cite class="reviews__name">Daniel B.</cite>
-      </blockquote>
-      <blockquote class="reviews__slide">
-        <p class="reviews__quote">&ldquo;We handed them our boutique windows for the season and the street noticed. Designed, produced and installed without us lifting a finger. The most painless collaboration we&rsquo;ve had.&rdquo;</p>
-        <cite class="reviews__name">Karim H.</cite>
-      </blockquote>
-      <blockquote class="reviews__slide">
-        <p class="reviews__quote">&ldquo;Three months of monthly content and our feed finally looks like one brand. Planned, shot and delivered on time, every time. It shows in the numbers.&rdquo;</p>
-        <cite class="reviews__name">Maya S.</cite>
-      </blockquote>
-      <blockquote class="reviews__slide">
-        <p class="reviews__quote">&ldquo;They built our identity from scratch: logo, colors, guidelines. A year later, everything we put out still feels like us. That&rsquo;s the real test.&rdquo;</p>
-        <cite class="reviews__name">Joelle R.</cite>
-      </blockquote>
-      <button class="reviews__arrow reviews__arrow--prev" id="revPrev" aria-label="Previous review">&larr;</button>
-      <button class="reviews__arrow reviews__arrow--next" id="revNext" aria-label="Next review">&rarr;</button>
+    <div class="reviews__grid">
+      <div class="reviews__card">
+        <blockquote class="reviews__slide is-on">
+          <p class="reviews__quote">&ldquo;I had a beautiful experience with Azzi Studios team! Marc has such an avant-garde vision, he catches very easily my ideas and transforms them into something way more upgraded! So professional, creative&hellip; recommended experience!&rdquo;</p>
+          <cite class="reviews__name">Elissa L.</cite>
+        </blockquote>
+        <blockquote class="reviews__slide">
+          <p class="reviews__quote">&ldquo;We handed them our boutique windows for the season and the street noticed. Designed, produced and installed without us lifting a finger. The most painless collaboration we&rsquo;ve had.&rdquo;</p>
+          <cite class="reviews__name">Karim H.</cite>
+        </blockquote>
+      </div>
+      <div class="reviews__card">
+        <blockquote class="reviews__slide is-on">
+          <p class="reviews__quote">&ldquo;Marc has a rare ability to understand what a brand needs visually before you can even articulate it yourself. The set he designed for our shoot elevated everything. Highly recommend!&rdquo;</p>
+          <cite class="reviews__name">Nour K.</cite>
+        </blockquote>
+        <blockquote class="reviews__slide">
+          <p class="reviews__quote">&ldquo;Three months of monthly content and our feed finally looks like one brand. Planned, shot and delivered on time, every time. It shows in the numbers.&rdquo;</p>
+          <cite class="reviews__name">Maya S.</cite>
+        </blockquote>
+      </div>
+      <div class="reviews__card">
+        <blockquote class="reviews__slide is-on">
+          <p class="reviews__quote">&ldquo;Huge thanks to Azzi Studios for completely transforming our brand image. From art direction to visual production and campaign creation, every detail was handled with an exceptional level of care and professionalism. Truly beyond our expectations, highly recommended. Thank you again!&rdquo;</p>
+          <cite class="reviews__name">Daniel B.</cite>
+        </blockquote>
+        <blockquote class="reviews__slide">
+          <p class="reviews__quote">&ldquo;They built our identity from scratch: logo, colors, guidelines. A year later, everything we put out still feels like us. That&rsquo;s the real test.&rdquo;</p>
+          <cite class="reviews__name">Joelle R.</cite>
+        </blockquote>
+      </div>
     </div>
   </section>
 
@@ -2812,49 +2806,34 @@ function buildRoom() {
 })();
 
 
-// ══ REVIEWS — rotating quote: reveal + cycle on scroll ═══
+// ══ REVIEWS — three cards, hover swaps one by one ═══════
 (function(){
   const sec = document.querySelector('.reviews');
   if (!sec) return;
-  const slides = Array.from(sec.querySelectorAll('.reviews__slide'));
-  const stage  = document.getElementById('reviewsStage');
-  const prev   = document.getElementById('revPrev');
-  const next   = document.getElementById('revNext');
-  if (!slides.length) return;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let cur = 0, timer = 0;
-  // dir: +1 flows right-to-left (next), -1 the other way. The
-  // incoming slide starts on the side of travel; the outgoing one
-  // exits through the opposite side.
-  function show(i, dir){
-    const d = dir || 1;
-    const out = slides[cur];
-    out.style.setProperty('--dx', (d > 0 ? '-1.6rem' : '1.6rem'));
-    out.classList.remove('is-on');
-    cur = (i + slides.length) % slides.length;
-    const inc = slides[cur];
-    inc.style.setProperty('--dx', (d > 0 ? '1.6rem' : '-1.6rem'));
-    inc.classList.add('is-on');
-  }
-  const HOLD = 6000;
-  const play = () => { if (!timer && !reduced) timer = setInterval(() => show(cur + 1, 1), HOLD); };
-  const stop = () => { if (timer) { clearInterval(timer); timer = 0; } };
-  const jump = d => { show(cur + d, d); stop(); play(); };
-  // Scroll: reveal once, rotate only while the section is on screen.
+  // Reveal on scroll — cards stagger via CSS delays.
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => entries.forEach(en => {
-      if (en.isIntersecting) { sec.classList.add('in'); play(); }
-      else stop();
-    }), { threshold: 0.3 });
+      if (en.isIntersecting) { sec.classList.add('in'); io.disconnect(); }
+    }), { threshold: 0.25 });
     io.observe(sec);
-  } else { sec.classList.add('in'); play(); }
-  // Hover pauses (CSS floats the quote); arrows step through.
-  if (stage) {
-    stage.addEventListener('mouseenter', stop);
-    stage.addEventListener('mouseleave', play);
-  }
-  if (prev) prev.addEventListener('click', e => { e.stopPropagation(); jump(-1); });
-  if (next) next.addEventListener('click', e => { e.stopPropagation(); jump(1); });
+  } else { sec.classList.add('in'); }
+  // Hover (or tap) a card → crossfade to its other quote. A short
+  // cooldown stops rapid mouse passes from thrashing the fade.
+  sec.querySelectorAll('.reviews__card').forEach(card => {
+    const slides = Array.from(card.querySelectorAll('.reviews__slide'));
+    if (slides.length < 2) return;
+    let cur = 0, busy = false;
+    const swap = () => {
+      if (busy) return;
+      busy = true;
+      slides[cur].classList.remove('is-on');
+      cur = (cur + 1) % slides.length;
+      slides[cur].classList.add('is-on');
+      setTimeout(() => { busy = false; }, 900);
+    };
+    card.addEventListener('mouseenter', swap);
+    card.addEventListener('click', swap);
+  });
 })();
 
 // ══ BACK LINK ════════════════════════════════════════════
