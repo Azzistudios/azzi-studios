@@ -1254,6 +1254,33 @@ body.entered .archive-cell{opacity:1;transform:none}
 }
 .gal.list-view .gal-list-mode{display:block}
 .gal-list-mode{display:none;padding:0 2rem 3rem}
+/* ── LIST FILTER — service categories above the list. Buttons are
+   built by JS from the .cat labels actually present, so new
+   categories appear automatically. Active = ink + underline. ── */
+.gal-filter{
+  display:flex;flex-wrap:wrap;gap:1.5rem 1.8rem;
+  padding:0.2rem 0 1.8rem;
+}
+.gal-filter button{
+  background:none;border:0;padding:0;cursor:pointer;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.22em;
+  text-transform:uppercase;color:#888;
+  transition:color 0.25s ease;
+}
+.gal-filter button:hover{color:#111}
+.gal-filter button.on{color:#111;text-decoration:underline;text-underline-offset:4px}
+.gal-filter button:focus-visible{outline:1px solid #111;outline-offset:3px;color:#111}
+.gal-list-mode a.gf-hide{display:none}
+.gal-list-mode a.gf-in{
+  animation:gfIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay:var(--fd,0s);
+}
+@keyframes gfIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  .gal-list-mode a.gf-in{animation:none}
+}
+
 .gal-list-mode a{
   display:flex;justify-content:space-between;align-items:baseline;
   padding:0.9rem 0;
@@ -2869,6 +2896,51 @@ function buildRoom() {
     card.addEventListener('mouseenter', swap);
     card.addEventListener('click', swap);
     if (mobile && ci === 0) setInterval(swap, 5000);
+  });
+})();
+
+
+// ══ LIST FILTER — service categories, built from the rows ══
+(function(){
+  const list = document.querySelector('.gal-list-mode');
+  if (!list) return;
+  const rows = Array.from(list.querySelectorAll('a'));
+  if (!rows.length) return;
+  const cats = [];
+  rows.forEach(r => {
+    const c = r.querySelector('.cat');
+    const t = c ? c.textContent.trim() : '';
+    if (t && !cats.includes(t)) cats.push(t);
+  });
+  const bar = document.createElement('div');
+  bar.className = 'gal-filter';
+  const mk = label => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = label;
+    bar.appendChild(b);
+    return b;
+  };
+  const btns = ['All', ...cats].map(mk);
+  btns[0].classList.add('on');
+  list.insertBefore(bar, list.firstChild);
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    const label = b.textContent;
+    btns.forEach(x => x.classList.toggle('on', x === b));
+    let i = 0;
+    rows.forEach(r => {
+      const c = r.querySelector('.cat');
+      const match = label === 'All' || (c && c.textContent.trim() === label);
+      r.classList.toggle('gf-hide', !match);
+      r.classList.remove('gf-in');
+      if (match) {
+        r.style.setProperty('--fd', (i++ * 45) + 'ms');
+        void r.offsetWidth;
+        r.classList.add('gf-in');
+      }
+    });
   });
 })();
 
