@@ -48,6 +48,7 @@
   ],
   "redirects": [
     { "source": "/project-blubay-nightlife", "destination": "/", "permanent": true },
+    { "source": "/project-eirene-identity", "destination": "/", "permanent": true },
     { "source": "/project",
       "has": [{ "type": "query", "key": "id", "value": "blubay-nightlife" }],
       "destination": "/", "permanent": true },
