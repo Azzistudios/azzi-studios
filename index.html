@@ -924,7 +924,9 @@ body.entered .gal-cell{opacity:1;transform:none}
 }
 .asteri-track{
   position:absolute;top:0;left:50%;height:100%;
-  display:flex;gap:18rem;
+  /* Tight gap = continuous filmstrip: the window is always covered
+     with pictures, no white bands between or beside slides. */
+  display:flex;gap:0.4rem;
   transition:transform 1.5s cubic-bezier(0.65,0,0.35,1);
   will-change:transform;
 }
@@ -1193,7 +1195,7 @@ body.entered .archive-cell{opacity:1;transform:none}
    language as the 3D mosaic cells. ── */
 .reviews{
   max-width:1200px;margin:0 auto;
-  padding:4.5rem 2rem 0.75rem;
+  padding:4.5rem 2rem 4rem;
   text-align:center;
 }
 .reviews__grid{
@@ -2359,6 +2361,11 @@ function buildRoom() {
   function extendBackForMobile() {
     if (!isMobileMQ.matches) return;
     const back = WALL_LAYOUTS.back;
+    // Thin the hand-tuned base wall on phones: every 3rd picture
+    // cell becomes white space (videos kept) — the desktop-dense
+    // top rows read as packed on a narrow screen.
+    let k = 0;
+    back.cells = back.cells.filter(p => p.video || (++k % 3 !== 0));
     const startRow = back.rows + 1;
     /* 18 rows × 13vw ≈ 234vw of vertical content — covers even the
        tallest phone viewports (≈2.3 aspect) so the sparse mosaic
@@ -2376,7 +2383,7 @@ function buildRoom() {
       let c = 1;
       while (c <= back.cols) {
         const roll = Math.random();
-        if (roll < 0.55) { c++; continue; }     // 55% white space
+        if (roll < 0.68) { c++; continue; }     // ~68% white space — the 55% fill read as packed on phones
         let w = 1, h = 1;
         const fits = (W, H) => {
           if (c + W - 1 > back.cols) return false;
@@ -2837,10 +2844,22 @@ function buildRoom() {
   } else { sec.classList.add('in'); }
   // Hover (or tap) a card → crossfade to its other quote. A short
   // cooldown stops rapid mouse passes from thrashing the fade.
-  sec.querySelectorAll('.reviews__card').forEach(card => {
+  // Phones show a single card — move every quote into it and cycle
+  // automatically (visitors have no hover to discover the rest).
+  // Tap still advances immediately.
+  const mobile = window.matchMedia('(max-width: 768px)').matches;
+  const cards = Array.from(sec.querySelectorAll('.reviews__card'));
+  if (mobile && cards.length > 1) {
+    cards.slice(1).forEach(c => c.querySelectorAll('.reviews__slide').forEach(sl => {
+      sl.classList.remove('is-on');
+      cards[0].appendChild(sl);
+    }));
+  }
+  cards.forEach((card, ci) => {
     const slides = Array.from(card.querySelectorAll('.reviews__slide'));
     if (slides.length < 2) return;
-    let cur = 0, busy = false;
+    let cur = Math.max(0, slides.findIndex(sl => sl.classList.contains('is-on')));
+    let busy = false;
     const swap = () => {
       if (busy) return;
       busy = true;
@@ -2851,6 +2870,7 @@ function buildRoom() {
     };
     card.addEventListener('mouseenter', swap);
     card.addEventListener('click', swap);
+    if (mobile && ci === 0) setInterval(swap, 5000);
   });
 })();
 
