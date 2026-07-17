@@ -62,238 +62,230 @@
   gtag('js', new Date());
   gtag('config', 'G-Z8L68HKHEJ');
 </script>
-
-<link rel="stylesheet" href="style.css?v=70">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Squada+One&display=swap" rel="stylesheet">
 <style>
-.c-nav { background: var(--bg); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html{font-size:16px;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar{display:none}
+body{background:#fff;color:#111;font-family:'Space Mono','Courier New',monospace;font-weight:400;line-height:1.55;min-height:100vh}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
 
-/* ── SERVICES PAGE ──────────────────────────── */
-.services-header {
-  padding: calc(var(--nav-h) + 3.5rem) var(--margin) 3rem;
-  border-bottom: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: end;
+/* ── NAV ─────────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;
+  height:60px;padding:1.5rem 2rem;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  z-index:100;background:#fff;
+  transition:opacity 0.45s ease;
+}
+.nav.nav--idle{opacity:0;pointer-events:none}
+.nav.nav--idle *{pointer-events:none}
+.nav-logo{
+  /* Loader-style logo (Space Mono, bold, uppercase, spaced) sized
+     to match the nav buttons — kept identical across all pages. */
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1;
+}
+.nav-logo sup{font-size:0.5em;vertical-align:super}
+.nav-right{
+  display:flex;gap:1.5rem;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+}
+.nav-right a{transition:opacity 0.2s;color:#111}
+.nav-right a:hover{opacity:0.4}
+.nav-right a.active{font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+.nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:12px;margin:-8px;cursor:pointer;position:relative;z-index:9001}
+.nav-ham span{display:block;width:12px;height:1.5px;background:#111;transition:transform 0.3s ease}
+/* Hamburger morphs into × while the burger menu is open.
+   Symmetric ±3.25px so spans meet at the geometric centre. */
+body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
+/* Hide the top-left nav-logo while the menu is open so the
+   centered "azzi studios" inside the menu is the only one. */
+body.menu-open .nav-logo{visibility:hidden}
+.mob-menu{
+  display:none;position:fixed;inset:0;background:#fff;z-index:99;
+  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase}
+.mob-menu__top{
+  position:absolute;
+  top:calc(max(1rem, env(safe-area-inset-top)) + 24px);
+  left:50%;transform:translate(-50%, -50%);
+  font-family:'Space Mono',monospace;
+  /* !important so it beats the more-specific .mob-menu a rule
+     above which sets 1.4rem for nav links inside the menu. */
+  font-size:0.6rem !important;font-weight:700;letter-spacing:0.2em !important;
+  text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
+}
+.mob-close{position:absolute;top:1.5rem;right:2rem;font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer}
+
+@media(max-width:720px){
+  .nav-right{display:none}
+  .nav-ham{display:flex}
 }
 
-.services-header__title {
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
+/* ── ABOUT BLOCK ─────────────────────────── */
+.about-block{
+  padding:8rem 2rem 6rem;
+  max-width:760px;
+  margin:0 auto;
 }
-
-.services-header__intro {
-  font-size: 0.875rem;
-  font-weight: 300;
-  line-height: 1.7;
-  max-width: 420px;
+.about-section{
+  margin-bottom:2.5rem;
 }
-
-/* ── SERVICE BLOCKS ─────────────────────────── */
-.service-block {
-  padding: 3rem var(--margin);
-  border-bottom: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 4rem;
-  align-items: start;
+.about-label{
+  font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:#111;margin-bottom:0.6rem;
 }
-
-.service-block__num-label {
-  font-size: 0.5625rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-light);
-  margin-bottom: 0.5rem;
+.about-body{
+  font-size:0.8125rem;
+  line-height:1.55;
+  color:#111;
+  max-width:560px;
 }
-
-.service-block__title {
-  font-size: clamp(1.125rem, 2vw, 1.75rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  line-height: 1.05;
+.about-cols{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 3rem;
+  margin-top:0.5rem;
 }
-
-.service-block__body {
-  font-size: 0.875rem;
-  font-weight: 300;
-  line-height: 1.7;
-  margin-bottom: 1.25rem;
-  max-width: 540px;
+.about-col-label{
+  font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:#111;margin-bottom:0.6rem;
 }
-
-.service-block__tagline {
-  font-size: 0.8125rem;
-  font-style: italic;
-  font-weight: 400;
-  color: var(--text-light);
-  border-left: 2px solid var(--border);
-  padding-left: 1rem;
+.about-col-body{
+  font-size:0.75rem;
+  color:rgba(17,17,17,0.45);
+  line-height:1.55;
 }
-
-/* ── CLOSING ────────────────────────────────── */
-.services-closing {
-  padding: 4rem var(--margin);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+.about-col-body a{
+  transition:color 0.2s;
 }
+.about-col-body a:hover{color:#111}
 
-.services-closing__text {
-  font-size: clamp(1.25rem, 3vw, 2.5rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1;
+/* footer row inside about */
+.about-footer{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem 3rem;
+  font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;
 }
-
-.services-closing__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--text);
-  padding-bottom: 2px;
-  white-space: nowrap;
-  transition: gap 0.25s var(--ease-out);
+.about-footer-cell{
+  color:rgba(17,17,17,0.45);
 }
+.about-footer-cell--center{text-align:center;color:rgba(17,17,17,0.5)}
+.about-footer-cell--right{text-align:right}
+.about-footer-cell a{
+  color:#111;
+  border-bottom:1px solid rgba(17,17,17,0.25);padding-bottom:1px;
+}
+.about-footer-cell a:hover{border-color:#111}
 
-.services-closing__cta:hover { gap: 1rem; }
-
-@media (max-width: 768px) {
-  .services-header { grid-template-columns: 1fr; }
-  .service-block   { grid-template-columns: 1fr; gap: 1.5rem; }
+/* Tablet */
+@media(max-width:1048px){
+  .about-block{padding:7rem 1.5rem 5rem}
+  .about-body{font-size:0.75rem}
+  .nav{padding:1.25rem 1.25rem;height:48px}
+}
+/* Mobile */
+@media(max-width:768px){
+  /* Inner padding lifted to 2rem (= nav padding) so body text
+     starts at the same x-position as the logo and never touches
+     the screen edge. */
+  .about-block{padding:6rem 2rem 3rem}
+  .about-cols{grid-template-columns:1fr;gap:1.25rem}
+  .about-footer{grid-template-columns:1fr;gap:0.5rem;text-align:left;padding:2rem}
+  .about-footer-cell--center,.about-footer-cell--right{text-align:left}
+  .toggle-bar{padding:3rem 2rem 1.5rem}
 }
 </style>
 <link rel="stylesheet" href="/enhance.css?v=70">
 </head>
 <body>
+<h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Services — Azzi Studios, Beirut Creative Studio</h1>
 
-<nav class="c-nav" id="nav">
-  <a href="index.html" class="c-nav__logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios.</a>
-  <!-- Deep-link to index with ?panel=X so About/Services/Contact
-       all open the same dropdown overlay that runs on index and
-       project pages, instead of navigating to standalone pages. -->
-  <ul class="c-nav__links">
-    <li><a href="index.html">Work</a></li>
-    <li><a href="index.html?panel=services" class="active">Services</a></li>
-    <li><a href="index.html?panel=about">About</a></li>
-    <li><a href="faq.html">FAQ</a></li>
-    <li><a href="index.html?panel=contact">Contact</a></li>
-  </ul>
-  <div class="c-nav__right">
-    <a href="index.html?panel=contact" class="c-nav__cta">Start a project</a>
+<nav class="nav">
+  <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <div class="nav-right">
+    <a href="services.html" class="active">Services</a>
+    <a href="mailto:hello@azzistudios.com">Email</a>
   </div>
-  <button class="c-nav__hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span>
-  </button>
+  <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
-
-<div class="c-layout">
-
-  <!-- HEADER -->
-  <div class="services-header">
-    <h1 class="services-header__title reveal">What we do.</h1>
-    <p class="services-header__intro reveal reveal-delay-1">
-      We work with brands who need their campaigns to look exactly the way they imagined. We handle everything — creative direction, set design, team, and production.
-    </p>
-  </div>
-
-  <!-- SERVICE 01 -->
-  <div class="service-block reveal" id="campaign">
-    <div>
-      <p class="service-block__num-label">Service 01</p>
-      <h2 class="service-block__title">Campaign<br>Production</h2>
-    </div>
-    <div>
-      <p class="service-block__body">
-        Creative Direction &middot; Art Direction &middot; Photography &middot; Videography &middot; Set Design &middot; 360 Campaigns &middot; Model Shoots &middot; Music Videos
-      </p>
-    </div>
-  </div>
-
-  <!-- SERVICE 02 -->
-  <div class="service-block reveal" id="visual">
-    <div>
-      <p class="service-block__num-label">Service 02</p>
-      <h2 class="service-block__title">Visual<br>Content</h2>
-    </div>
-    <div>
-      <p class="service-block__body">
-        Product Photography &middot; Model Shoots &middot; Lookbooks &middot; Reels &middot; Monthly Content Production
-      </p>
-    </div>
-  </div>
-
-  <!-- SERVICE 03 -->
-  <div class="service-block reveal" id="vm-window">
-    <div>
-      <p class="service-block__num-label">Service 03</p>
-      <h2 class="service-block__title">VM &amp; Window<br>Display</h2>
-    </div>
-    <div>
-      <p class="service-block__body">
-        Window Display &middot; Visual Merchandising &middot; Brand Activations &middot; Retail Environments &middot; Pop-Up Design
-      </p>
-    </div>
-  </div>
-
-  <!-- SERVICE 04 -->
-  <div class="service-block reveal" id="visual-identity">
-    <div>
-      <p class="service-block__num-label">Service 04</p>
-      <h2 class="service-block__title">Visual<br>Identity</h2>
-    </div>
-    <div>
-      <p class="service-block__body">
-        Logo &middot; Typography &middot; Colour System &middot; Brand Guidelines &middot; Packaging Design
-      </p>
-    </div>
-  </div>
-
-  <!-- SERVICE 05 -->
-  <div class="service-block reveal" id="social-media">
-    <div>
-      <p class="service-block__num-label">Service 05</p>
-      <h2 class="service-block__title">Social Media<br>Management</h2>
-    </div>
-    <div>
-      <p class="service-block__body">
-        Content Strategy &middot; Content Calendars &middot; Community Management &middot; Account Growth &middot; Paid Social &middot; Analytics &amp; Reporting
-      </p>
-    </div>
-  </div>
-
-  <!-- CLOSING -->
-  <div class="services-closing reveal">
-    <p class="services-closing__text">We craft images worth keeping.</p>
-    <a href="contact.html" class="services-closing__cta">Start a project →</a>
-  </div>
-
-  <!-- FOOTER — unified across every page -->
-  <footer class="c-footer">
-    <span class="c-footer__copy">&copy; 2026 Azzi Studios — All rights reserved</span>
-    <span class="c-footer__center">Creative Studio</span>
-    <div class="c-footer__right">
-      <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a>
-      <a href="mailto:hello@azzistudios.com">Email</a>
-    </div>
-  </footer>
-
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html" class="mob-menu__top" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <a href="index.html">Work</a>
+  <a href="index.html?panel=about">About</a>
+  <a href="index.html?panel=services">Services</a>
+  <a href="faq.html">FAQ</a>
+  <a href="index.html?panel=contact">Contact</a>
 </div>
 
-<script src="main.js"></script>
+<section class="about-block">
+
+  <div class="about-section">
+    <div class="about-label">What we do</div>
+    <p class="about-body">We work with brands who need their campaigns to look exactly the way they imagined. We handle everything &mdash; creative direction, set design, team, and production.</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Service 01 — Campaign Production</div>
+    <p class="about-body">Creative Direction &middot; Art Direction &middot; Photography &middot; Videography &middot; Set Design &middot; 360 Campaigns &middot; Model Shoots &middot; Music Videos</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Service 02 — Visual Content</div>
+    <p class="about-body">Product Photography &middot; Model Shoots &middot; Lookbooks &middot; Reels &middot; Monthly Content Production</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Service 03 — VM &amp; Window Display</div>
+    <p class="about-body">Window Display &middot; Visual Merchandising &middot; Brand Activations &middot; Retail Environments &middot; Pop-Up Design</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Service 04 — Visual Identity</div>
+    <p class="about-body">Logo &middot; Typography &middot; Colour System &middot; Brand Guidelines &middot; Packaging Design</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Service 05 — Social Media Management</div>
+    <p class="about-body">Content Strategy &middot; Content Calendars &middot; Community Management &middot; Account Growth &middot; Paid Social &middot; Analytics &amp; Reporting</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Start a project</div>
+    <p class="about-body">We craft images worth keeping. Write to <a href="mailto:hello@azzistudios.com" style="border-bottom:1px solid rgba(17,17,17,0.25);padding-bottom:1px">hello@azzistudios.com</a> and tell us what you are working on.</p>
+  </div>
+
+  <div style="margin-top:2.5rem">
+    <div class="about-footer">
+      <div class="about-footer-cell">&copy; 2026 AZZI STUDIOS — All Rights Reserved</div>
+      <div class="about-footer-cell about-footer-cell--right">Website by <a href="index.html">AZZI STUDIOS</a></div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+// Hamburger — same behaviour as the about page.
+(function(){
+  const ham  = document.getElementById('ham');
+  const menu = document.getElementById('mobMenu');
+  if (!ham || !menu) return;
+  function sync(){ document.body.classList.toggle('menu-open', menu.classList.contains('open')); }
+  ham.addEventListener('click', () => { menu.classList.toggle('open'); sync(); });
+  menu.querySelectorAll('a, button').forEach(el =>
+    el.addEventListener('click', () => { menu.classList.remove('open'); sync(); }));
+})();
+</script>
 <script defer src="/enhance.js"></script>
 </body>
 </html>

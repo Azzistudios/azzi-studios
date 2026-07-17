@@ -121,267 +121,225 @@
   gtag('js', new Date());
   gtag('config', 'G-Z8L68HKHEJ');
 </script>
-
-<link rel="stylesheet" href="style.css?v=70">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Squada+One&display=swap" rel="stylesheet">
 <style>
-.c-nav { background: var(--bg); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html{font-size:16px;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar{display:none}
+body{background:#fff;color:#111;font-family:'Space Mono','Courier New',monospace;font-weight:400;line-height:1.55;min-height:100vh}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
 
-/* ── FAQ PAGE ───────────────────────────────── */
-.faq-header {
-  padding: calc(var(--nav-h) + 3.5rem) var(--margin) 3rem;
-  border-bottom: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: end;
+/* ── NAV ─────────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;
+  height:60px;padding:1.5rem 2rem;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  z-index:100;background:#fff;
+  transition:opacity 0.45s ease;
+}
+.nav.nav--idle{opacity:0;pointer-events:none}
+.nav.nav--idle *{pointer-events:none}
+.nav-logo{
+  /* Loader-style logo (Space Mono, bold, uppercase, spaced) sized
+     to match the nav buttons — kept identical across all pages. */
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1;
+}
+.nav-logo sup{font-size:0.5em;vertical-align:super}
+.nav-right{
+  display:flex;gap:1.5rem;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+}
+.nav-right a{transition:opacity 0.2s;color:#111}
+.nav-right a:hover{opacity:0.4}
+.nav-right a.active{font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+.nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:12px;margin:-8px;cursor:pointer;position:relative;z-index:9001}
+.nav-ham span{display:block;width:12px;height:1.5px;background:#111;transition:transform 0.3s ease}
+/* Hamburger morphs into × while the burger menu is open.
+   Symmetric ±3.25px so spans meet at the geometric centre. */
+body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
+/* Hide the top-left nav-logo while the menu is open so the
+   centered "azzi studios" inside the menu is the only one. */
+body.menu-open .nav-logo{visibility:hidden}
+.mob-menu{
+  display:none;position:fixed;inset:0;background:#fff;z-index:99;
+  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase}
+.mob-menu__top{
+  position:absolute;
+  top:calc(max(1rem, env(safe-area-inset-top)) + 24px);
+  left:50%;transform:translate(-50%, -50%);
+  font-family:'Space Mono',monospace;
+  /* !important so it beats the more-specific .mob-menu a rule
+     above which sets 1.4rem for nav links inside the menu. */
+  font-size:0.6rem !important;font-weight:700;letter-spacing:0.2em !important;
+  text-transform:uppercase;color:#111;line-height:1;white-space:nowrap;
+}
+.mob-close{position:absolute;top:1.5rem;right:2rem;font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer}
+
+@media(max-width:720px){
+  .nav-right{display:none}
+  .nav-ham{display:flex}
 }
 
-.faq-header__title {
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
+/* ── ABOUT BLOCK ─────────────────────────── */
+.about-block{
+  padding:8rem 2rem 6rem;
+  max-width:760px;
+  margin:0 auto;
 }
+.about-section{
+  margin-bottom:2.5rem;
+}
+.about-label{
+  font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:#111;margin-bottom:0.6rem;
+}
+.about-body{
+  font-size:0.8125rem;
+  line-height:1.55;
+  color:#111;
+  max-width:560px;
+}
+.about-cols{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 3rem;
+  margin-top:0.5rem;
+}
+.about-col-label{
+  font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:#111;margin-bottom:0.6rem;
+}
+.about-col-body{
+  font-size:0.75rem;
+  color:rgba(17,17,17,0.45);
+  line-height:1.55;
+}
+.about-col-body a{
+  transition:color 0.2s;
+}
+.about-col-body a:hover{color:#111}
 
-.faq-header__intro {
-  font-size: 0.875rem;
-  font-weight: 300;
-  line-height: 1.7;
-  max-width: 420px;
+/* footer row inside about */
+.about-footer{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem 3rem;
+  font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;
 }
+.about-footer-cell{
+  color:rgba(17,17,17,0.45);
+}
+.about-footer-cell--center{text-align:center;color:rgba(17,17,17,0.5)}
+.about-footer-cell--right{text-align:right}
+.about-footer-cell a{
+  color:#111;
+  border-bottom:1px solid rgba(17,17,17,0.25);padding-bottom:1px;
+}
+.about-footer-cell a:hover{border-color:#111}
 
-.faq-list { padding: 1rem 0 2rem; }
-
-.faq-item {
-  border-bottom: 1px solid var(--border);
+/* Tablet */
+@media(max-width:1048px){
+  .about-block{padding:7rem 1.5rem 5rem}
+  .about-body{font-size:0.75rem}
+  .nav{padding:1.25rem 1.25rem;height:48px}
 }
-
-.faq-item summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 1.75rem var(--margin);
-  display: grid;
-  grid-template-columns: 180px 1fr 24px;
-  gap: 4rem;
-  align-items: start;
-  transition: opacity 0.2s;
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary:hover { opacity: 0.6; }
-
-.faq-item__num {
-  font-size: 0.5625rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-light);
-  padding-top: 0.35rem;
-}
-
-.faq-item__q {
-  font-size: clamp(1.05rem, 1.8vw, 1.5rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-.faq-item__sign {
-  font-size: 1.25rem;
-  line-height: 1;
-  font-weight: 400;
-  justify-self: end;
-  padding-top: 0.2rem;
-  transition: transform 0.3s var(--ease-out);
-}
-.faq-item[open] .faq-item__sign { transform: rotate(45deg); }
-
-.faq-item__a {
-  padding: 0 var(--margin) 2rem;
-  display: grid;
-  grid-template-columns: 180px 1fr 24px;
-  gap: 4rem;
-}
-.faq-item__a p {
-  grid-column: 2;
-  font-size: 0.9375rem;
-  font-weight: 300;
-  line-height: 1.7;
-  max-width: 620px;
-  color: var(--text-light);
-}
-.faq-item__a a {
-  border-bottom: 1px solid var(--text);
-  padding-bottom: 1px;
-  transition: opacity 0.2s;
-}
-.faq-item__a a:hover { opacity: 0.55; }
-
-/* ── CLOSING ────────────────────────────────── */
-.faq-closing {
-  padding: 4rem var(--margin);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.faq-closing__text {
-  font-size: clamp(1.25rem, 3vw, 2.5rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.faq-closing__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--text);
-  padding-bottom: 2px;
-  white-space: nowrap;
-  transition: gap 0.25s var(--ease-out);
-}
-.faq-closing__cta:hover { gap: 1rem; }
-
-@media (max-width: 768px) {
-  .faq-header { grid-template-columns: 1fr; }
-  .faq-item summary,
-  .faq-item__a { grid-template-columns: 1fr 24px; gap: 1.25rem; }
-  .faq-item__num { display: none; }
-  .faq-item__a p { grid-column: 1; }
+/* Mobile */
+@media(max-width:768px){
+  /* Inner padding lifted to 2rem (= nav padding) so body text
+     starts at the same x-position as the logo and never touches
+     the screen edge. */
+  .about-block{padding:6rem 2rem 3rem}
+  .about-cols{grid-template-columns:1fr;gap:1.25rem}
+  .about-footer{grid-template-columns:1fr;gap:0.5rem;text-align:left;padding:2rem}
+  .about-footer-cell--center,.about-footer-cell--right{text-align:left}
+  .toggle-bar{padding:3rem 2rem 1.5rem}
 }
 </style>
 <link rel="stylesheet" href="/enhance.css?v=70">
 </head>
 <body>
+<h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">FAQ — Azzi Studios, Beirut Creative Studio</h1>
 
-<nav class="c-nav" id="nav">
-  <a href="index.html" class="c-nav__logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
-  <!-- Deep-link to index with ?panel=X so About/Services/Contact
-       open the same dropdown overlay as on index + project pages. -->
-  <ul class="c-nav__links">
-    <li><a href="index.html">Work</a></li>
-    <li><a href="index.html?panel=services">Services</a></li>
-    <li><a href="index.html?panel=about">About</a></li>
-    <li><a href="faq.html" class="active">FAQ</a></li>
-    <li><a href="index.html?panel=contact">Contact</a></li>
-  </ul>
-  <div class="c-nav__right">
-    <a href="index.html?panel=contact" class="c-nav__cta">Start a project</a>
+<nav class="nav">
+  <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <div class="nav-right">
+    <a href="faq.html" class="active">FAQ</a>
+    <a href="mailto:hello@azzistudios.com">Email</a>
   </div>
-  <button class="c-nav__hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span>
-  </button>
+  <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
-
-<div class="c-layout">
-
-  <!-- HEADER -->
-  <div class="faq-header">
-    <h1 class="faq-header__title reveal">Questions.</h1>
-    <p class="faq-header__intro reveal reveal-delay-1">
-      The things brands ask us most — where we work, what we do, and how a project comes together.
-    </p>
-  </div>
-
-  <!-- FAQ LIST -->
-  <div class="faq-list">
-
-    <details class="faq-item reveal">
-      <summary>
-        <span class="faq-item__num">01</span>
-        <span class="faq-item__q">Where is Azzi Studios based, and do you work internationally?</span>
-        <span class="faq-item__sign">+</span>
-      </summary>
-      <div class="faq-item__a">
-        <p>Azzi Studios is a creative studio based in Beirut, Lebanon. We produce work across the region and travel internationally for campaigns, shoots and installations.</p>
-      </div>
-    </details>
-
-    <details class="faq-item reveal">
-      <summary>
-        <span class="faq-item__num">02</span>
-        <span class="faq-item__q">What services does Azzi Studios offer?</span>
-        <span class="faq-item__sign">+</span>
-      </summary>
-      <div class="faq-item__a">
-        <p>Five. <strong>Campaign Production</strong> — creative direction, art direction, photography, videography and set design. <strong>Visual Content</strong> — product photography, lookbooks, reels and monthly content. <strong>VM &amp; Window Display</strong> — window display, visual merchandising, retail environments and pop-ups. <strong>Visual Identity</strong> — logo, typography, colour systems, brand guidelines and packaging. <strong>Social Media Management</strong> — content strategy, calendars, community management, account growth and paid social.</p>
-      </div>
-    </details>
-
-    <details class="faq-item reveal">
-      <summary>
-        <span class="faq-item__num">03</span>
-        <span class="faq-item__q">What kinds of brands do you work with?</span>
-        <span class="faq-item__sign">+</span>
-      </summary>
-      <div class="faq-item__a">
-        <p>We work with fashion, beauty, lifestyle and hospitality brands — from established names to new labels launching their first campaign.</p>
-      </div>
-    </details>
-
-    <details class="faq-item reveal">
-      <summary>
-        <span class="faq-item__num">04</span>
-        <span class="faq-item__q">What does a typical project look like?</span>
-        <span class="faq-item__sign">+</span>
-      </summary>
-      <div class="faq-item__a">
-        <p>Every project starts with a brief and a conversation. We handle creative direction, set, team and production from end to end, so you get one studio with full creative ownership from concept to final delivery.</p>
-      </div>
-    </details>
-
-    <details class="faq-item reveal">
-      <summary>
-        <span class="faq-item__num">05</span>
-        <span class="faq-item__q">Do you offer monthly or ongoing content production?</span>
-        <span class="faq-item__sign">+</span>
-      </summary>
-      <div class="faq-item__a">
-        <p>Yes. Alongside one-off campaigns we produce monthly visual content on retainer — product photography, reels and social-ready assets — for brands that need a consistent stream of imagery.</p>
-      </div>
-    </details>
-
-    <details class="faq-item reveal">
-      <summary>
-        <span class="faq-item__num">06</span>
-        <span class="faq-item__q">How do we start a project with Azzi Studios?</span>
-        <span class="faq-item__sign">+</span>
-      </summary>
-      <div class="faq-item__a">
-        <p>Email <a href="mailto:hello@azzistudios.com">hello@azzistudios.com</a> or message us on <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a> with a few words about what you are working on. We favour long-term collaborations and tailor-made approaches.</p>
-      </div>
-    </details>
-
-  </div>
-
-  <!-- CLOSING -->
-  <div class="faq-closing reveal">
-    <p class="faq-closing__text">Still have a question?</p>
-    <a href="index.html?panel=contact" class="faq-closing__cta">Get in touch →</a>
-  </div>
-
-  <!-- FOOTER — unified across every page -->
-  <footer class="c-footer">
-    <span class="c-footer__copy">&copy; 2026 Azzi Studios — All rights reserved</span>
-    <span class="c-footer__center">Creative Studio</span>
-    <div class="c-footer__right">
-      <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a>
-      <a href="mailto:hello@azzistudios.com">Email</a>
-    </div>
-  </footer>
-
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html" class="mob-menu__top" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <a href="index.html">Work</a>
+  <a href="index.html?panel=about">About</a>
+  <a href="index.html?panel=services">Services</a>
+  <a href="faq.html">FAQ</a>
+  <a href="index.html?panel=contact">Contact</a>
 </div>
 
-<script src="main.js"></script>
+<section class="about-block">
+
+  <div class="about-section">
+    <div class="about-label">Where is Azzi Studios based, and do you work internationally?</div>
+    <p class="about-body">Azzi Studios is a creative studio based in Beirut, Lebanon. We produce work across the region and travel internationally for campaigns, shoots and installations.</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">What services does Azzi Studios offer?</div>
+    <p class="about-body">Five. Campaign Production — creative direction, art direction, photography, videography and set design. Visual Content — product photography, lookbooks, reels and monthly content. VM & Window Display — window display, visual merchandising, retail environments and pop-ups. Visual Identity — logo, typography, colour systems, brand guidelines and packaging. Social Media Management — content strategy, calendars, community management, account growth and paid social.</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">What kinds of brands do you work with?</div>
+    <p class="about-body">We work with fashion, beauty, lifestyle and hospitality brands — from established names to new labels launching their first campaign.</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">What does a typical project look like?</div>
+    <p class="about-body">Every project starts with a brief and a conversation. We handle creative direction, set, team and production from end to end, so you get one studio with full creative ownership from concept to final delivery.</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Do you offer monthly or ongoing content production?</div>
+    <p class="about-body">Yes. Alongside one-off campaigns we produce monthly visual content on retainer — product photography, reels and social-ready assets — for brands that need a consistent stream of imagery.</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">How do we start a project with Azzi Studios?</div>
+    <p class="about-body">Email hello@azzistudios.com or message us on WhatsApp at +961 78 90 26 28 with a few words about what you are working on. We favour long-term collaborations and tailor-made approaches.</p>
+  </div>
+
+  <div style="margin-top:2.5rem">
+    <div class="about-footer">
+      <div class="about-footer-cell">&copy; 2026 AZZI STUDIOS — All Rights Reserved</div>
+      <div class="about-footer-cell about-footer-cell--right">Website by <a href="index.html">AZZI STUDIOS</a></div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+// Hamburger — same behaviour as the about page.
+(function(){
+  const ham  = document.getElementById('ham');
+  const menu = document.getElementById('mobMenu');
+  if (!ham || !menu) return;
+  function sync(){ document.body.classList.toggle('menu-open', menu.classList.contains('open')); }
+  ham.addEventListener('click', () => { menu.classList.toggle('open'); sync(); });
+  menu.querySelectorAll('a, button').forEach(el =>
+    el.addEventListener('click', () => { menu.classList.remove('open'); sync(); }));
+})();
+</script>
 <script defer src="/enhance.js"></script>
 </body>
 </html>
