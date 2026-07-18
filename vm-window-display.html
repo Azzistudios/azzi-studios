@@ -224,23 +224,85 @@
 }
 </style>
 <link rel="stylesheet" href="/enhance.css?v=70">
+
+<style>
+/* ── MAIN-SITE HEADER + FOOTER (cloned from index) ─────────── */
+.nav{
+  position:fixed;top:1rem;left:0;right:0;
+  height:48px;padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:8600;
+}
+.nav-logo{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;line-height:1;color:#111;
+}
+.nav-center{
+  position:fixed;top:calc(1rem + 24px);left:50%;
+  transform:translate(-50%,-50%);z-index:8600;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;
+  color:#111;white-space:nowrap;
+}
+.nav-right{
+  display:flex;gap:1.75rem;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+}
+.nav-right a{transition:opacity 0.2s;color:#111}
+.nav-right a:hover{opacity:0.4}
+.nav-ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:12px;margin:-8px;cursor:pointer;position:relative;z-index:9001}
+.nav-ham span{display:block;width:12px;height:1.5px;background:#111;transition:transform 0.3s ease}
+body.menu-open .nav-ham span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+body.menu-open .nav-ham span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
+body.menu-open .nav-logo,body.menu-open .nav-center{visibility:hidden}
+.mob-menu{display:none;position:fixed;inset:0;background:#fff;z-index:9000;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Space Mono',monospace;font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase;color:#111}
+.mob-menu__top{position:absolute;top:calc(max(1rem, env(safe-area-inset-top)) + 24px);left:50%;transform:translate(-50%,-50%);font-size:0.6rem !important;font-weight:700;letter-spacing:0.2em !important;line-height:1;white-space:nowrap}
+@media(max-width:768px){
+  .nav-right,.nav-center{display:none}
+  .nav-ham{display:flex}
+}
+.site-footer{
+  margin-top:4rem;
+  padding:2.5rem 2rem 2rem;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;
+  color:#111;
+}
+.site-footer__copy{justify-self:start;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;line-height:1}
+.site-footer__center{justify-self:center;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;line-height:1;white-space:nowrap}
+.site-footer__right{justify-self:end;display:flex;align-items:center;gap:1.75rem;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;line-height:1}
+.site-footer__right a{color:#111;transition:opacity 0.2s}
+.site-footer__right a:hover{opacity:0.4}
+@media(max-width:768px){
+  .site-footer{display:flex;flex-direction:column;align-items:center;gap:1.2rem;text-align:center;padding:2.5rem 1rem;margin-top:3rem}
+  .site-footer__center{display:none}
+}
+</style>
 </head>
 <body>
 
-<nav class="c-nav" id="nav">
-  <a href="index.html" class="c-nav__logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
-  <ul class="c-nav__links">
-    <li><a href="index.html">Work</a></li>
-    <li><a href="services.html" class="active">Services</a></li>
-    <li><a href="index.html?panel=about">About</a></li>
-    <li><a href="faq.html">FAQ</a></li>
-    <li><a href="index.html?panel=contact">Contact</a></li>
-  </ul>
-  <div class="c-nav__right">
-    <a href="index.html?panel=contact" class="c-nav__cta">Start a project</a>
+<nav class="nav">
+  <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <a href="index.html" class="nav-center" onclick="sessionStorage.removeItem('azzi_entered')">Creative Studio</a>
+  <div class="nav-right">
+    <a href="index.html">Work</a>
+    <a href="index.html?panel=about">About</a>
+    <a href="index.html?panel=services">Services</a>
+    <a href="index.html?panel=contact">Contact</a>
   </div>
-  <button class="c-nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span></button>
+  <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html" class="mob-menu__top" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
+  <a href="index.html">Work</a>
+  <a href="index.html?panel=about">About</a>
+  <a href="index.html?panel=services">Services</a>
+  <a href="faq.html">FAQ</a>
+  <a href="index.html?panel=contact">Contact</a>
+</div>
 
 <div class="c-layout svc-wrap">
 
@@ -284,20 +346,31 @@
     <a href="index.html?panel=contact" class="svc-cta__btn">Start a project &rarr;</a>
   </div>
 
-  <footer class="c-footer">
-    <span class="c-footer__copy">&copy; 2026 Azzi Studios — All rights reserved</span>
-    <span class="c-footer__center">Creative Studio</span>
-    <div class="c-footer__right">
-      <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a>
-      <a href="mailto:hello@azzistudios.com">Email</a>
-    </div>
-  </footer>
+  <footer class="site-footer">
+  <span class="site-footer__copy">&copy; 2026 Azzi Studios &mdash; All rights reserved</span>
+  <span class="site-footer__center">Creative Studio</span>
+  <div class="site-footer__right">
+    <a href="https://www.linkedin.com/company/azzi-studios/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://wa.me/96178902628" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="mailto:hello@azzistudios.com">Email</a>
+  </div>
+</footer>
 
 </div>
 
 <script src="main.js"></script>
 <script defer src="/enhance.js"></script>
+<script>
+(function(){
+  const ham  = document.getElementById('ham');
+  const menu = document.getElementById('mobMenu');
+  if (!ham || !menu) return;
+  function sync(){ document.body.classList.toggle('menu-open', menu.classList.contains('open')); }
+  ham.addEventListener('click', () => { menu.classList.toggle('open'); sync(); });
+  menu.querySelectorAll('a').forEach(el =>
+    el.addEventListener('click', () => { menu.classList.remove('open'); sync(); }));
+})();
+</script>
 </body>
 </html>
