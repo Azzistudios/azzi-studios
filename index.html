@@ -69,7 +69,7 @@
     "https://www.instagram.com/azzistudios",
     "https://www.linkedin.com/company/azzi-studios"
   ],
-  "knowsAbout": ["Campaign Production", "Art Direction", "Creative Direction", "Set Design", "Visual Content", "Product Photography", "Visual Merchandising", "Window Display", "Visual Identity", "Branding", "Social Media Management"],
+  "knowsAbout": ["Campaign Production", "Art Direction", "Creative Direction", "Set Design", "Visual Content", "Product Photography", "Visual Merchandising", "Window Display", "Visual Identity", "Branding", "Social Media Management", "Fashion", "Luxury", "Beauty", "Jewellery", "Lifestyle", "Gastronomy", "Spirits", "Automotive", "Culture and Arts"],
   "makesOffer": [
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Campaign Production", "areaServed": "Lebanon" } },
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Visual Content", "areaServed": "Lebanon" } },
@@ -1139,20 +1139,6 @@ body.entered .archive-cell{opacity:1;transform:none}
 
 /* LIST view */
 .gal.list-view .gal-row{display:none}
-/* ── CUSTOM CURSOR — a small dot in difference blend: black over
-   white, inverting over imagery. Trails the pointer with the site's
-   lerp, swells over anything clickable, contracts while pressed.
-   Desktop fine-pointer only; native cursor returns under
-   reduced-motion or without JS. ── */
-body.has-cursor, body.has-cursor *{cursor:none !important}
-#cursor{
-  position:fixed;top:0;left:0;
-  width:10px;height:10px;border-radius:50%;
-  background:#fff;mix-blend-mode:difference;
-  pointer-events:none;z-index:99999;
-  opacity:0;
-  will-change:transform;
-}
 
 /* ── CLIENTS — quiet monochrome marquee before the footer.
    Every logo is rendered in the site's ink via CSS mask (only the
@@ -1467,7 +1453,7 @@ body.has-cursor, body.has-cursor *{cursor:none !important}
           <p class="ov-facts">
             <b>Founded:</b> 2024<br>
             <b>Based:</b> Beirut, Lebanon<br>
-            <b>Specializing:</b> Luxury, Beauty, Lifestyle, F&amp;B<br>
+            <b>Specializing:</b> Fashion, Luxury, Beauty, Jewellery, Lifestyle, Gastronomy, Spirits, Automotive, Culture &amp; Arts<br>
             <b>Working:</b> Beirut and the region
           </p>
         </div>
@@ -2992,33 +2978,6 @@ function buildRoom() {
 })();
 
 
-// ══ CUSTOM CURSOR — dot with lerped trail, difference blend ══
-(function(){
-  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const dot = document.createElement('div');
-  dot.id = 'cursor';
-  document.body.appendChild(dot);
-  document.body.classList.add('has-cursor');
-  const HOT = 'a,button,.wcell:not(.wcell--empty),.gal-cell,.reviews__card,.clients__logo,.archive-cell';
-  let x = innerWidth/2, y = innerHeight/2, tx = x, ty = y;
-  let s = 1, hot = false, pressed = false, seen = false;
-  document.addEventListener('mousemove', e => {
-    tx = e.clientX; ty = e.clientY;
-    if (!seen) { x = tx; y = ty; seen = true; dot.style.opacity = '1'; }
-    hot = !!(e.target.closest && e.target.closest(HOT));
-  }, { passive: true });
-  document.addEventListener('mousedown', () => { pressed = true; });
-  document.addEventListener('mouseup',   () => { pressed = false; });
-  document.documentElement.addEventListener('mouseleave', () => { dot.style.opacity = '0'; seen = false; });
-  (function loop(){
-    const target = (hot ? 3.1 : 1) * (pressed ? 0.72 : 1);
-    x += (tx - x) * 0.22;
-    y += (ty - y) * 0.22;
-    s += (target - s) * 0.16;
-    dot.style.transform = 'translate3d(' + (x - 5) + 'px,' + (y - 5) + 'px,0) scale(' + s.toFixed(3) + ')';
-    requestAnimationFrame(loop);
-  })();
 })();
 
 // ══ BACK LINK ════════════════════════════════════════════
