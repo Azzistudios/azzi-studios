@@ -852,7 +852,7 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=70">
+<link rel="stylesheet" href="/enhance.css?v=71">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -1429,7 +1429,7 @@ const PROJECTS = {
     // few pairs so they're ready the moment the user starts scrolling.
     const load = eager ? '' : ' loading="lazy"';
     const prio = eager ? ' fetchpriority="high"' : '';
-    return `<img class="${cls}" src="${esc(src)}" alt="Plastik Studios — Roadster — by Azzi Studios"${load}${prio} decoding="async" title="Azzi Studios — Plastik Roadster">`;
+    return `<img class="${cls}" src="${esc(src)}" alt="Plastik Studios — Roadster — by Azzi Studios"${load}${prio} decoding="async">`;
   }
 
   const footer = `
