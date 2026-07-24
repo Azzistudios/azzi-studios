@@ -3413,10 +3413,6 @@ function whenEntered(fn){
       const pl = v.play(); if (pl && pl.catch) pl.catch(() => {});
     });
   };
-  // Already past the intro (Back from a project, or ?panel deep link):
-  // the landing is visible right away, so start them now.
-  if (document.body.classList.contains('entered')) window.__startLandingVideos();
-
   // ── Build the repeating blocks ──
   let ptr = 0, block = 0;
   const GRID_N = 6;   // projects per grid chunk
@@ -3460,6 +3456,11 @@ function whenEntered(fn){
     if (win) win.style.aspectRatio = '3 / 4';
     add(row);
   }
+
+  // Already past the intro (Back from a project, or ?panel deep link):
+  // the landing is visible right away, so hydrate its deferred media
+  // now — AFTER every block (including the video cells) exists.
+  if (document.body.classList.contains('entered')) window.__startLandingVideos();
 
   function esc(s){
     return String(s).replace(/[&<>"']/g, c =>
