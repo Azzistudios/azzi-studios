@@ -3472,18 +3472,21 @@ function whenEntered(fn){
     const href  = esc(p.href);
     const title = esc(p.title);
     const lazy  = ' loading="lazy" decoding="async"';
-    // Editorial blocks render at ≤880px — draw from the 880px tier,
-    // never the full-resolution originals (one Eloria still was a
-    // 2.9 MB PNG loading above the fold on the work page).
-    const disp = u => /^https?:\/\//.test(u) ? u :
+    // Half-width duo/stagger cells draw from the 880px tier; the
+    // FULL-WIDTH solo cover renders ~1664px, so it draws from the
+    // 1600px tier (an 880px source visibly upscaled = "flou").
+    // Neither ever touches the full-resolution originals.
+    const disp   = u => /^https?:\/\//.test(u) ? u :
       'thumbs-lg/' + u.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+    const dispXL = u => /^https?:\/\//.test(u) ? u :
+      'thumbs-xl/' + u.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
 
     if (layout === 'solo') {
       row.className = 'gal-row gal-row--solo';
       row.innerHTML =
         '<a href="' + href + '" class="gal-cell gal-cell--solo">' +
           '<div class="solo-window">' +
-            '<img src="' + esc(disp(p.imgs[0])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + '>' +
+            '<img src="' + esc(dispXL(p.imgs[0])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + '>' +
           '</div>' +
           '<div class="gal-cell-cap">' + title + '</div>' +
         '</a>';
