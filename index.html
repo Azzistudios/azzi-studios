@@ -2117,9 +2117,14 @@ function buildRoom() {
   // are used as-is. This swap took the mosaic from ~18 MB of
   // effective load (full-size webp + 0.4-1 MB PNG "thumbs") down
   // to a few hundred KB on screen at a time.
-  const thumb = url =>
+  // Two thumbnail tiers: 440px (thumbs/) for single 1×1 cells, 880px
+  // (thumbs-lg/) for any cell that spans 2+ tracks — those render
+  // large enough that a 440px source visibly upscales. `large` is
+  // passed by makeCell from the cell's grid span.
+  const thumb = (url, large) =>
     /^https?:\/\//.test(url) ? url :
-    'thumbs/' + url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+    (large ? 'thumbs-lg/' : 'thumbs/') +
+      url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
 
   // ── Bookkeeping ──
   // projectCount: project name → how many cells currently show it
@@ -2240,6 +2245,9 @@ function buildRoom() {
     if (ratio < 0.95)      { ratioCls = 'wcell--34'; cellOri = 'portrait'; }
     else if (ratio < 1.1)  { ratioCls = 'wcell--11'; cellOri = 'square'; }
     else                   { ratioCls = 'wcell--43'; cellOri = 'landscape'; }
+    // A cell spanning 2+ tracks in either axis renders large enough
+    // to warrant the 880px tier; 1×1 cells keep the light 440px one.
+    const isLarge = pos.w > 1 || pos.h > 1;
     cell.dataset.orientation = cellOri;
     cell.className = 'wcell ' + ratioCls + (pos.empty ? ' wcell--empty' : '');
     cell.style.gridColumn = pos.c + ' / span ' + pos.w;
@@ -2302,7 +2310,7 @@ function buildRoom() {
       commit(cell, initUrl);
       const imgA = document.createElement('img');
       imgA.className = 'img-a';
-      imgA.src = thumb(initUrl);
+      imgA.src = thumb(initUrl, isLarge);
       imgA.alt = '';
       // ALL cells load eagerly: loading="lazy" inside a 3D-transformed
       // scene is unreliable (browsers mis-judge the projected viewport
@@ -2342,7 +2350,7 @@ function buildRoom() {
 
       const newImg = document.createElement('img');
       newImg.className = 'img-b';
-      newImg.src = thumb(newUrl);
+      newImg.src = thumb(newUrl, isLarge);
       newImg.alt = '';
       newImg.decoding = 'async';
       cell.appendChild(newImg);
@@ -2732,6 +2740,13 @@ function buildRoom() {
     });
   }
 
+  // The preview renders at ~300px, so it draws from the 880px tier —
+  // NOT the full-resolution originals. (This loop used to prewarm
+  // ~90 MB of originals at page load for a desktop-only hover feature
+  // most visitors never open.)
+  const lg = url => /^https?:\/\//.test(url) ? url :
+    'thumbs-lg/' + url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+
   // For each gallery cell, derive its project folder from the
   // first image, then map the project id to the full image list.
   // hrefMatch handles both the legacy /project.html?id=X format
@@ -2753,20 +2768,33 @@ function buildRoom() {
     // wasted preload bandwidth) — accept either prefix here.
     const folderMatch = src.match(/^(?:images|thumbs)\/([^\/]+)\//);
     const imgs = folderMatch ? (byFolder[folderMatch[1]] || []) : [];
-    map[id] = imgs.length ? imgs : [src];
+    map[id] = imgs.length ? imgs.map(lg) : [src];
   });
 
-  // Pre-warm browser cache for every preview image so the first
-  // hover never shows a blank flash — the picture is already
-  // decoded and ready to paint.
-  const seen = new Set();
-  Object.values(map).forEach(imgs => imgs.forEach(src => {
-    if (seen.has(src)) return;
-    seen.add(src);
-    const i = new Image();
-    i.decoding = 'async';
-    i.src = src;
-  }));
+  // Pre-warm the 880px preview thumbs — but ONLY once the visitor
+  // actually opens list view (desktop-only feature). Watching the
+  // gallery's class means it fires no matter how list view is
+  // toggled; it self-disconnects after the first warm.
+  let warmed = false;
+  function prewarm(){
+    if (warmed) return;
+    warmed = true;
+    const seen = new Set();
+    Object.values(map).forEach(imgs => imgs.forEach(src => {
+      if (seen.has(src)) return;
+      seen.add(src);
+      const i = new Image();
+      i.decoding = 'async';
+      i.src = src;
+    }));
+  }
+  if (gallery.classList.contains('list-view')) prewarm();
+  else if (window.MutationObserver) {
+    const mo = new MutationObserver(() => {
+      if (gallery.classList.contains('list-view')) { prewarm(); mo.disconnect(); }
+    });
+    mo.observe(gallery, { attributes: true, attributeFilter: ['class'] });
+  }
 
   // Per-id rotation index — advances on every fresh mouseenter
   const cursor = {};
@@ -2872,18 +2900,10 @@ function buildRoom() {
 (function(){
   const sec = document.querySelector('.reviews');
   if (!sec) return;
-  // Reveal on scroll — cards stagger via CSS delays.
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => entries.forEach(en => {
-      if (en.isIntersecting) { sec.classList.add('in'); io.disconnect(); }
-    }), { threshold: 0.25 });
-    io.observe(sec);
-  } else { sec.classList.add('in'); }
   // Hover (or tap) a card → crossfade to its other quote. A short
   // cooldown stops rapid mouse passes from thrashing the fade.
   // Phones show a single card — move every quote into it and cycle
   // automatically (visitors have no hover to discover the rest).
-  // Tap still advances immediately.
   const mobile = window.matchMedia('(max-width: 768px)').matches;
   const cards = Array.from(sec.querySelectorAll('.reviews__card'));
   if (mobile && cards.length > 1) {
@@ -2892,6 +2912,7 @@ function buildRoom() {
       cards[0].appendChild(sl);
     }));
   }
+  let firstCardSwap = null;
   cards.forEach((card, ci) => {
     const slides = Array.from(card.querySelectorAll('.reviews__slide'));
     if (slides.length < 2) return;
@@ -2907,8 +2928,20 @@ function buildRoom() {
     };
     card.addEventListener('mouseenter', swap);
     card.addEventListener('click', swap);
-    if (mobile && ci === 0) setInterval(swap, 5000);
+    if (ci === 0) firstCardSwap = swap;
   });
+  // Reveal on scroll; the mobile auto-cycle runs ONLY while the
+  // section is on screen (was a setInterval that ran forever).
+  let cycle = 0;
+  const startCycle = () => { if (mobile && firstCardSwap && !cycle) cycle = setInterval(firstCardSwap, 5000); };
+  const stopCycle  = () => { if (cycle) { clearInterval(cycle); cycle = 0; } };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => entries.forEach(en => {
+      if (en.isIntersecting) { sec.classList.add('in'); startCycle(); }
+      else stopCycle();
+    }), { threshold: 0.25 });
+    io.observe(sec);
+  } else { sec.classList.add('in'); startCycle(); }
 })();
 
 
@@ -3338,10 +3371,10 @@ function whenEntered(fn){
           const p = list[imgSeq % list.length];
           if (!p || !p.imgs.length) { imgSeq++; return; }
           href  = p.href; title = p.title;
-          media = '<img src="' + esc(thumb(p.imgs[imgSeq % p.imgs.length])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios" loading="lazy" decoding="async" title="' + esc(p.title) + '">';
+          media = '<img src="' + esc(thumb(p.imgs[imgSeq % p.imgs.length])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios" loading="lazy" decoding="async">';
         } else {
           href  = pick.p.href; title = pick.p.title;
-          media = '<img src="' + esc(thumb(pick.img)) + '" alt="' + esc(pick.p.title) + ' — a project by Azzi Studios" loading="lazy" decoding="async" title="' + esc(pick.p.title) + '">';
+          media = '<img src="' + esc(thumb(pick.img)) + '" alt="' + esc(pick.p.title) + ' — a project by Azzi Studios" loading="lazy" decoding="async">';
         }
         imgSeq++;
       }
@@ -3438,13 +3471,18 @@ function whenEntered(fn){
     const href  = esc(p.href);
     const title = esc(p.title);
     const lazy  = ' loading="lazy" decoding="async"';
+    // Editorial blocks render at ≤880px — draw from the 880px tier,
+    // never the full-resolution originals (one Eloria still was a
+    // 2.9 MB PNG loading above the fold on the work page).
+    const disp = u => /^https?:\/\//.test(u) ? u :
+      'thumbs-lg/' + u.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
 
     if (layout === 'solo') {
       row.className = 'gal-row gal-row--solo';
       row.innerHTML =
         '<a href="' + href + '" class="gal-cell gal-cell--solo">' +
           '<div class="solo-window">' +
-            '<img src="' + esc(p.imgs[0]) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + ' title="' + esc(p.title) + '">' +
+            '<img src="' + esc(disp(p.imgs[0])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + '>' +
           '</div>' +
           '<div class="gal-cell-cap">' + title + '</div>' +
         '</a>';
@@ -3456,8 +3494,8 @@ function whenEntered(fn){
       row.innerHTML =
         '<a href="' + href + '" class="gal-cell gal-cell--duo">' +
           '<div class="duo-pair">' +
-            '<div class="duo-window"><img src="' + esc(p.imgs[0]) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + ' title="' + esc(p.title) + '"></div>' +
-            '<div class="duo-window"><img src="' + esc(p.imgs[1]) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + ' title="' + esc(p.title) + '"></div>' +
+            '<div class="duo-window"><img src="' + esc(disp(p.imgs[0])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + '></div>' +
+            '<div class="duo-window"><img src="' + esc(disp(p.imgs[1])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + '></div>' +
           '</div>' +
           '<div class="gal-cell-cap">' + title + '</div>' +
         '</a>';
@@ -3469,8 +3507,8 @@ function whenEntered(fn){
       row.innerHTML =
         '<a href="' + href + '" class="gal-cell gal-cell--stagger">' +
           '<div class="stagger-pair">' +
-            '<div class="stagger-main"><img src="' + esc(p.imgs[0]) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + ' title="' + esc(p.title) + '"></div>' +
-            '<div class="stagger-side"><div class="stagger-mini"><img src="' + esc(p.imgs[1]) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + ' title="' + esc(p.title) + '"></div></div>' +
+            '<div class="stagger-main"><img src="' + esc(disp(p.imgs[0])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + '></div>' +
+            '<div class="stagger-side"><div class="stagger-mini"><img src="' + esc(disp(p.imgs[1])) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios"' + lazy + '></div></div>' +
           '</div>' +
           '<div class="gal-cell-cap">' + title + '</div>' +
         '</a>';
@@ -3481,7 +3519,7 @@ function whenEntered(fn){
     row.className = 'gal-row gal-row--hero';
     const slides = p.imgs.map((u, i) =>
       '<img class="asteri-slide' + (i === 0 ? ' is-on' : '') + '" ' +
-      'src="' + esc(u) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async" title="' + esc(p.title) + '">'
+      'src="' + esc(disp(u)) + '" alt="' + esc(p.title) + ' — a project by Azzi Studios" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">'
     ).join('');
     row.innerHTML =
       '<a href="' + href + '" class="gal-cell gal-cell--hero">' +
