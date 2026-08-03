@@ -355,6 +355,19 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
   width:auto;max-width:54vw;
 }
 
+/* ── THE RICH WIFE — page-scoped: photos render FULL FRAME.
+   The editorial carries the Sayidaty watermark at the frame edge,
+   so nothing may crop: the 40px parallax overscan is removed and
+   the scroll parallax neutralised (!important beats the inline
+   transform the parallax JS writes). Cells are 4:5 and the photos
+   are exactly 4:5, so contain === edge-to-edge with zero loss. */
+.proj-cell img{
+  height:100% !important;
+  margin-top:0 !important;
+  object-fit:contain !important;
+  transform:none !important;
+}
+
 /* Video-end — every project's videos play at the end, ALL in
    the same section, side by side. Default aspect is 16:9 (the
    "video:" prefix). Reels marked with "vreel:" render as
