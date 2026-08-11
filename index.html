@@ -2139,7 +2139,8 @@ function buildRoom() {
   const thumb = (url, large) =>
     /^https?:\/\//.test(url) ? url :
     (large ? 'thumbs-lg/' : 'thumbs/') +
-      url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+      url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg') +
+      (large ? '?v=2' : '');
 
   // ── Bookkeeping ──
   // projectCount: project name → how many cells currently show it
@@ -2760,7 +2761,7 @@ function buildRoom() {
   // ~90 MB of originals at page load for a desktop-only hover feature
   // most visitors never open.)
   const lg = url => /^https?:\/\//.test(url) ? url :
-    'thumbs-lg/' + url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+    'thumbs-lg/' + url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg') + '?v=2';
 
   // For each gallery cell, derive its project folder from the
   // first image, then map the project id to the full image list.
@@ -3492,9 +3493,9 @@ function whenEntered(fn){
     // 1600px tier (an 880px source visibly upscaled = "flou").
     // Neither ever touches the full-resolution originals.
     const disp   = u => /^https?:\/\//.test(u) ? u :
-      'thumbs-lg/' + u.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+      'thumbs-lg/' + u.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg') + '?v=2';
     const dispXL = u => /^https?:\/\//.test(u) ? u :
-      'thumbs-xl/' + u.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+      'thumbs-xl/' + u.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg') + '?v=2';
 
     if (layout === 'solo') {
       row.className = 'gal-row gal-row--solo';
