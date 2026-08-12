@@ -83,7 +83,10 @@
 
     function dismiss(value) {
       try { localStorage.setItem(COOKIE_KEY, value); } catch {}
-      if (value === 'declined') window['ga-disable-G-Z8L68HKHEJ'] = true;
+      if (value === 'declined') {
+        window['ga-disable-G-Z8L68HKHEJ'] = true;
+        if (window.fbq) { try { window.fbq('consent', 'revoke'); } catch (e) {} }
+      }
       bar.classList.remove('show');
       setTimeout(() => bar.remove(), 400);
     }

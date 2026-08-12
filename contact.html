@@ -208,6 +208,33 @@ body.menu-open .nav-logo{visibility:hidden}
 }
 </style>
 <link rel="stylesheet" href="/enhance.css?v=71">
+<!-- Meta Pixel Code — gated by the same consent + self-exclusion
+     as GA: no tracking if the visitor declined cookies or this is a
+     studio device (azzi_noga). fbq still exists as a no-op queue so
+     inline fbq('track',...) handlers never throw. -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];
+var ok = true;
+try {
+  ok = localStorage.getItem('azzi_noga') !== '1'
+    && localStorage.getItem('azzi_cookies_v1') !== 'declined';
+} catch(err){}
+if (!ok) return;
+t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1388003146766293');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Contact — Azzi Studios, Beirut Creative Studio</h1>
@@ -216,7 +243,7 @@ body.menu-open .nav-logo{visibility:hidden}
   <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
   <div class="nav-right">
     <a href="contact.html" class="active">Contact</a>
-    <a href="mailto:hello@azzistudios.com">Email</a>
+    <a href="mailto:hello@azzistudios.com" onclick="window.fbq&&fbq('track','Contact');">Email</a>
   </div>
   <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
@@ -239,9 +266,9 @@ body.menu-open .nav-logo{visibility:hidden}
   <div class="about-section">
     <div class="about-label">Contact details</div>
     <div class="about-col-body" style="margin-top:0.25rem">
-      <span style="color:#111">Email</span> &mdash; <a href="mailto:hello@azzistudios.com" style="color:#111">hello@azzistudios.com</a><br>
+      <span style="color:#111">Email</span> &mdash; <a href="mailto:hello@azzistudios.com" style="color:#111" onclick="window.fbq&&fbq('track','Contact');">hello@azzistudios.com</a><br>
       <span style="color:#111">Phone</span> &mdash; <a href="tel:+96178902628" style="color:#111">+961 78 90 26 28</a><br>
-      <span style="color:#111">WhatsApp</span> &mdash; <a href="https://wa.me/96178902628" target="_blank" rel="noopener" style="color:#111">+961 78 90 26 28</a><br>
+      <span style="color:#111">WhatsApp</span> &mdash; <a href="https://wa.me/96178902628" target="_blank" rel="noopener" style="color:#111" onclick="window.fbq&&fbq('track','Contact');">+961 78 90 26 28</a><br>
       <span style="color:#111">Instagram</span> &mdash; <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener" style="color:#111">@azzistudios</a>
     </div>
   </div>

@@ -208,6 +208,33 @@ body.menu-open .nav-logo{visibility:hidden}
 }
 </style>
 <link rel="stylesheet" href="/enhance.css?v=71">
+<!-- Meta Pixel Code — gated by the same consent + self-exclusion
+     as GA: no tracking if the visitor declined cookies or this is a
+     studio device (azzi_noga). fbq still exists as a no-op queue so
+     inline fbq('track',...) handlers never throw. -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];
+var ok = true;
+try {
+  ok = localStorage.getItem('azzi_noga') !== '1'
+    && localStorage.getItem('azzi_cookies_v1') !== 'declined';
+} catch(err){}
+if (!ok) return;
+t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1388003146766293');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 <h1 class="sr-only" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap;">Services — Azzi Studios, Beirut Creative Studio</h1>
@@ -216,7 +243,7 @@ body.menu-open .nav-logo{visibility:hidden}
   <a href="index.html" class="nav-logo" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
   <div class="nav-right">
     <a href="services.html" class="active">Services</a>
-    <a href="mailto:hello@azzistudios.com">Email</a>
+    <a href="mailto:hello@azzistudios.com" onclick="window.fbq&&fbq('track','Contact');">Email</a>
   </div>
   <button class="nav-ham" id="ham"><span></span><span></span></button>
 </nav>
@@ -263,7 +290,7 @@ body.menu-open .nav-logo{visibility:hidden}
 
   <div class="about-section">
     <div class="about-label">Start a project</div>
-    <p class="about-body">We craft images worth keeping. Write to <a href="mailto:hello@azzistudios.com" style="border-bottom:1px solid rgba(17,17,17,0.25);padding-bottom:1px">hello@azzistudios.com</a> and tell us what you are working on.</p>
+    <p class="about-body">We craft images worth keeping. Write to <a href="mailto:hello@azzistudios.com" style="border-bottom:1px solid rgba(17,17,17,0.25);padding-bottom:1px" onclick="window.fbq&&fbq('track','Contact');">hello@azzistudios.com</a> and tell us what you are working on.</p>
   </div>
 
   <div style="margin-top:2.5rem">
