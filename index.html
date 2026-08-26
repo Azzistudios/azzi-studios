@@ -1624,7 +1624,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
 
     <div class="gal-row gal-row--2">
       <a href="project-pinch-moi-garden.html" class="gal-cell">
-        <div class="gal-cell-img"><img src="thumbs/Project15_PinchMoi_TheGarden/DSC09569.jpg" alt="Pinch Moi — The Garden — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
+        <div class="gal-cell-img"><img src="thumbs/Project15_PinchMoi_TheGarden/DSC09569.jpg?v=2" alt="Pinch Moi — The Garden — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
         <div class="gal-cell-cap">Pinch Moi — The Garden</div>
       </a>
       <a href="project-ambiance-autumn.html" class="gal-cell">
@@ -1635,7 +1635,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
 
     <div class="gal-row gal-row--6">
       <a href="project-ambiance-boutique-xmas.html" class="gal-cell">
-        <div class="gal-cell-img"><img src="thumbs/Project02_Ambiance_ChristmasBoutique/IMG_3828.jpg" alt="Ambiance Boutique — Christmas — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
+        <div class="gal-cell-img"><img src="thumbs/Project02_Ambiance_ChristmasBoutique/IMG_3828.jpg?v=2" alt="Ambiance Boutique — Christmas — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
         <div class="gal-cell-cap">Boutique — Christmas</div>
       </a>
       <a href="project-ambiance-boutique-val.html" class="gal-cell">
@@ -1974,6 +1974,11 @@ const IMGS = [
   'images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_10.jpg',
 ];
 
+// True orientation of every pool image (EXIF-aware, baked at
+// build time) — lets every cell pick a matching-orientation photo
+// from the FIRST paint instead of learning after load.
+const IMG_ORI_STATIC = {"images/Project01_Ambiance_AutumnShoot/_37A7482%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7521%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7535%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7580%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7605%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7624%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7684%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7729%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7741%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7767%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7776%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7799%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7845%20copy%202.jpg":"portrait","images/Project01_Ambiance_AutumnShoot/_37A7888%20copy%202.jpg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3803.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3804.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3813.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3822.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3828.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3834.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3835.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3836.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3837.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3839.jpeg":"portrait","images/Project02_Ambiance_ChristmasBoutique/IMG_3840.jpeg":"portrait","images/Project03_Ambiance_ChristmasCampaign/1.JPG":"portrait","images/Project03_Ambiance_ChristmasCampaign/19.jpg":"portrait","images/Project03_Ambiance_ChristmasCampaign/20.jpg":"landscape","images/Project03_Ambiance_ChristmasCampaign/21.jpg":"portrait","images/Project03_Ambiance_ChristmasCampaign/22.jpg":"portrait","images/Project03_Ambiance_ChristmasCampaign/23.jpg":"portrait","images/Project03_Ambiance_ChristmasCampaign/5.jpg":"portrait","images/Project03_Ambiance_ChristmasCampaign/8.jpg":"portrait","images/Project04_Ambiance_Emozee/emozee1.jpg":"square","images/Project04_Ambiance_Emozee/emozee2.png":"square","images/Project06_Ambiance_SpringShoot/IMG_2340.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2432.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2451.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2469%202.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2477.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2585.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2600.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2615.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2634.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2687.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2701.jpg":"portrait","images/Project06_Ambiance_SpringShoot/IMG_2703.jpg":"portrait","images/Project07_Ambiance_SummerShoot/010.jpg":"portrait","images/Project07_Ambiance_SummerShoot/011.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0110.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0111.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0112.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0113.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0114.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0115.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0116.jpg":"portrait","images/Project07_Ambiance_SummerShoot/0117.jpg":"portrait","images/Project07_Ambiance_SummerShoot/012.jpg":"portrait","images/Project07_Ambiance_SummerShoot/013.jpg":"portrait","images/Project07_Ambiance_SummerShoot/014.jpg":"portrait","images/Project07_Ambiance_SummerShoot/015.jpg":"portrait","images/Project07_Ambiance_SummerShoot/016.jpg":"portrait","images/Project07_Ambiance_SummerShoot/017.jpg":"portrait","images/Project07_Ambiance_SummerShoot/018.jpg":"portrait","images/Project07_Ambiance_SummerShoot/019.jpg":"portrait","images/Project08_Ambiance_Valentine/010.jpg":"portrait","images/Project08_Ambiance_Valentine/011.JPG":"portrait","images/Project08_Ambiance_Valentine/0111.jpeg":"portrait","images/Project08_Ambiance_Valentine/0112.jpeg":"portrait","images/Project08_Ambiance_Valentine/0113.jpeg":"portrait","images/Project08_Ambiance_Valentine/012.jpg":"portrait","images/Project08_Ambiance_Valentine/013.JPG":"square","images/Project08_Ambiance_Valentine/015.jpeg":"portrait","images/Project08_Ambiance_Valentine/016.jpeg":"portrait","images/Project08_Ambiance_Valentine/017.jpeg":"portrait","images/Project08_Ambiance_Valentine/018.jpeg":"portrait","images/Project08_Ambiance_Valentine/019.jpeg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03053.jpg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03056.jpg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03061.jpg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03070.jpg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03076.jpg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03086.jpg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03099.jpg":"portrait","images/Project09_Ambiance_WinterShoot/DSC03133.jpg":"portrait","images/Project11_Blubay_Shoot/IMG_7880.JPG":"portrait","images/Project11_Blubay_Shoot/IMG_7881.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7882.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7883.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7884.JPG":"portrait","images/Project11_Blubay_Shoot/IMG_7893.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7895.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7901.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7902.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7903.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7904.JPG":"portrait","images/Project11_Blubay_Shoot/IMG_7905.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7906.JPG":"landscape","images/Project11_Blubay_Shoot/IMG_7907.JPG":"portrait","images/Project11_Blubay_Shoot/IMG_7908.JPG":"portrait","images/Project11_Blubay_Shoot/IMG_7935.JPG":"landscape","images/Project14_Eloria_Launch/image00023.png":"portrait","images/Project14_Eloria_Launch/image00024.png":"portrait","images/Project14_Eloria_Launch/image00028.png":"portrait","images/Project14_Eloria_Launch/image00030.png":"portrait","images/Project14_Eloria_Launch/image00032.jpeg":"portrait","images/Project14_Eloria_Launch/image00038.png":"portrait","images/Project14_Eloria_Launch/image00040.png":"portrait","images/Project14_Eloria_Launch/image00043.jpeg":"portrait","images/Project14_Eloria_Launch/image00045.png":"portrait","images/Project14_Eloria_Launch/image00050.png":"portrait","images/Project14_Eloria_Launch/image00052.png":"portrait","images/Project14_Eloria_Launch/image00057.png":"portrait","images/Project15_PinchMoi_TheGarden/DSC09569.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09574.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09593.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09617.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09648.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09711.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09747.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09822.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09836.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09875.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09882.JPG":"portrait","images/Project15_PinchMoi_TheGarden/DSC09900.JPG":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_03.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_04.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_05.webp":"landscape","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_06.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_07.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_08.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_09.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_10.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_11.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_13.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_14.webp":"landscape","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_15.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_16.webp":"portrait","images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_17.webp":"portrait","images/Project18_Plastik_Roadster/515285069_18511440391057114_5258077007708806205_n.jpg":"portrait","images/Project18_Plastik_Roadster/516740497_18512180509057114_3339638040969611148_n.jpg":"portrait","images/Project18_Plastik_Roadster/517855742_18512547376057114_6651450596493651219_n.jpg":"portrait","images/Project18_Plastik_Roadster/527953147_18517432660057114_9115896980160238796_n.jpg":"portrait","images/Project18_Plastik_Roadster/528296516_18517432687057114_5396667161801077676_n.jpg":"portrait","images/Project18_Plastik_Roadster/528330731_18517432678057114_4771236940823808404_n.jpg":"portrait","images/Project18_Plastik_Roadster/529160533_18517432447057114_3963628044403323556_n.jpg":"portrait","images/Project18_Plastik_Roadster/529514908_18517432669057114_3525830708845009008_n.jpg":"portrait","images/Project18_Plastik_Roadster/529839148_18517432648057114_1648346591603768476_n.jpg":"portrait","images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01b.jpg":"portrait","images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_02b.jpg":"portrait","images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_03b.jpg":"landscape","images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_04b.jpg":"landscape","images/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_05b.jpg":"landscape","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_01.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_02.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_03.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_04.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_05.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_06.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_07.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_08.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_09.jpg":"portrait","images/Project20_Sayidaty_RichWife/AZZISTUDIOS_Sayidaty_RichWife_2026_10.jpg":"portrait"};
+
 // ══ WALL LAYOUTS ══════════════════════════════════════════
 // Each wall has a regular cols × rows grid; cells span various
 // (w, h) combinations so the look is irregular — squares, portraits,
@@ -1981,103 +1986,72 @@ const IMGS = [
 // white space (no image, no hover) — that's the "white space"
 // the user asked for, NOT gutters between pictures.
 const WALL_LAYOUTS = {
-  // Finer grids so "small" can be a mix of small SQUARE (1×1),
-  // small PORTRAIT (1×2), and small LANDSCAPE (2×1) — variety
-  // within the small size. Across the whole mosaic only:
-  //   • 2 BIG landscapes (back wall + top wall)  — span 5×2
-  //   • 2 BIG portraits  (left wall + right wall) — span 2×4
-  // Unfilled grid tracks render as the wall's white background,
-  // so there's no need to declare empty cells explicitly.
-  back:   { cols:10, rows:6, cells: [
-    // BIG landscape anchored lower-left — a video tile
-    {c:2,  r:4, w:3, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4'},
-
-    // ── Top band ──
-    {c:1,  r:1, w:1, h:1},   // small square (top-left corner)
-    {c:3,  r:1, w:2, h:1},   // small landscape
-    {c:6,  r:1, w:1, h:1},   // small square
-    {c:8,  r:1, w:1, h:2},   // small portrait
-    {c:10, r:1, w:1, h:1},   // small square (top-right corner)
-
-    // ── Middle band ──
-    {c:1,  r:2, w:1, h:2},   // small portrait (upper-left)
-    {c:3,  r:2, w:1, h:1},   // small square
-    {c:5,  r:2, w:1, h:1},   // small square
-    {c:6,  r:3, w:1, h:2},   // small portrait
-    {c:9,  r:2, w:1, h:2},   // small portrait (upper-right)
-
-    // ── Lower band — anchored by the big ──
-    {c:1,  r:5, w:1, h:1},   // small square
-    {c:7,  r:4, w:2, h:1},   // small landscape (right of big)
-    {c:8,  r:5, w:1, h:2},   // small portrait
-    {c:10, r:4, w:1, h:1},   // small square
-
-    // ── Bottom row ──
-    {c:1,  r:6, w:1, h:1},   // small square (bottom-left corner)
-    {c:5,  r:6, w:2, h:1},   // small landscape
-    {c:10, r:6, w:1, h:1},   // small square (bottom-right corner)
+  back: { cols:10, rows:6, cells: [
+    {c:2, r:4, w:3, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4'},
+    {c:3, r:1, w:1, h:2},   // portrait
+    {c:5, r:1, w:1, h:2},   // portrait
+    {c:8, r:1, w:1, h:2},   // portrait
+    {c:10, r:1, w:1, h:2},   // portrait
+    {c:2, r:2, w:1, h:1},   // square
+    {c:7, r:2, w:1, h:1},   // square
+    {c:9, r:2, w:1, h:2},   // portrait
+    {c:1, r:3, w:1, h:2},   // portrait
+    {c:3, r:3, w:2, h:1},   // landscape
+    {c:10, r:3, w:1, h:2},   // portrait
+    {c:5, r:4, w:1, h:2},   // portrait
+    {c:8, r:4, w:1, h:2},   // portrait
+    {c:7, r:5, w:1, h:2},   // portrait
   ]},
-  // ── Side / top / bottom walls — content SPREAD across the whole
-  // wall with generous white-space gaps, and the videos placed
-  // centrally. Whatever slice is in view always has pictures and
-  // breathing room — no fully-white strip. ──
-  left:   { cols:6, rows:6, cells: [
-    {c:1, r:1, w:1, h:2},   // portrait
-    {c:3, r:1, w:1, h:1},   // square
-    {c:5, r:1, w:2, h:1},   // landscape
+  left: { cols:6, rows:6, cells: [
     {c:2, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Gym_loop.mp4'},
+    {c:2, r:1, w:1, h:2},   // portrait
+    {c:4, r:1, w:1, h:2},   // portrait
+    {c:1, r:2, w:1, h:2},   // portrait
+    {c:3, r:2, w:1, h:1},   // square
     {c:5, r:2, w:1, h:2},   // portrait
-    {c:1, r:4, w:1, h:1},   // square
-    {c:6, r:4, w:1, h:2},   // portrait
-    {c:4, r:5, w:1, h:1},   // square
-    {c:1, r:6, w:1, h:1},   // square
-    {c:2, r:6, w:1, h:1},   // square
+    {c:6, r:3, w:1, h:2},   // portrait
+    {c:2, r:5, w:1, h:2},   // portrait
   ]},
-  right:  { cols:6, rows:6, cells: [
-    {c:1, r:1, w:2, h:1},   // landscape
+  right: { cols:6, rows:6, cells: [
+    {c:3, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office_loop.mp4'},
+    {c:1, r:1, w:1, h:2},   // portrait
     {c:4, r:1, w:1, h:2},   // portrait
     {c:6, r:1, w:1, h:1},   // square
+    {c:3, r:2, w:1, h:1},   // square
     {c:1, r:3, w:1, h:2},   // portrait
-    {c:3, r:3, w:2, h:2, video:'images/Project14_Eloria_Launch/Eloria_LaunchingShoot_2025_Video_Office_loop.mp4'},
-    {c:6, r:3, w:1, h:2},   // portrait
+    {c:5, r:3, w:1, h:2},   // portrait
     {c:1, r:5, w:1, h:1},   // square
-    {c:5, r:5, w:1, h:1},   // square
-    {c:3, r:6, w:2, h:1},   // landscape
-    {c:6, r:6, w:1, h:1},   // square
+    {c:3, r:5, w:2, h:1},   // landscape
   ]},
-  top:    { cols:10, rows:6, cells: [
-    {c:1,  r:1, w:1, h:1},   // square
-    {c:3,  r:1, w:2, h:1},   // landscape
-    {c:6,  r:1, w:1, h:2},   // portrait
-    {c:8,  r:1, w:1, h:1},   // square
+  top: { cols:10, rows:6, cells: [
+    {c:3, r:3, w:3, h:2, video:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01_loop.mp4'},
+    {c:1, r:1, w:1, h:2},   // portrait
+    {c:3, r:1, w:1, h:2},   // portrait
+    {c:5, r:1, w:2, h:1},   // landscape
+    {c:8, r:1, w:1, h:2},   // portrait
     {c:10, r:1, w:1, h:2},   // portrait
-    {c:1,  r:2, w:1, h:2},   // portrait
-    {c:3,  r:3, w:3, h:2, video:'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01_loop.mp4'},
-    {c:7,  r:3, w:1, h:1},   // square
-    {c:9,  r:3, w:1, h:2},   // portrait
-    {c:1,  r:5, w:2, h:1},   // landscape
-    {c:4,  r:5, w:1, h:1},   // square
-    {c:6,  r:5, w:1, h:2},   // portrait
-    {c:3,  r:6, w:1, h:1},   // square
-    {c:8,  r:6, w:2, h:1},   // landscape
+    {c:4, r:2, w:1, h:1},   // square
+    {c:7, r:2, w:1, h:2},   // portrait
+    {c:2, r:3, w:1, h:2},   // portrait
+    {c:6, r:3, w:1, h:2},   // portrait
+    {c:9, r:3, w:1, h:1},   // square
+    {c:1, r:4, w:1, h:2},   // portrait
+    {c:10, r:4, w:1, h:2},   // portrait
   ]},
   bottom: { cols:10, rows:6, cells: [
-    {c:1,  r:1, w:1, h:2},   // portrait
-    {c:3,  r:1, w:1, h:1},   // square
-    {c:5,  r:1, w:2, h:1},   // landscape
-    {c:8,  r:1, w:1, h:2},   // portrait
-    {c:10, r:1, w:1, h:1},   // square
-    {c:3,  r:2, w:1, h:1},   // square
-    {c:1,  r:3, w:1, h:1},   // square
-    {c:6,  r:3, w:2, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4'},
-    {c:9,  r:3, w:1, h:2},   // portrait
-    {c:3,  r:4, w:1, h:2},   // portrait
-    {c:1,  r:5, w:2, h:1},   // landscape
-    {c:5,  r:5, w:1, h:1},   // square
-    {c:8,  r:5, w:1, h:1},   // square
-    {c:10, r:5, w:1, h:2},   // portrait
-    {c:5,  r:6, w:1, h:1},   // square
-    {c:7,  r:6, w:1, h:1},   // square
+    {c:6, r:3, w:2, h:2, video:'images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_Video_loop.mp4'},
+    {c:1, r:1, w:1, h:2},   // portrait
+    {c:3, r:1, w:1, h:2},   // portrait
+    {c:5, r:1, w:1, h:2},   // portrait
+    {c:8, r:1, w:1, h:2},   // portrait
+    {c:10, r:1, w:1, h:2},   // portrait
+    {c:6, r:2, w:2, h:1},   // landscape
+    {c:1, r:3, w:1, h:1},   // square
+    {c:3, r:3, w:1, h:2},   // portrait
+    {c:9, r:3, w:1, h:2},   // portrait
+    {c:5, r:4, w:1, h:2},   // portrait
+    {c:8, r:4, w:1, h:2},   // portrait
+    {c:10, r:4, w:1, h:2},   // portrait
   ]},
 };
 
@@ -2167,7 +2141,7 @@ function buildRoom() {
     /^https?:\/\//.test(url) ? url :
     (large ? 'thumbs-lg/' : 'thumbs/') +
       url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg') +
-      (large ? '?v=2' : '');
+      (large ? '?v=2' : '?v=2');
 
   // ── Bookkeeping ──
   // projectCount: project name → how many cells currently show it
@@ -2205,6 +2179,9 @@ function buildRoom() {
   // Lazily-populated orientation map for every image. Filled as
   // images load into cells (see the `load` listener below).
   const IMG_ORI = (window.__azziImgOri = window.__azziImgOri || {});
+  // Seed with the baked map — first-paint picks are orientation-true.
+  if (typeof IMG_ORI_STATIC !== 'undefined')
+    for (const k in IMG_ORI_STATIC) if (!(k in IMG_ORI)) IMG_ORI[k] = IMG_ORI_STATIC[k];
   function classifyOri(w, h){
     const r = w / h;
     if (r < 0.95) return 'portrait';
