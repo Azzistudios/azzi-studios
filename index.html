@@ -776,12 +776,14 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
    defines its shape, and a CSS aspect-ratio override fights with
    the row span (causing cells to overflow into the row below
    when the ratio demands more height than the span allows). */
-/* Constant half-pixel bleed on every picture cell: fractional
-   grid tracks under 3D transforms round to hairline white seams
-   between neighbours. A fixed -0.5px margin covers the seam on
-   every cell size — unlike the old scale(1.012), which grew with
-   the cell and read as visible overlap on large tiles. */
-.wcell:not(.wcell--empty){margin:-0.5px}
+/* Seam vs overlap: under the rotating 3D perspective, cell edges
+   always project onto fractional pixels — leaving either hairline
+   white gaps or stacked edges. The symmetric -0.5px bleed made
+   BOTH neighbours extend, stacking ~1-2 device px. Now each cell
+   bleeds 0.5px on its right/bottom only: every seam is covered by
+   exactly one neighbour, nothing stacks, and the paint-over stays
+   below the anti-aliasing threshold. */
+.wcell:not(.wcell--empty){margin:0 -0.5px -0.5px 0}
 .wcell.in{opacity:1;transform:none}
 .wcell img{
   position:absolute;inset:0;width:100%;height:100%;
