@@ -183,7 +183,7 @@ a{color:inherit;text-decoration:none}
   font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
   line-height:1.35;color:#111;text-align:center;max-width:88vw;
 }
-.ll-top,.ll-bot,.ll-logo{display:block;will-change:transform,opacity}
+.ll-top,.ll-bot,.ll-logo{display:block}
 .ll-top{
   font-size:1.8em;
   opacity:0;transform:translateY(-3.2em);
@@ -767,7 +767,6 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
              transform 0.8s cubic-bezier(0.22,1,0.36,1) var(--d,0s);
   cursor:pointer;
   pointer-events:auto;
-  will-change:transform,opacity;
 }
 /* The .wcell--34 / --11 / --43 classes are kept as orientation
    tags (used by pickImage to match portrait / square / landscape
@@ -878,7 +877,6 @@ body.entered .nav .view-toggle{opacity:1;pointer-events:auto}
   opacity:0;transform:translateY(24px);
   transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1) var(--d,0s),
              transform 0.85s cubic-bezier(0.16,1,0.3,1) var(--d,0s);
-  will-change:transform,opacity;
 }
 body.entered .gal-cell{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
@@ -917,7 +915,7 @@ body.entered .gal-cell{opacity:1;transform:none}
 /* ── Per-cell auto-cycling image stack (slides right → left) ── */
 .gal-cell-img .gal-img{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-  opacity:0;transform:translateX(100%);will-change:transform,opacity;
+  opacity:0;transform:translateX(100%);
   transition:transform 1.4s cubic-bezier(0.65,0,0.35,1), opacity 1s ease;
 }
 .gal-cell-img .gal-img.is-on{opacity:1;transform:translateX(0)}
@@ -1181,7 +1179,7 @@ body.entered .archive-cell{opacity:1;transform:none}
 .clients__logo--roadster{height:20px;width:119px}
 .clients__logo--asteri{height:40px;width:42px}
 .clients__logo--magrabi{height:20px;width:96px}
-.clients__logo--nara{height:32px;width:79px}
+.clients__logo--nara{height:32px;width:77px}
 .clients__logo--cameleon{height:30px;width:135px}
 .clients__logo--eclec{height:24px;width:86px}
 .clients__logo--eirene{height:40px;width:76px}
@@ -1195,7 +1193,7 @@ body.entered .archive-cell{opacity:1;transform:none}
   .clients__logo--roadster{height:16px;width:95px}
   .clients__logo--asteri{height:32px;width:33px}
   .clients__logo--magrabi{height:16px;width:77px}
-  .clients__logo--nara{height:26px;width:64px}
+  .clients__logo--nara{height:26px;width:63px}
   .clients__logo--cameleon{height:24px;width:108px}
   .clients__logo--eclec{height:19px;width:68px}
   .clients__logo--eirene{height:32px;width:61px}
@@ -1706,7 +1704,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
           <span class="clients__logo clients__logo--eloria" role="img" aria-label="Eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
           <span class="clients__logo clients__logo--magrabi" role="img" aria-label="Magrabi" style="--m:url('/brand_assets/clients/magrabi.png')"></span>
           <span class="clients__logo clients__logo--eclec" role="img" aria-label="Eclec" style="--m:url('/brand_assets/clients/eclec.png')"></span>
-          <span class="clients__logo clients__logo--nara" role="img" aria-label="Nara" style="--m:url('/brand_assets/clients/nara.png')"></span>
+          <span class="clients__logo clients__logo--nara" role="img" aria-label="Nara" style="--m:url('/brand_assets/clients/nara.png?v=2')"></span>
           <span class="clients__logo clients__logo--cameleon" role="img" aria-label="Cameleon MGT" style="--m:url('/brand_assets/clients/cameleon-mgt.png')"></span>
           <span class="clients__logo clients__logo--eirene" role="img" aria-label="Eiréné" style="--m:url('/brand_assets/clients/eirene.png')"></span>
           <span class="clients__logo clients__logo--blubay" role="img" aria-label="Blubay Batroun" style="--m:url('/brand_assets/clients/blubay.png')"></span>
@@ -1716,7 +1714,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
           <span class="clients__logo clients__logo--eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
           <span class="clients__logo clients__logo--magrabi" style="--m:url('/brand_assets/clients/magrabi.png')"></span>
           <span class="clients__logo clients__logo--eclec" style="--m:url('/brand_assets/clients/eclec.png')"></span>
-          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png')"></span>
+          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png?v=2')"></span>
           <span class="clients__logo clients__logo--cameleon" style="--m:url('/brand_assets/clients/cameleon-mgt.png')"></span>
           <span class="clients__logo clients__logo--eirene" style="--m:url('/brand_assets/clients/eirene.png')"></span>
           <span class="clients__logo clients__logo--blubay" style="--m:url('/brand_assets/clients/blubay.png')"></span>
@@ -1726,7 +1724,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
           <span class="clients__logo clients__logo--eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
           <span class="clients__logo clients__logo--magrabi" style="--m:url('/brand_assets/clients/magrabi.png')"></span>
           <span class="clients__logo clients__logo--eclec" style="--m:url('/brand_assets/clients/eclec.png')"></span>
-          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png')"></span>
+          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png?v=2')"></span>
           <span class="clients__logo clients__logo--cameleon" style="--m:url('/brand_assets/clients/cameleon-mgt.png')"></span>
           <span class="clients__logo clients__logo--eirene" style="--m:url('/brand_assets/clients/eirene.png')"></span>
           <span class="clients__logo clients__logo--blubay" style="--m:url('/brand_assets/clients/blubay.png')"></span>
@@ -1738,7 +1736,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
           <span class="clients__logo clients__logo--eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
           <span class="clients__logo clients__logo--magrabi" style="--m:url('/brand_assets/clients/magrabi.png')"></span>
           <span class="clients__logo clients__logo--eclec" style="--m:url('/brand_assets/clients/eclec.png')"></span>
-          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png')"></span>
+          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png?v=2')"></span>
           <span class="clients__logo clients__logo--cameleon" style="--m:url('/brand_assets/clients/cameleon-mgt.png')"></span>
           <span class="clients__logo clients__logo--eirene" style="--m:url('/brand_assets/clients/eirene.png')"></span>
           <span class="clients__logo clients__logo--blubay" style="--m:url('/brand_assets/clients/blubay.png')"></span>
@@ -1748,7 +1746,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
           <span class="clients__logo clients__logo--eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
           <span class="clients__logo clients__logo--magrabi" style="--m:url('/brand_assets/clients/magrabi.png')"></span>
           <span class="clients__logo clients__logo--eclec" style="--m:url('/brand_assets/clients/eclec.png')"></span>
-          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png')"></span>
+          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png?v=2')"></span>
           <span class="clients__logo clients__logo--cameleon" style="--m:url('/brand_assets/clients/cameleon-mgt.png')"></span>
           <span class="clients__logo clients__logo--eirene" style="--m:url('/brand_assets/clients/eirene.png')"></span>
           <span class="clients__logo clients__logo--blubay" style="--m:url('/brand_assets/clients/blubay.png')"></span>
@@ -1758,7 +1756,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
           <span class="clients__logo clients__logo--eloria" style="--m:url('/brand_assets/clients/eloria.png')"></span>
           <span class="clients__logo clients__logo--magrabi" style="--m:url('/brand_assets/clients/magrabi.png')"></span>
           <span class="clients__logo clients__logo--eclec" style="--m:url('/brand_assets/clients/eclec.png')"></span>
-          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png')"></span>
+          <span class="clients__logo clients__logo--nara" style="--m:url('/brand_assets/clients/nara.png?v=2')"></span>
           <span class="clients__logo clients__logo--cameleon" style="--m:url('/brand_assets/clients/cameleon-mgt.png')"></span>
           <span class="clients__logo clients__logo--eirene" style="--m:url('/brand_assets/clients/eirene.png')"></span>
           <span class="clients__logo clients__logo--blubay" style="--m:url('/brand_assets/clients/blubay.png')"></span>
