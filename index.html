@@ -1484,7 +1484,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
           <p class="ov-facts">
             <b>Founded:</b> 2024<br>
             <b>Based:</b> Beirut, Lebanon<br>
-            <b>Specializing:</b> Fashion, Luxury, Beauty, Jewellery, Lifestyle, Gastronomy, Spirits, Automotive, Culture &amp; Arts<br>
+            <b>Specializing:</b> Fashion, Luxury, Beauty, Jewellery,<br>Lifestyle, Gastronomy, Spirits, Automotive, Culture &amp; Arts<br>
             <b>Working:</b> Beirut and the region
           </p>
         </div>
@@ -2636,12 +2636,16 @@ function buildRoom() {
     rafId = requestAnimationFrame(lerpRoom);
   });
 
-  // ── Click to enter — soft crossfade ──
-  // The box is never transformed by the entry: the parallax loop
-  // stays alive so it keeps gently floating, and the whole room
-  // simply dissolves while the work page fades in underneath.
-  // No rotation, no dolly → it can't glitch and never flattens
-  // into a single wall.
+  // ── Click to enter — clean dissolve through white ──
+  // The box is never transformed by the entry (no rotation, no
+  // dolly → it can't glitch and never flattens into a single wall).
+  // The parallax loop is frozen at the click: its drift is invisible
+  // under a fade, and a static room composites as one cheap layer
+  // instead of re-rendering the 3D scene every frame while the
+  // landing is decoding its images. The two fades barely overlap —
+  // the room is nearly gone before the landing builds, so the switch
+  // passes through a quiet white beat instead of a double exposure
+  // of two photo grids.
   const room = document.getElementById('room');
   const landing = document.getElementById('landing');
   let entering = false;
@@ -2649,27 +2653,28 @@ function buildRoom() {
     if (entering) return;
     entering = true;
     sessionStorage.setItem('azzi_entered', '1');
+    // Freeze the parallax — the dissolve blends a static frame.
+    alive = false;
+    if (rafId) cancelAnimationFrame(rafId);
     // The landing is about to fade in — start its loop videos now.
     if (window.__startLandingVideos) window.__startLandingVideos();
 
-    // Dissolve the 3D room (box keeps floating underneath the fade).
-    room.style.transition = 'opacity 1.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    // Dissolve the 3D room.
+    room.style.transition = 'opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
     room.style.opacity = '0';
     room.style.pointerEvents = 'none';
 
-    // Work page crossfades in underneath, overlapping the fade-out.
+    // Work page fades in as the room is almost gone.
     setTimeout(() => {
       document.body.classList.add('entered');
       landing.classList.add('vis');
-    }, 250);
+    }, 350);
 
-    // After the crossfade, stop the parallax loop and drop the room.
+    // After the crossfade, drop the room from the tree.
     setTimeout(() => {
-      alive = false;
-      if (rafId) cancelAnimationFrame(rafId);
       room.style.display = 'none';
       document.body.style.overflow = '';
-    }, 1450);
+    }, 1500);
   });
 }
 
