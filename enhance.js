@@ -71,7 +71,7 @@
     bar.setAttribute('aria-label', 'Cookie preferences');
     bar.innerHTML = `
       <p class="cookie-bar__copy">
-        We use analytics cookies to understand how visitors use the site. No tracking otherwise.
+        We use analytics cookies to understand how visitors use the site. No tracking otherwise. <a class="cookie-bar__link" href="/privacy">Privacy</a>
       </p>
       <div class="cookie-bar__btns">
         <button type="button" class="cookie-bar__btn cookie-bar__btn--decline">Decline</button>
