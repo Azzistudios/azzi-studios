@@ -1459,7 +1459,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
     <button class="nav-link" type="button" data-panel="services">Services</button>
     <button class="nav-link" type="button" data-panel="contact">Contact</button>
   </div>
-  <button class="nav-ham" id="ham"><span></span><span></span></button>
+  <button class="nav-ham" id="ham" aria-label="Menu"><span></span><span></span></button>
 </nav>
 <div class="mob-menu" id="mobMenu">
   <a href="index.html" class="mob-menu__top" onclick="sessionStorage.removeItem('azzi_entered')">azzi studios</a>
@@ -3319,8 +3319,15 @@ function whenEntered(fn){
     const src   = img ? img.getAttribute('src') : '';
     const fm    = src.match(/^(?:images|thumbs)\/([^\/]+)\//);
     if (!fm) return;
-    const imgs  = byFolder[fm[1]] || [];
+    let imgs  = byFolder[fm[1]] || [];
     if (!imgs.length) return;
+    // Lead each block with the tile's own cover: rotate the folder
+    // list to start at the tile image, so a project shown on two
+    // tiles (two covers) opens on two different pictures instead of
+    // repeating imgs[0].
+    const base = src.split('/').pop().replace(/\.(jpe?g|png|webp)$/i, '');
+    const ci = imgs.findIndex(u => u.split('/').pop().replace(/\.(jpe?g|png|webp)$/i, '') === base);
+    if (ci > 0) imgs = imgs.slice(ci).concat(imgs.slice(0, ci));
     projects.push({ href, title, imgs });
   });
 

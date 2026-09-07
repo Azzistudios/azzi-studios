@@ -13,67 +13,67 @@
   </url>
 
   <url>
-    <loc>https://azzistudios.com/about.html</loc>
+    <loc>https://azzistudios.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/services.html</loc>
+    <loc>https://azzistudios.com/services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/campaign-production.html</loc>
+    <loc>https://azzistudios.com/campaign-production</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/visual-content.html</loc>
+    <loc>https://azzistudios.com/visual-content</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/vm-window-display.html</loc>
+    <loc>https://azzistudios.com/vm-window-display</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/visual-identity.html</loc>
+    <loc>https://azzistudios.com/visual-identity</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/social-media.html</loc>
+    <loc>https://azzistudios.com/social-media</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/campaign-production-gcc.html</loc>
+    <loc>https://azzistudios.com/campaign-production-gcc</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/restaurant-hospitality-branding.html</loc>
+    <loc>https://azzistudios.com/restaurant-hospitality-branding</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/faq.html</loc>
+    <loc>https://azzistudios.com/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/contact.html</loc>
+    <loc>https://azzistudios.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -82,7 +82,7 @@
        child tells Google which hero image represents each project for
        Google Images. -->
   <url>
-    <loc>https://azzistudios.com/project-plastik-asteri.html</loc>
+    <loc>https://azzistudios.com/project-plastik-asteri</loc>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/plastik-asteri.jpg</image:loc>
@@ -91,7 +91,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-plastik-roadster.html</loc>
+    <loc>https://azzistudios.com/project-plastik-roadster</loc>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/plastik-roadster.jpg</image:loc>
@@ -100,7 +100,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-eloria-launch.html</loc>
+    <loc>https://azzistudios.com/project-eloria-launch</loc>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/eloria-launch.jpg</image:loc>
@@ -109,7 +109,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-peachpuff-summer.html</loc>
+    <loc>https://azzistudios.com/project-peachpuff-summer</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/peachpuff-summer.jpg</image:loc>
@@ -118,7 +118,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-xmas.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-xmas</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-xmas.jpg</image:loc>
@@ -127,7 +127,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-winter.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-winter</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-winter.jpg</image:loc>
@@ -136,7 +136,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-summer.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-summer</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-summer.jpg</image:loc>
@@ -145,7 +145,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-emozee.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-emozee</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-emozee.jpg</image:loc>
@@ -154,7 +154,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-sayidaty-rich-wife.html</loc>
+    <loc>https://azzistudios.com/project-sayidaty-rich-wife</loc>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/sayidaty-rich-wife.jpg</image:loc>
@@ -163,7 +163,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-nara-in-your-skin.html</loc>
+    <loc>https://azzistudios.com/project-nara-in-your-skin</loc>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/nara-in-your-skin.jpg</image:loc>
@@ -172,7 +172,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-beirut-living.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-beirut-living</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-beirut-living-b.jpg</image:loc>
@@ -181,7 +181,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-spring.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-spring</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-spring.jpg</image:loc>
@@ -190,7 +190,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-boutique-xmas.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-boutique-xmas</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-boutique-xmas.jpg</image:loc>
@@ -199,7 +199,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-pinch-moi-garden.html</loc>
+    <loc>https://azzistudios.com/project-pinch-moi-garden</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/pinch-moi-garden.jpg</image:loc>
@@ -208,7 +208,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-autumn.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-autumn</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-autumn.jpg</image:loc>
@@ -217,7 +217,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-hue.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-hue</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-hue.jpg</image:loc>
@@ -226,7 +226,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-boutique-val.html</loc>
+    <loc>https://azzistudios.com/project-ambiance-boutique-val</loc>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-boutique-val.jpg</image:loc>
@@ -236,13 +236,13 @@
   </url>
 
   <url>
-    <loc>https://azzistudios.com/privacy.html</loc>
+    <loc>https://azzistudios.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://azzistudios.com/terms.html</loc>
+    <loc>https://azzistudios.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
