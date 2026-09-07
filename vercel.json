@@ -47,9 +47,12 @@
       "destination": "/project-ambiance-boutique-val.html" }
   ],
   "redirects": [
-    { "source": "/:path*",
+    { "source": "/",
       "has": [{ "type": "host", "value": "www.azzistudios.com" }],
-      "destination": "https://azzistudios.com/:path*", "permanent": true },
+      "destination": "https://azzistudios.com/", "permanent": true },
+    { "source": "/:path+",
+      "has": [{ "type": "host", "value": "www.azzistudios.com" }],
+      "destination": "https://azzistudios.com/:path+", "permanent": true },
     { "source": "/project-blubay-nightlife", "destination": "/", "permanent": true },
     { "source": "/project-eirene-identity", "destination": "/", "permanent": true },
     { "source": "/project",
