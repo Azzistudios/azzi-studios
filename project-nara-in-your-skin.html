@@ -349,6 +349,9 @@ body.info-open .info-btn-float{opacity:0;visibility:hidden;pointer-events:none}
 
 /* Solo picture — single 4:5 portrait, larger */
 .proj-section--solo-pic{padding:8vh 3vw}
+/* Opening pair = the two landscape frames (group poolside, lounger).
+   Native 4:3 so they show full-frame instead of a 4:5 centre crop. */
+.proj-section--pair:first-of-type .proj-cell{aspect-ratio:4/3}
 .proj-section--solo-pic .proj-cell{
   aspect-ratio:4/5;
   height:min(79vh, calc(54vw * 5 / 4));
@@ -1081,14 +1084,14 @@ const PROJECTS = {
       { role: 'Models', name: 'Dalia Najjar, Naré Parseghian & Majd Dwedari' },
     ],
     media: [
-      '/images-hd/nara-in-your-skin-01c.webp',
       '/images-hd/nara-in-your-skin-02c.webp',
+      '/images-hd/nara-in-your-skin-08c.webp',
+      '/images-hd/nara-in-your-skin-01c.webp',
       '/images-hd/nara-in-your-skin-03c.webp',
       '/images-hd/nara-in-your-skin-04c.webp',
       '/images-hd/nara-in-your-skin-05c.webp',
       '/images-hd/nara-in-your-skin-06c.webp',
       '/images-hd/nara-in-your-skin-07c.webp',
-      '/images-hd/nara-in-your-skin-08c.webp',
       '/images-hd/nara-in-your-skin-09c.webp',
       '/images-hd/nara-in-your-skin-10c.webp',
       '/images-hd/nara-in-your-skin-11c.webp',
