@@ -8,7 +8,7 @@
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og-image.png</image:loc>
-      <image:title>Azzi Studios — Campaign Production, Visual Content, VM &amp; Window Display, Visual Identity</image:title>
+      <image:title>Azzi Studios — Campaign Production, Visual Content, Visual Identity</image:title>
     </image:image>
   </url>
 
@@ -32,12 +32,6 @@
 
   <url>
     <loc>https://azzistudios.com/visual-content</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://azzistudios.com/vm-window-display</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
