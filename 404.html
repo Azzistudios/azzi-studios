@@ -60,19 +60,20 @@ body{
 </style>
 <link rel="stylesheet" href="/enhance.css?v=72">
 <!-- Meta Pixel Code — gated by the same consent + self-exclusion
-     as GA: no tracking if the visitor declined cookies or this is a
-     studio device (azzi_noga). fbq still exists as a no-op queue so
-     inline fbq('track',...) handlers never throw. -->
+     as GA: only loads once the visitor has accepted cookies, and never
+     on a studio device (azzi_noga). fbq still exists as a queue so inline
+     fbq('track',...) handlers never throw; enhance.js loads the pixel on
+     Accept. -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
 n.queue=[];
-var ok = true;
+var ok = false;
 try {
   ok = localStorage.getItem('azzi_noga') !== '1'
-    && localStorage.getItem('azzi_cookies_v1') !== 'declined';
+    && localStorage.getItem('azzi_cookies_v1') === 'accepted';
 } catch(err){}
 if (!ok) return;
 t=b.createElement(e);t.async=!0;
@@ -82,9 +83,6 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1388003146766293');
 fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
-/></noscript>
 <!-- End Meta Pixel Code -->
 </head>
 <body>
@@ -97,6 +95,6 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
     <a href="/?panel=about">About</a>
     <a href="/?panel=contact">Contact</a>
   </div>
-<script defer src="/enhance.js"></script>
+<script defer src="/enhance.js?v=2"></script>
 </body>
 </html>

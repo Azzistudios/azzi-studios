@@ -3,7 +3,7 @@
    Loaded on every page. Adds:
    • Skip-to-main link (keyboard a11y)
    • Cookie consent banner (GDPR-friendly)
-   • GA4 generate_lead on email / phone / WhatsApp clicks
+   • GA4 events (enquiries, contact channels, panels, projects)
    • Smooth scroll-to-top when the logo is clicked while
      already on the same page
    • prefers-reduced-motion respect
@@ -40,14 +40,39 @@
       });
     });
 
-  // ── Enquiry tracking ────────────────────────────────────
-  // GA4 generate_lead for email / phone / WhatsApp clicks. Delegated
-  // so links added later (panels, overlays) are caught too. Goes
-  // through gtag, so the ga-disable flag below applies to it as well.
+  // ── Event tracking ──────────────────────────────────────
+  // Delegated so links added later (panels, overlays) are caught too.
+  // gtag only queues until GA loads, which needs accepted cookies.
+  function track(name, params) {
+    if (window.gtag) window.gtag('event', name, params);
+  }
+
   document.addEventListener('click', (e) => {
-    const link = e.target.closest && e.target.closest('a[href]');
+    if (!e.target.closest) return;
+
+    // About / Services / Contact panel opens (data-panel buttons)
+    const panel = e.target.closest('[data-panel]');
+    if (panel && !panel.closest('#overlay')) {
+      track('panel_open', { panel: panel.getAttribute('data-panel') });
+    }
+    // Flow / List toggle
+    const toggle = e.target.closest('#btnFlow, #btnList');
+    if (toggle) track('view_mode', { mode: toggle.id === 'btnFlow' ? 'flow' : 'list' });
+
+    const link = e.target.closest('a[href]');
     if (!link) return;
     const href = link.getAttribute('href');
+
+    // Project clicks (any link to a project-*.html)
+    if (link.matches('a[href^="project-"], a[href*="project.html?id="]')) {
+      const m = href.match(/project-([a-z0-9-]+)\.html/) || href.match(/[?&]id=([a-z0-9-]+)/);
+      track('project_click', { project: m ? m[1] : 'unknown' });
+    }
+    // Social channel taps
+    if (href.includes('instagram.com/azzistudios')) track('contact', { channel: 'instagram' });
+    if (href.includes('linkedin.com/company/azzi-studios')) track('contact', { channel: 'linkedin' });
+
+    // Enquiry channel taps: also generate_lead, the GA4 key event
     const channel =
       /^mailto:/i.test(href) ? 'email' :
       /^tel:/i.test(href) ? 'phone' :
@@ -57,7 +82,10 @@
       link.setAttribute('href', href + (href.includes('?') ? '&' : '?') +
         'text=' + encodeURIComponent(whatsappSourceLine()));
     }
-    if (channel && window.gtag) window.gtag('event', 'generate_lead', { channel });
+    if (channel) {
+      track('contact', { channel });
+      track('generate_lead', { channel });
+    }
   });
 
   // ── WhatsApp source line ────────────────────────────────
@@ -92,13 +120,11 @@
 
   // ── Cookie consent ──────────────────────────────────────
   // Shown once. Choice (accept / decline) stored in localStorage.
-  // If declined, fire the GA opt-out flag so analytics stops sending.
+  // GA and the Meta pixel load only after Accept: from each page's head
+  // on later visits, from here on the page where Accept is clicked. What
+  // that page already queued (page view, clicks) then sends.
   const COOKIE_KEY = 'azzi_cookies_v1';
   const choice = (function () { try { return localStorage.getItem(COOKIE_KEY); } catch { return null; } })();
-
-  if (choice === 'declined') {
-    window['ga-disable-G-Z8L68HKHEJ'] = true;
-  }
 
   // ── Service worker ────────────────────────────────────
   // Previously registered /sw.js to cache static assets, but the
@@ -132,11 +158,19 @@
     document.body.appendChild(bar);
     requestAnimationFrame(() => bar.classList.add('show'));
 
+    function loadScript(src) {
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = src;
+      document.head.appendChild(s);
+    }
+
     function dismiss(value) {
       try { localStorage.setItem(COOKIE_KEY, value); } catch {}
-      if (value === 'declined') {
-        window['ga-disable-G-Z8L68HKHEJ'] = true;
-        if (window.fbq) { try { window.fbq('consent', 'revoke'); } catch (e) {} }
+      const excluded = (function () { try { return localStorage.getItem('azzi_noga') === '1'; } catch { return false; } })();
+      if (value === 'accepted' && !excluded) {
+        if (window.gtag) loadScript('https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ');
+        if (window.fbq) loadScript('https://connect.facebook.net/en_US/fbevents.js');
       }
       bar.classList.remove('show');
       setTimeout(() => bar.remove(), 400);

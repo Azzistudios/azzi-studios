@@ -39,22 +39,26 @@
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og-image.png">
 
 <script>
-  /* Self-exclusion from Google Analytics. Visit any page with
-     ?noga=1 once on a device (phone or laptop) and that browser
-     is opted out for good (stored in localStorage). ?noga=0 undoes
-     it. Uses GA4's official window['ga-disable-<ID>'] kill switch,
-     set BEFORE gtag.js loads so no hit is ever sent. */
+  /* Google Analytics only loads once the visitor has accepted cookies
+     (on Accept, enhance.js loads it for the current page). Self-exclusion:
+     visit any page with ?noga=1 once on a device and that browser never
+     loads it (stored in localStorage). ?noga=0 undoes it. */
   (function(){
+    var ok = false;
     try {
       var p = new URLSearchParams(location.search);
       if (p.get('noga') === '1') localStorage.setItem('azzi_noga','1');
       if (p.get('noga') === '0') localStorage.removeItem('azzi_noga');
-      if (localStorage.getItem('azzi_noga') === '1')
-        window['ga-disable-G-Z8L68HKHEJ'] = true;
+      ok = localStorage.getItem('azzi_noga') !== '1'
+        && localStorage.getItem('azzi_cookies_v1') === 'accepted';
     } catch(e){}
+    if (!ok) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ';
+    document.head.appendChild(s);
   })();
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8L68HKHEJ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -166,19 +170,20 @@ body.menu-open .nav-logo,body.menu-open .nav-center{visibility:hidden}
 }
 </style>
 <!-- Meta Pixel Code — gated by the same consent + self-exclusion
-     as GA: no tracking if the visitor declined cookies or this is a
-     studio device (azzi_noga). fbq still exists as a no-op queue so
-     inline fbq('track',...) handlers never throw. -->
+     as GA: only loads once the visitor has accepted cookies, and never
+     on a studio device (azzi_noga). fbq still exists as a queue so inline
+     fbq('track',...) handlers never throw; enhance.js loads the pixel on
+     Accept. -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
 n.queue=[];
-var ok = true;
+var ok = false;
 try {
   ok = localStorage.getItem('azzi_noga') !== '1'
-    && localStorage.getItem('azzi_cookies_v1') !== 'declined';
+    && localStorage.getItem('azzi_cookies_v1') === 'accepted';
 } catch(err){}
 if (!ok) return;
 t=b.createElement(e);t.async=!0;
@@ -188,9 +193,6 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1388003146766293');
 fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
-/></noscript>
 <!-- End Meta Pixel Code -->
 </head>
 <body>
@@ -239,7 +241,7 @@ src="https://www.facebook.com/tr?id=1388003146766293&ev=PageView&noscript=1"
 </div>
 
 <script src="main.js"></script>
-<script defer src="/enhance.js"></script>
+<script defer src="/enhance.js?v=2"></script>
 <script>
 (function(){
   const ham  = document.getElementById('ham');
