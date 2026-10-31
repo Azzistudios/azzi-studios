@@ -61,7 +61,10 @@
       "destination": "/", "permanent": true },
     { "source": "/project.html",
       "has": [{ "type": "query", "key": "id", "value": "blubay-nightlife" }],
-      "destination": "/", "permanent": true }
+      "destination": "/", "permanent": true },
+    { "source": "/ig", "destination": "/?utm_source=instagram&utm_medium=bio&utm_campaign=profile", "permanent": false },
+    { "source": "/in", "destination": "/?utm_source=linkedin&utm_medium=profile&utm_campaign=profile", "permanent": false },
+    { "source": "/fb", "destination": "/?utm_source=facebook&utm_medium=page&utm_campaign=profile", "permanent": false }
   ],
   "headers": [
     {
