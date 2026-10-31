@@ -3,6 +3,7 @@
    Loaded on every page. Adds:
    • Skip-to-main link (keyboard a11y)
    • Cookie consent banner (GDPR-friendly)
+   • GA4 generate_lead on email / phone / WhatsApp clicks
    • Smooth scroll-to-top when the logo is clicked while
      already on the same page
    • prefers-reduced-motion respect
@@ -38,6 +39,21 @@
         }
       });
     });
+
+  // ── Enquiry tracking ────────────────────────────────────
+  // GA4 generate_lead for email / phone / WhatsApp clicks. Delegated
+  // so links added later (panels, overlays) are caught too. Goes
+  // through gtag, so the ga-disable flag below applies to it as well.
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest && e.target.closest('a[href]');
+    if (!link || !window.gtag) return;
+    const href = link.getAttribute('href');
+    const channel =
+      /^mailto:/i.test(href) ? 'email' :
+      /^tel:/i.test(href) ? 'phone' :
+      /^https?:\/\/wa\.me\//i.test(href) ? 'whatsapp' : null;
+    if (channel) window.gtag('event', 'generate_lead', { channel });
+  });
 
   // ── Cookie consent ──────────────────────────────────────
   // Shown once. Choice (accept / decline) stored in localStorage.
