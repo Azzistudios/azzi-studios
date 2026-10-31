@@ -46,14 +46,49 @@
   // through gtag, so the ga-disable flag below applies to it as well.
   document.addEventListener('click', (e) => {
     const link = e.target.closest && e.target.closest('a[href]');
-    if (!link || !window.gtag) return;
+    if (!link) return;
     const href = link.getAttribute('href');
     const channel =
       /^mailto:/i.test(href) ? 'email' :
       /^tel:/i.test(href) ? 'phone' :
       /^https?:\/\/wa\.me\//i.test(href) ? 'whatsapp' : null;
-    if (channel) window.gtag('event', 'generate_lead', { channel });
+    if (channel === 'whatsapp' && !/[?&]text=/i.test(href)) {
+      // Set during the click, so the link opens with the new href.
+      link.setAttribute('href', href + (href.includes('?') ? '&' : '?') +
+        'text=' + encodeURIComponent(whatsappSourceLine()));
+    }
+    if (channel && window.gtag) window.gtag('event', 'generate_lead', { channel });
   });
+
+  // ── WhatsApp source line ────────────────────────────────
+  // Pre-filled, editable first line naming the page, so a chat can be
+  // traced to the site. Project names come from the page title, which
+  // project.html sets at runtime. Unlisted pages get the plain line.
+  const PAGE_NAMES = {
+    'visual-identity': 'Visual identity',
+    'visual-content': 'Visual content',
+    'campaign-production': 'Campaign production',
+    'campaign-production-gcc': 'Campaign production GCC',
+    'restaurant-hospitality-branding': 'Restaurant and hospitality branding',
+    'social-media': 'Social media',
+    'vm-window-display': 'Window display',
+    'services': 'Services',
+    'about': 'About',
+    'contact': 'Contact',
+    'faq': 'FAQ',
+    'privacy': 'Privacy',
+    'terms': 'Terms'
+  };
+
+  function whatsappSourceLine() {
+    const slug = window.location.pathname.split('/').pop().replace(/\.html$/, '');
+    const project = /^project(-|$)/.test(slug) &&
+      document.title.match(/^(.+) · Azzi Studios$/);
+    const page = project ? project[1].replace(' — ', ' ') : PAGE_NAMES[slug];
+    return page
+      ? `Hello, I found you on your website, on the ${page} page.`
+      : 'Hello, I found you on your website.';
+  }
 
   // ── Cookie consent ──────────────────────────────────────
   // Shown once. Choice (accept / decline) stored in localStorage.
