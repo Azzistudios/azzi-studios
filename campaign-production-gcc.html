@@ -275,11 +275,13 @@ body.menu-open .nav-logo,body.menu-open .nav-center{visibility:hidden}
 .site-footer__copy{justify-self:start;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;line-height:1}
 .site-footer__center{justify-self:center;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;line-height:1;white-space:nowrap}
 .site-footer__right{justify-self:end;display:flex;align-items:center;gap:1.75rem;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;line-height:1}
-.site-footer__right a{color:#111;transition:opacity 0.2s}
+.site-footer__right{flex-wrap:wrap;justify-content:flex-end;row-gap:0.85rem}
+.site-footer__right a{color:#111;transition:opacity 0.2s;white-space:nowrap}
 .site-footer__right a:hover{opacity:0.4}
 @media(max-width:768px){
   .site-footer{display:flex;flex-direction:column;align-items:center;gap:1.2rem;text-align:center;padding:2.5rem 1rem;margin-top:3rem}
   .site-footer__center{display:none}
+  .site-footer__right{flex-wrap:wrap;justify-content:center;gap:0.85rem 1.2rem;max-width:100%}
 }
 </style>
 <!-- Meta Pixel Code — gated by the same consent + self-exclusion
@@ -367,6 +369,7 @@ fbq('track', 'PageView');
     <a href="https://instagram.com/azzistudios" target="_blank" rel="noopener">Instagram</a>
     <a href="https://wa.me/96179041840" target="_blank" rel="noopener" onclick="window.fbq&&fbq('track','Contact');">WhatsApp</a>
     <a href="mailto:hello@azzistudios.com" onclick="window.fbq&&fbq('track','Contact');">Email</a>
+    <a href="https://ateliersanstitre.com" target="_blank" rel="noopener">Atelier Sans Titre</a>
   </div>
 </footer>
 </div>
