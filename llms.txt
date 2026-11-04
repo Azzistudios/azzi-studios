@@ -1,6 +1,6 @@
 # Azzi Studios
 
-> Azzi Studios is a creative studio based in Beirut, Lebanon, founded in 2024 by an architect. It produces campaigns, visual content, visual identities and social media management for fashion, luxury, beauty, jewellery, lifestyle, gastronomy, spirits, automotive and culture & arts brands — across Lebanon, the GCC (Dubai, Saudi Arabia) and internationally. Contact: hello@azzistudios.com.
+> Azzi Studios is a creative studio based in Beirut, Lebanon, founded in 2024. It produces campaigns, visual content, visual identities and social media management for fashion, luxury, beauty, jewellery, lifestyle, gastronomy, spirits, automotive and culture & arts brands — across Lebanon, the GCC (Dubai, Saudi Arabia) and internationally. Contact: hello@azzistudios.com.
 
 ## Studio
 - [Work](https://azzistudios.com/): portfolio of campaigns, shoots and set design
@@ -25,6 +25,17 @@ Each project page carries a written case study (brief, approach, outcome) and fu
 - [Sayidaty — The Rich Wife](https://azzistudios.com/project-sayidaty-rich-wife)
 - [Ambiance — Beirut Living](https://azzistudios.com/project-ambiance-beirut-living)
 - [Pinch Moi — The Garden](https://azzistudios.com/project-pinch-moi-garden)
+- [Nara — In Your Skin](https://azzistudios.com/project-nara-in-your-skin)
+- [Peachpuff Agency — Summer Shoot](https://azzistudios.com/project-peachpuff-summer)
+- [Ambiance — Christmas Campaign](https://azzistudios.com/project-ambiance-xmas)
+- [Ambiance — Emozee Campaign](https://azzistudios.com/project-ambiance-emozee)
+- [Ambiance — Hue Campaign](https://azzistudios.com/project-ambiance-hue)
+- [Ambiance — Spring Shoot](https://azzistudios.com/project-ambiance-spring)
+- [Ambiance — Summer Shoot](https://azzistudios.com/project-ambiance-summer)
+- [Ambiance — Autumn Shoot](https://azzistudios.com/project-ambiance-autumn)
+- [Ambiance — Winter Shoot](https://azzistudios.com/project-ambiance-winter)
+- [Ambiance — Boutique Christmas](https://azzistudios.com/project-ambiance-boutique-xmas)
+- [Ambiance — Boutique Valentine](https://azzistudios.com/project-ambiance-boutique-val)
 
 ## Policies
 - [Privacy](https://azzistudios.com/privacy)
