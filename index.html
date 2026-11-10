@@ -2135,11 +2135,14 @@ function buildRoom() {
   // (thumbs-lg/) for any cell that spans 2+ tracks — those render
   // large enough that a 440px source visibly upscales. `large` is
   // passed by makeCell from the cell's grid span.
+  // Since Nov 2026 the room has its own WebP set in mz/ — s (300px,
+  // phones: a track there is ~13vw, about 55 CSS px), m (440px) and
+  // l (880px) — roughly half the weight of the JPG tiers above, which
+  // the work page still uses.
   const thumb = (url, large) =>
     /^https?:\/\//.test(url) ? url :
-    (large ? 'thumbs-lg/' : 'thumbs/') +
-      url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.jpg') +
-      (large ? '?v=2' : '?v=2');
+    'mz/' + (isMobileMQ.matches ? 's' : large ? 'l' : 'm') + '/' +
+      url.slice('images/'.length).replace(/\.(jpe?g|png|webp)$/i, '.webp');
 
   // ── Bookkeeping ──
   // projectCount: project name → how many cells currently show it
