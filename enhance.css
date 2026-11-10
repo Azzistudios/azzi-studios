@@ -170,3 +170,8 @@
 
 /* The skip link lands on the content wrapper; it takes focus, not a ring. */
 #main:focus, #gallery:focus, #proj-root:focus { outline: none; }
+
+/* Contact panel: the direct contact details sit in the first column,
+   under "reach out" — the form has the second column to itself. */
+.ova-contact { margin-top: 2rem; }
+.ova-contact .ov-label { margin-bottom: 0.8rem; color: #111; }
