@@ -69,7 +69,7 @@
   padding: 0.2rem 0;
   transition: opacity 0.2s;
 }
-.cookie-bar__btn--decline { color: rgba(17, 17, 17, 0.45); }
+.cookie-bar__btn--decline { color: rgba(17, 17, 17, 0.62); }
 .cookie-bar__btn--decline:hover { color: #111; }
 .cookie-bar__btn--accept {
   color: #111;
@@ -167,3 +167,6 @@
 @media (prefers-reduced-motion: reduce) {
   .enq input, .enq select, .enq textarea, .enq__send { transition: none; }
 }
+
+/* The skip link lands on the content wrapper; it takes focus, not a ring. */
+#main:focus, #gallery:focus, #proj-root:focus { outline: none; }

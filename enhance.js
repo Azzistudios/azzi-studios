@@ -15,7 +15,17 @@
   if (!document.querySelector('.skip-link')) {
     const skip = document.createElement('a');
     skip.className = 'skip-link';
-    skip.href = '#main';
+    // Point it at the page's real content. Most pages have no #main,
+    // so the first content wrapper found is named and made focusable.
+    const target = document.getElementById('main') ||
+      document.querySelector('main, #gallery, .about-block, .svc-wrap, #proj-root');
+    if (target) {
+      if (!target.id) target.id = 'main';
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      skip.href = '#' + target.id;
+    } else {
+      skip.href = '#main';
+    }
     skip.textContent = 'Skip to content';
     document.body.insertBefore(skip, document.body.firstChild);
   }

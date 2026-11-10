@@ -1,49 +1,99 @@
-# CLAUDE.md — Frontend Website Rules
+# CLAUDE.md — azzistudios.com
 
-## Always Do First
-- **Invoke the `frontend-design` skill** before writing any frontend code, every session, no exceptions.
+The live site of Azzi Studios. Static HTML, CSS and JavaScript, no build step.
+Business rules and the visual identity live in `~/My Drive/CLAUDE.md`; this file
+covers only how the site is put together. Rewritten 10 Nov 2026: the earlier
+version was a generic template (Tailwind, serif pairing, placeholder images) that
+contradicted the identity. None of it applies.
 
-## Reference Images
-- If a reference image is provided: match layout, spacing, typography, and color exactly. Swap in placeholder content (images via `https://placehold.co/`, generic copy). Do not improve or add to the design.
-- If no reference image: design from scratch with high craft (see guardrails below).
-- Screenshot your output, compare against reference, fix mismatches, re-screenshot. Do at least 2 comparison rounds. Stop only when no visible differences remain or user says so.
+## The rules that bite
 
-## Local Server
-- **Always serve on localhost** — never open a `file:///` URL.
-- Start the dev server: `python3 serve.py` (serves the project root at `http://localhost:3000`)
-- `serve.py` lives in the project root. Start it in the background before previewing.
-- If the server is already running, do not start a second instance.
+- **Space Mono only.** No second typeface, no Tailwind, no placeholder images.
+  Ink #111 on white. Shapes are geometry. No rounded pills.
+- **Azzi has no studio of its own.** Never write "our studio", "in-studio" or
+  "under one roof".
+- **Window display, visual merchandising and events are Atelier Sans Titre's.**
+  They stay off this site. Four services only: Campaign Production, Visual
+  Content, Visual Identity, Social Media Management.
+- **Testimonials are Google reviews only**, quoted verbatim (a marked cut is
+  fine), with the reviewer's name.
+- **A client number is published only with that client's consent.**
+- **Pushing to `main` publishes.** Vercel deploys it within a minute or two, and
+  a GitHub Action pings IndexNow for changed pages. Ask Marc before every push.
 
-## Screenshot Workflow
-- Screenshots are not currently available on this machine (Node.js / Puppeteer not installed).
-- To preview: open `http://localhost:3000` in a browser manually after starting `serve.py`.
-- When Node.js is available, `screenshot.mjs` can be created to automate this. Until then, ask the user to check the browser and report what they see.
+## Pages
 
-## Output Defaults
-- Single `index.html` file, all styles inline, unless user says otherwise
-- Tailwind CSS via CDN: `<script src="https://cdn.tailwindcss.com"></script>`
-- Placeholder images: `https://placehold.co/WIDTHxHEIGHT`
-- Mobile-first responsive
+- `index.html` — loader, then the 3D mosaic (`#room`), then the work page
+  (`#landing`, `#gallery`). The About, Services and Contact panels are overlays
+  on this page (`index.html?panel=contact`).
+- `project-<id>.html` — one static page per project. `project.html` is the bare
+  template: noindex, kept for old `?id=` links.
+- `services.html` and the four service pages, `campaign-production-gcc.html`,
+  `restaurant-hospitality-branding.html`, `about.html`, `contact.html`,
+  `faq.html`, `privacy.html`, `terms.html`.
+- `vm-window-display.html` — noindex pointer to Atelier Sans Titre.
+- `enhance.js` and `enhance.css` load on every page: skip link, cookie consent,
+  analytics events, the enquiry form. Bump their `?v=` on every page when either
+  changes (they are cached for 30 days).
 
-## Brand Assets
-- Always check the `brand_assets/` folder before designing. It may contain logos, color guides, style guides, or images.
-- If assets exist there, use them. Do not use placeholders where real assets are available.
-- If a logo is present, use it. If a color palette is defined, use those exact values — do not invent brand colors.
+## Adding or removing a project
 
-## Anti-Generic Guardrails
-- **Colors:** Never use default Tailwind palette (indigo-500, blue-600, etc.). Pick a custom brand color and derive from it.
-- **Shadows:** Never use flat `shadow-md`. Use layered, color-tinted shadows with low opacity.
-- **Typography:** Never use the same font for headings and body. Pair a display/serif with a clean sans. Apply tight tracking (`-0.03em`) on large headings, generous line-height (`1.7`) on body.
-- **Gradients:** Layer multiple radial gradients. Add grain/texture via SVG noise filter for depth.
-- **Animations:** Only animate `transform` and `opacity`. Never `transition-all`. Use spring-style easing.
-- **Interactive states:** Every clickable element needs hover, focus-visible, and active states. No exceptions.
-- **Images:** Add a gradient overlay (`bg-gradient-to-t from-black/60`) and a color treatment layer with `mix-blend-multiply`.
-- **Spacing:** Use intentional, consistent spacing tokens — not random Tailwind steps.
-- **Depth:** Surfaces should have a layering system (base → elevated → floating), not all sit at the same z-plane.
+A project lives in several places. Miss one and a link breaks.
 
-## Hard Rules
-- Do not add sections, features, or content not in the reference
-- Do not "improve" a reference design — match it
-- Do not stop after one screenshot pass
-- Do not use `transition-all`
-- Do not use default Tailwind blue/indigo as primary color
+1. `project-<id>.html` — copy a recent one. Change the title, descriptions,
+   canonical, Open Graph tags, JSON-LD, the hidden H1, `window.__PROJECT_ID__`
+   and the three case-study paragraphs.
+2. The `PROJECTS` object inside every `project*.html` (each page carries its own
+   copy; newer entries exist only in newer pages).
+3. `index.html`: a tile in `#gallery` and a row in `.gal-list-mode`, entries in
+   `IMGS` (the mosaic and work-page pool) and the folder in `PROJECT_PAGE`.
+   The tile's cover decides which folder of `IMGS` the work page draws from.
+4. `about.html`: the same tile and list row.
+5. `sitemap.xml`, `llms.txt`, and for a removal a redirect in `vercel.json`.
+
+## Images
+
+| Folder | What | Used by |
+|---|---|---|
+| `images/<Project>/` | originals, 2000px | hero slides, loop videos |
+| `thumbs/`, `thumbs-lg/`, `thumbs-xl/` | JPG at 440, 880, 1600px | work page, list preview |
+| `mz/s`, `mz/m`, `mz/l` | WebP at 300, 440, 880px | the mosaic only |
+| `images-hd/` | WebP, about 1400px | project pages |
+| `brand_assets/og/` | 1200x630 share images | Open Graph, sitemap |
+
+A picture in `IMGS` needs a file in every `thumbs*` and `mz/*` folder at the same
+relative path. Convert to sRGB and embed the profile. Turn images upright from
+their orientation tag before resizing. Finished, edited images only.
+
+## The mosaic
+
+- Hover swaps a cell's picture. A click on a picture opens its project
+  (`PROJECT_PAGE`); a click on white, the VIEW WORK button, a scroll, a swipe up
+  or Enter opens the work page.
+- `#room-persp` and `#room-scene` carry `pointer-events:none` on purpose: they
+  sit at z=0 and otherwise swallow the pointer for every cell behind them.
+- Phones (600px and under) use the `mz/s` size, load on-screen cells first and
+  skip cells out of reach.
+- The work page's pictures are parked on `data-src` while the room is in front
+  and hydrate on entry or 3.5 s after the reveal. This took the phone largest
+  paint from 11.0 s to 4.2 s (PageSpeed, 10 Nov 2026). Do not preload them.
+
+## The enquiry form
+
+`enhance.js` renders it into any `<div data-enquiry>` and posts to the HubSpot
+form "Website enquiry (azzistudios.com)" (portal 148861106, EU data centre). The
+form holds first name, last name, email and message, so brand, service, visit
+source and page travel inside the message. It creates a contact, not a deal.
+`vercel.json` allows `api-eu1.hsforms.com` in the Content-Security-Policy.
+
+## Previewing
+
+`python3 serve.py` serves the folder at `http://localhost:3000`. Never open a
+`file://` URL: paths are root-relative. A hidden or background browser tab
+throttles animation frames, so the loader and the mosaic reveal can look stuck
+there; check the DOM, or bring the tab to the front.
+
+## Local-only files
+
+`images/` holds large originals that are deliberately not committed (see
+`.gitignore`). Leave them where they are.

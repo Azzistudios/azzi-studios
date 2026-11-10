@@ -9,7 +9,7 @@
 <title>Project — Azzi Studios</title>
 <meta name="description" content="Azzi Studios — A creative studio based in Beirut. Campaign production, visual content, visual identity and social media.">
 <meta name="author" content="Azzi Studios">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://azzistudios.com/project" id="canonical-link">
 
 <!-- Favicons — cropped tight so the monogram fills the tab icon -->
@@ -855,7 +855,7 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
   }
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=73">
+<link rel="stylesheet" href="/enhance.css?v=74">
 <!-- Meta Pixel Code — gated by the same consent + self-exclusion
      as GA: only loads once the visitor has accepted cookies, and never
      on a studio device (azzi_noga). fbq still exists as a queue so inline
@@ -918,7 +918,7 @@ fbq('track', 'PageView');
 </aside>
 
 <!-- ══ OVERLAY (About / Services / Contact) — same as index.html ══ -->
-<div id="overlay" aria-hidden="true">
+<div id="overlay" aria-hidden="true" data-nosnippet>
   <button id="ovClose" class="ov-close" type="button">Back</button>
   <div class="ov-scroll">
 
@@ -1703,6 +1703,6 @@ document.addEventListener('dragstart',   e => { if (e.target.tagName === 'IMG') 
   });
 })();
 </script>
-<script defer src="/enhance.js?v=3"></script>
+<script defer src="/enhance.js?v=4"></script>
 </body>
 </html>
