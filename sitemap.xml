@@ -177,6 +177,16 @@
     </image:image>
   </url>
   <url>
+    <loc>https://azzistudios.com/project-nara-social-media</loc>
+    <lastmod>2026-11-10</lastmod>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://azzistudios.com/brand_assets/og/nara-social-media.jpg</image:loc>
+      <image:title>Nara — Social Media</image:title>
+      <image:caption>Social media management for Nara by Azzi Studios, a Beirut-based creative studio.</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://azzistudios.com/project-ambiance-beirut-living</loc>
     <lastmod>2026-11-04</lastmod>
     <priority>0.7</priority>
