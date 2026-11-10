@@ -211,7 +211,7 @@ body.menu-open .nav-logo{visibility:hidden}
   .toggle-bar{padding:3rem 2rem 1.5rem}
 }
 </style>
-<link rel="stylesheet" href="/enhance.css?v=72">
+<link rel="stylesheet" href="/enhance.css?v=73">
 <!-- Meta Pixel Code — gated by the same consent + self-exclusion
      as GA: only loads once the visitor has accepted cookies, and never
      on a studio device (azzi_noga). fbq still exists as a queue so inline
@@ -287,7 +287,12 @@ fbq('track', 'PageView');
   </div>
 
   <div class="about-section">
-    <div class="about-label">Contact details</div>
+    <div class="about-label">Start a project</div>
+    <div data-enquiry></div>
+  </div>
+
+  <div class="about-section">
+    <div class="about-label">Or reach us directly</div>
     <div class="about-col-body" style="margin-top:0.25rem">
       <span style="color:#111">Email</span> &mdash; <a href="mailto:hello@azzistudios.com" style="color:#111" onclick="window.fbq&&fbq('track','Contact');">hello@azzistudios.com</a><br>
       <span style="color:#111">Phone</span> &mdash; <a href="tel:+96179041840" style="color:#111" onclick="window.fbq&&fbq('track','Contact');">+961 79 041840</a><br>
@@ -322,6 +327,6 @@ fbq('track', 'PageView');
     el.addEventListener('click', () => { menu.classList.remove('open'); sync(); }));
 })();
 </script>
-<script defer src="/enhance.js?v=2"></script>
+<script defer src="/enhance.js?v=3"></script>
 </body>
 </html>

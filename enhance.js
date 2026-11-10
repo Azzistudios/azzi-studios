@@ -118,6 +118,107 @@
       : 'Hello, I found you on your website.';
   }
 
+  // ── Enquiry form ────────────────────────────────────────
+  // Rendered into every [data-enquiry] placeholder. Submits straight
+  // to the HubSpot form "Website enquiry (azzistudios.com)" over its
+  // public submissions endpoint (EU data centre) — no HubSpot script,
+  // no cookie. The form holds first name, last name, email and
+  // message, so brand, service and source travel inside the message.
+  const HS_SUBMIT = 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/148861106/8d54a353-630d-42a3-9d82-c463a2572162';
+
+  // Where the visit came from — noted once per tab, on the first page.
+  const visitSource = (function () {
+    try {
+      let s = sessionStorage.getItem('azzi_src');
+      if (!s) {
+        const p = new URLSearchParams(location.search);
+        const utm = ['utm_source', 'utm_medium', 'utm_campaign'].map(k => p.get(k)).filter(Boolean).join(' / ');
+        let ref = '';
+        try { ref = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) {}
+        if (ref === location.hostname) ref = '';
+        s = utm || ref || 'direct';
+        sessionStorage.setItem('azzi_src', s);
+      }
+      return s;
+    } catch (e) { return 'unknown'; }
+  })();
+
+  document.querySelectorAll('[data-enquiry]').forEach((slot, n) => {
+    const id = 'enq' + n;
+    slot.innerHTML = `
+      <form class="enq" novalidate>
+        <label class="enq__f" for="${id}-name"><span>Name</span>
+          <input id="${id}-name" name="name" type="text" autocomplete="name" required></label>
+        <label class="enq__f" for="${id}-email"><span>Email</span>
+          <input id="${id}-email" name="email" type="email" autocomplete="email" required></label>
+        <label class="enq__f" for="${id}-brand"><span>Brand</span>
+          <input id="${id}-brand" name="brand" type="text" autocomplete="organization"></label>
+        <label class="enq__f" for="${id}-service"><span>Service</span>
+          <select id="${id}-service" name="service">
+            <option value="">Not sure yet</option>
+            <option>Campaign Production</option>
+            <option>Visual Content</option>
+            <option>Visual Identity</option>
+            <option>Social Media Management</option>
+          </select></label>
+        <label class="enq__f" for="${id}-msg"><span>What are you working on?</span>
+          <textarea id="${id}-msg" name="message" rows="4" required></textarea></label>
+        <label class="enq__hp" aria-hidden="true">Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+        <button type="submit" class="enq__send">Send</button>
+        <p class="enq__note" role="status" aria-live="polite">We reply within one working day. Your details go to our CRM (HubSpot) so we can answer. <a href="/privacy">Privacy</a></p>
+      </form>`;
+    const form = slot.querySelector('form');
+    const note = form.querySelector('.enq__note');
+    const send = form.querySelector('.enq__send');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = k => (form.elements[k].value || '').trim();
+      if (v('website')) return;                       // honeypot: bots fill it
+      const bad = ['name', 'email', 'message'].find(k =>
+        !v(k) || (k === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v(k))));
+      form.querySelectorAll('.enq__f').forEach(l => l.classList.remove('is-bad'));
+      if (bad) {
+        form.elements[bad].closest('.enq__f').classList.add('is-bad');
+        form.elements[bad].focus();
+        note.textContent = bad === 'email' ? 'That email does not look right.' : 'Name, email and a line about the project, please.';
+        return;
+      }
+      const parts = v('name').split(/\s+/);
+      const message = [
+        'Brand: ' + (v('brand') || 'not given'),
+        'Service: ' + (v('service') || 'not sure yet'),
+        'Source: ' + visitSource,
+        'Page: ' + location.pathname,
+        '',
+        v('message'),
+      ].join('\n');
+      const field = (name, value) => ({ objectTypeId: '0-1', name, value });
+      send.disabled = true; send.textContent = 'Sending';
+      fetch(HS_SUBMIT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: [
+            field('firstname', parts[0]),
+            field('lastname', parts.slice(1).join(' ')),
+            field('email', v('email')),
+            field('message', message),
+          ],
+          context: { pageUri: location.href, pageName: document.title },
+        }),
+      }).then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        form.innerHTML = '<p class="enq__done" role="status">Received. We reply within one working day.</p>';
+        track('contact', { channel: 'form' });
+        track('generate_lead', { channel: 'form' });
+        if (window.fbq) window.fbq('track', 'Contact');
+      }).catch(() => {
+        send.disabled = false; send.textContent = 'Send';
+        note.innerHTML = 'It did not send. Write to <a href="mailto:hello@azzistudios.com">hello@azzistudios.com</a> and we will pick it up there.';
+      });
+    });
+  });
+
   // ── Cookie consent ──────────────────────────────────────
   // Shown once. Choice (accept / decline) stored in localStorage.
   // GA and the Meta pixel load only after Accept: from each page's head
