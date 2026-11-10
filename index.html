@@ -663,12 +663,18 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
       #fff 97%);
 }
 #room-persp{
+  /* Not a hit target (nor is #room-scene): both sit flat at z=0 and
+     swallowed the pointer for everything behind that plane — the
+     whole back wall and the far end of every side wall, i.e. the
+     pictures in the corners never got their hover. Cells opt back in. */
+  pointer-events:none;
   position:absolute;inset:0;
   perspective:1300px;
   perspective-origin:50% 50%;
   display:flex;align-items:center;justify-content:center;
 }
 #room-scene{
+  pointer-events:none;
   position:relative;
   width:var(--box-w);height:var(--box-h);
   transform-style:preserve-3d;
@@ -1246,6 +1252,13 @@ body.entered .archive-cell{opacity:1;transform:none}
              transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s;
 }
 .reviews__card:hover .reviews__slide.is-on{transform:translateY(-4px)}
+.reviews__source{
+  margin-top:2.2rem;text-align:center;
+  font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;
+}
+.reviews__source a{color:#111;border-bottom:1px solid rgba(17,17,17,0.3);padding-bottom:1px;transition:opacity 0.2s}
+.reviews__source a:hover{opacity:0.45}
+.reviews__source a:focus-visible{outline:1px solid #111;outline-offset:3px}
 .reviews__quote{
   font-size:0.72rem;font-weight:400;letter-spacing:0.01em;
   line-height:1.8;color:#111;
@@ -1612,13 +1625,13 @@ fbq('track', 'PageView');
         <div class="gal-cell-img"><img decoding="async" src="thumbs/Project21_Nara_InYourSkin/AZZISTUDIOS_Nara_InYourSkin_2026_04c.jpg" alt="Nara — In Your Skin — poolside campaign stills for Nara Cherry Skn, produced by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
         <div class="gal-cell-cap">Nara — In Your Skin</div>
       </a>
-      <a href="project-ambiance-summer.html" class="gal-cell">
-        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project07_Ambiance_SummerShoot/010.jpg" alt="Ambiance — Summer — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
-        <div class="gal-cell-cap">Ambiance — Summer</div>
+      <a href="project-ambiance-emozee.html" class="gal-cell">
+        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project04_Ambiance_Emozee/emozee1.jpg" alt="Ambiance — Emozee — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Emozee</div>
       </a>
-      <a href="project-ambiance-spring.html" class="gal-cell">
-        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project06_Ambiance_SpringShoot/IMG_2634.jpg" alt="Ambiance — Spring — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
-        <div class="gal-cell-cap">Ambiance — Spring</div>
+      <a href="project-peachpuff-summer.html" class="gal-cell">
+        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project11_Blubay_Shoot/IMG_7884.jpg" alt="Peachpuff — Summer — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
+        <div class="gal-cell-cap">Peachpuff — Summer</div>
       </a>
     </div>
 
@@ -1627,25 +1640,13 @@ fbq('track', 'PageView');
         <div class="gal-cell-img"><img decoding="async" src="thumbs/Project15_PinchMoi_TheGarden/DSC09569.jpg?v=2" alt="Pinch Moi — The Garden — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
         <div class="gal-cell-cap">Pinch Moi — The Garden</div>
       </a>
-      <a href="project-ambiance-autumn.html" class="gal-cell">
-        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project01_Ambiance_AutumnShoot/_37A7521%20copy%202.jpg" alt="Ambiance — Autumn — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
-        <div class="gal-cell-cap">Ambiance — Autumn</div>
+      <a href="project-ambiance-seasons.html" class="gal-cell">
+        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project07_Ambiance_SummerShoot/010.jpg" alt="Ambiance — Four Seasons — seasonal shoots art directed and built by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
+        <div class="gal-cell-cap">Ambiance — Four Seasons</div>
       </a>
     </div>
 
-    <div class="gal-row gal-row--6">
-      <a href="project-ambiance-emozee.html" class="gal-cell">
-        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project04_Ambiance_Emozee/emozee1.jpg" alt="Ambiance — Emozee — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
-        <div class="gal-cell-cap">Ambiance — Emozee</div>
-      </a>
-      <a href="project-ambiance-hue.html" class="gal-cell">
-        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project05_Ambiance_HUE/AZZISTUDIOS_Ambiance_Hue_2024_02.jpg" alt="Ambiance — Hue — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
-        <div class="gal-cell-cap">Ambiance — Hue</div>
-      </a>
-      <a href="project-peachpuff-summer.html" class="gal-cell">
-        <div class="gal-cell-img"><img decoding="async" src="thumbs/Project11_Blubay_Shoot/IMG_7884.jpg" alt="Peachpuff — Summer — a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
-        <div class="gal-cell-cap">Peachpuff — Summer</div>
-      </a>
+    <div class="gal-row gal-row--3">
       <a href="project-ambiance-beirut-living.html" class="gal-cell">
         <div class="gal-cell-img"><img decoding="async" src="thumbs/Project19_Ambiance_BeirutLiving/AZZISTUDIOS_Ambiance_BeirutLiving_2024_01b.jpg" alt="Ambiance — Beirut Living — set design with sculptural smiley spheres, a project by Azzi Studios, Beirut-based creative studio" loading="lazy"></div>
         <div class="gal-cell-cap">Ambiance — Beirut Living</div>
@@ -1666,12 +1667,8 @@ fbq('track', 'PageView');
       <a href="project-plastik-asteri.html"><span>Plastik — Asteri</span><span class="cat">Campaign Production</span></a>
       <a href="project-eloria-launch.html"><span>Eloria — Launch</span><span class="cat">Campaign Production</span></a>
       <a href="project-ambiance-xmas.html"><span>Ambiance — Christmas</span><span class="cat">Campaign Production</span></a>
-      <a href="project-ambiance-winter.html"><span>Ambiance — Winter</span><span class="cat">Visual Content</span></a>
-      <a href="project-ambiance-summer.html"><span>Ambiance — Summer</span><span class="cat">Visual Content</span></a>
-      <a href="project-ambiance-spring.html"><span>Ambiance — Spring</span><span class="cat">Visual Content</span></a>
-      <a href="project-ambiance-autumn.html"><span>Ambiance — Autumn</span><span class="cat">Visual Content</span></a>
+      <a href="project-ambiance-seasons.html"><span>Ambiance — Four Seasons</span><span class="cat">Visual Content</span></a>
       <a href="project-ambiance-emozee.html"><span>Ambiance — Emozee</span><span class="cat">Campaign Production</span></a>
-      <a href="project-ambiance-hue.html"><span>Ambiance — Hue</span><span class="cat">Campaign Production</span></a>
       <a href="project-pinch-moi-garden.html"><span>Pinch Moi — The Garden</span><span class="cat">Campaign Production</span></a>
       <a href="project-peachpuff-summer.html"><span>Peachpuff — Summer</span><span class="cat">Visual Content</span></a>
       <a href="project-ambiance-beirut-living.html"><span>Ambiance — Beirut Living</span><span class="cat">Campaign Production</span></a>
@@ -1762,31 +1759,36 @@ fbq('track', 'PageView');
     <div class="reviews__grid">
       <div class="reviews__card">
         <blockquote class="reviews__slide is-on">
+          <p class="reviews__quote">&ldquo;From content creation to creative direction, the team has truly understood our vision and translated it into something exceptional. [&hellip;] It&rsquo;s rare to find a creative team that combines artistic vision with such a strong understanding of branding and business.&rdquo;</p>
+          <cite class="reviews__name">Layla Jaffal &middot; Nara</cite>
+        </blockquote>
+        <blockquote class="reviews__slide">
           <p class="reviews__quote">&ldquo;I had a beautiful experience with Azzi Studios team! Marc has such an avant-garde vision, he catches very easily my ideas and transforms them into something way more upgraded! So professional, creative&hellip; recommended experience!&rdquo;</p>
-          <cite class="reviews__name">Elissa L.</cite>
+          <cite class="reviews__name">Elissa Lorenzato</cite>
         </blockquote>
       </div>
       <div class="reviews__card">
         <blockquote class="reviews__slide is-on">
           <p class="reviews__quote">&ldquo;Marc has a rare ability to understand what a brand needs visually before you can even articulate it yourself. The set he designed for our shoot elevated everything. Highly recommend!&rdquo;</p>
-          <cite class="reviews__name">Nour K.</cite>
+          <cite class="reviews__name">Nour Kattar</cite>
         </blockquote>
         <blockquote class="reviews__slide">
-          <p class="reviews__quote">&ldquo;Three months of monthly content and our feed finally looks like one brand. Planned, shot and delivered on time, every time. It shows in the numbers.&rdquo;</p>
-          <cite class="reviews__name">Maya S.</cite>
+          <p class="reviews__quote">&ldquo;Working with Marc was a great experience. He is professional, hardworking, and always respectful of deadlines. [&hellip;] Marc is a true &ldquo;911&rdquo; on set&mdash;always ready to solve problems and save the day.&rdquo;</p>
+          <cite class="reviews__name">Andrew Chwaifaty</cite>
         </blockquote>
       </div>
       <div class="reviews__card">
         <blockquote class="reviews__slide is-on">
           <p class="reviews__quote">&ldquo;Huge thanks to Azzi Studios for completely transforming our brand image. From art direction to visual production and campaign creation, every detail was handled with an exceptional level of care and professionalism. Truly beyond our expectations, highly recommended. Thank you again!&rdquo;</p>
-          <cite class="reviews__name">Daniel B.</cite>
+          <cite class="reviews__name">Daniel Badaoui</cite>
         </blockquote>
         <blockquote class="reviews__slide">
-          <p class="reviews__quote">&ldquo;They built our identity from scratch: logo, colors, guidelines. A year later, everything we put out still feels like us. That&rsquo;s the real test.&rdquo;</p>
-          <cite class="reviews__name">Joelle R.</cite>
+          <p class="reviews__quote">&ldquo;If you are considering working with Marc, don&rsquo;t hesitate. [&hellip;] He is the kind of talent you find and never want to lose.&rdquo;</p>
+          <cite class="reviews__name">Corine Chartouni</cite>
         </blockquote>
       </div>
     </div>
+    <p class="reviews__source"><a href="https://maps.google.com/?cid=13269089547204844255" target="_blank" rel="noopener">All reviews on Google</a></p>
   </section>
 
   <div class="gal-footer">
@@ -1959,10 +1961,6 @@ const IMGS = [
   'images/Project21_Nara_InYourSkin/AZZISTUDIOS_Nara_InYourSkin_2026_10c.jpg',
   'images/Project21_Nara_InYourSkin/AZZISTUDIOS_Nara_InYourSkin_2026_11c.jpg',
   'images/Project21_Nara_InYourSkin/AZZISTUDIOS_Nara_InYourSkin_2026_12c.jpg',
-  'images/Project05_Ambiance_HUE/AZZISTUDIOS_Ambiance_Hue_2024_01.jpg',
-  'images/Project05_Ambiance_HUE/AZZISTUDIOS_Ambiance_Hue_2024_02.jpg',
-  'images/Project05_Ambiance_HUE/AZZISTUDIOS_Ambiance_Hue_2024_03.jpg',
-  'images/Project05_Ambiance_HUE/AZZISTUDIOS_Ambiance_Hue_2024_04.jpg',
 ];
 
 // True orientation of every pool image (EXIF-aware, baked at
@@ -2719,13 +2717,12 @@ function buildRoom() {
   // ── A picture opens its project; white space enters the work page ──
   // Folder of the picture on show → that project's page.
   const PROJECT_PAGE = {
-    Project01_Ambiance_AutumnShoot:       'project-ambiance-autumn.html',
+    Project01_Ambiance_AutumnShoot:       'project-ambiance-seasons.html',
     Project03_Ambiance_ChristmasCampaign: 'project-ambiance-xmas.html',
     Project04_Ambiance_Emozee:            'project-ambiance-emozee.html',
-    Project05_Ambiance_HUE:               'project-ambiance-hue.html',
-    Project06_Ambiance_SpringShoot:       'project-ambiance-spring.html',
-    Project07_Ambiance_SummerShoot:       'project-ambiance-summer.html',
-    Project09_Ambiance_WinterShoot:       'project-ambiance-winter.html',
+    Project06_Ambiance_SpringShoot:       'project-ambiance-seasons.html',
+    Project07_Ambiance_SummerShoot:       'project-ambiance-seasons.html',
+    Project09_Ambiance_WinterShoot:       'project-ambiance-seasons.html',
     Project11_Blubay_Shoot:               'project-peachpuff-summer.html',
     Project14_Eloria_Launch:              'project-eloria-launch.html',
     Project15_PinchMoi_TheGarden:         'project-pinch-moi-garden.html',

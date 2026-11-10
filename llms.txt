@@ -29,11 +29,7 @@ Each project page carries a written case study (brief, approach, outcome) and fu
 - [Peachpuff Agency — Summer Shoot](https://azzistudios.com/project-peachpuff-summer)
 - [Ambiance — Christmas Campaign](https://azzistudios.com/project-ambiance-xmas)
 - [Ambiance — Emozee Campaign](https://azzistudios.com/project-ambiance-emozee)
-- [Ambiance — Hue Campaign](https://azzistudios.com/project-ambiance-hue)
-- [Ambiance — Spring Shoot](https://azzistudios.com/project-ambiance-spring)
-- [Ambiance — Summer Shoot](https://azzistudios.com/project-ambiance-summer)
-- [Ambiance — Autumn Shoot](https://azzistudios.com/project-ambiance-autumn)
-- [Ambiance — Winter Shoot](https://azzistudios.com/project-ambiance-winter)
+- [Ambiance — Four Seasons](https://azzistudios.com/project-ambiance-seasons)
 
 ## Sister studio
 - [Atelier Sans Titre](https://ateliersanstitre.com): event scenography studio in Beirut, also founded by Marc Azzi. Weddings and private events, brand and corporate events, fashion shows, window display and visual merchandising. Part of the Azzi Studios creative ecosystem.

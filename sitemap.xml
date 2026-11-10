@@ -137,22 +137,12 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-winter</loc>
-    <lastmod>2026-11-04</lastmod>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://azzistudios.com/brand_assets/og/ambiance-winter.jpg</image:loc>
-      <image:title>Ambiance — Winter</image:title>
-      <image:caption>A project by Azzi Studios, a Beirut-based creative studio.</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://azzistudios.com/project-ambiance-summer</loc>
-    <lastmod>2026-11-04</lastmod>
+    <loc>https://azzistudios.com/project-ambiance-seasons</loc>
+    <lastmod>2026-11-10</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-summer.jpg</image:loc>
-      <image:title>Ambiance — Summer</image:title>
+      <image:title>Ambiance — Four Seasons</image:title>
       <image:caption>A project by Azzi Studios, a Beirut-based creative studio.</image:caption>
     </image:image>
   </url>
@@ -197,42 +187,12 @@
     </image:image>
   </url>
   <url>
-    <loc>https://azzistudios.com/project-ambiance-spring</loc>
-    <lastmod>2026-11-04</lastmod>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://azzistudios.com/brand_assets/og/ambiance-spring.jpg</image:loc>
-      <image:title>Ambiance — Spring</image:title>
-      <image:caption>A project by Azzi Studios, a Beirut-based creative studio.</image:caption>
-    </image:image>
-  </url>
-  <url>
     <loc>https://azzistudios.com/project-pinch-moi-garden</loc>
     <lastmod>2026-11-04</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/pinch-moi-garden.jpg</image:loc>
       <image:title>Pinch Moi — The Garden</image:title>
-      <image:caption>A project by Azzi Studios, a Beirut-based creative studio.</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://azzistudios.com/project-ambiance-autumn</loc>
-    <lastmod>2026-11-04</lastmod>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://azzistudios.com/brand_assets/og/ambiance-autumn.jpg</image:loc>
-      <image:title>Ambiance — Autumn</image:title>
-      <image:caption>A project by Azzi Studios, a Beirut-based creative studio.</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://azzistudios.com/project-ambiance-hue</loc>
-    <lastmod>2026-11-04</lastmod>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://azzistudios.com/brand_assets/og/ambiance-hue.jpg</image:loc>
-      <image:title>Ambiance — Hue</image:title>
       <image:caption>A project by Azzi Studios, a Beirut-based creative studio.</image:caption>
     </image:image>
   </url>
