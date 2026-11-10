@@ -2299,7 +2299,16 @@ function buildRoom() {
         'images/Project14_Eloria_Launch/Eloria_WinterShoot_2026_Videos_01_loop.mp4':
           'images/Project14_Eloria_Launch/image00028.png'
       };
-      if (VIDEO_POSTERS[pos.video]) vid.poster = thumb(VIDEO_POSTERS[pos.video]);
+      if (VIDEO_POSTERS[pos.video]) {
+        vid.poster = thumb(VIDEO_POSTERS[pos.video]);
+        // The video cells are the largest things in the room, so one
+        // of their posters is the page's largest paint — but a poster
+        // is fetched at low priority, behind every thumbnail. Ask for
+        // it first; the <video> then finds it already in the cache.
+        const pre = new Image();
+        pre.fetchPriority = 'high';
+        pre.src = vid.poster;
+      }
       vid.muted = true; vid.loop = true;
       vid.playsInline = true; vid.preload = 'none';
       vid.setAttribute('muted', '');
