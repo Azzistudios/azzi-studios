@@ -779,9 +779,35 @@ body[data-ov-panel="services"] .ov-close{top:calc(55vh + 0.5rem)}
   pointer-events:none;
 }
 
+/* Entry cue — the room's one line of type, and the keyboard way in.
+   Sits above the grain and the vignette; arrives after the mosaic. */
+#room-enter{
+  position:absolute;left:50%;
+  bottom:calc(2rem + env(safe-area-inset-bottom, 0px));
+  transform:translateX(-50%);
+  z-index:8;
+  font-family:'Space Mono',monospace;
+  font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:#111;background:#fff;
+  border:0;border-radius:0;padding:0.75em 1.2em;
+  cursor:pointer;
+  opacity:0;transition:opacity 0.9s ease, bottom 0.5s ease;
+}
+#room-enter.in{opacity:1}
+/* The cookie bar (enhance.js) sits bottom-left, 400px wide — full
+   width on phones. Below ~980px it would cover the cue, so the cue
+   rides above it until the visitor has answered. */
+@media(max-width:980px){
+  body:has(.cookie-bar.show) #room-enter{bottom:calc(10.5rem + env(safe-area-inset-bottom, 0px))}
+}
+#room-enter:hover{background:#111;color:#fff}
+#room-enter:active{background:#111;color:#fff;opacity:0.7}
+#room-enter:focus-visible{outline:1px solid #111;outline-offset:3px}
+
 @media(prefers-reduced-motion:reduce){
   .wcell{opacity:1;transform:none;transition:none}
   .wcell img{transition:none}
+  #room-enter{transition:none}
 }
 
 /* ══════════════════════════════════════════
@@ -1527,6 +1553,7 @@ fbq('track', 'PageView');
   <div id="room-persp">
     <div id="room-scene"></div>
   </div>
+  <button type="button" id="room-enter">View work</button>
 </div>
 
 <!-- ══ LANDING PAGE ══════════════════════ -->
@@ -2231,7 +2258,9 @@ function buildRoom() {
     else                   { ratioCls = 'wcell--43'; cellOri = 'landscape'; }
     // A cell spanning 2+ tracks in either axis renders large enough
     // to warrant the 880px tier; 1×1 cells keep the light 440px one.
-    const isLarge = pos.w > 1 || pos.h > 1;
+    // Phones never need it: a track there is ~13vw, so even a 2×2
+    // cell is about 100 CSS px — the 440px tier covers it at 3x.
+    const isLarge = !isMobileMQ.matches && (pos.w > 1 || pos.h > 1);
     cell.dataset.orientation = cellOri;
     cell.className = 'wcell ' + ratioCls + (pos.empty ? ' wcell--empty' : '');
     cell.style.gridColumn = pos.c + ' / span ' + pos.w;
@@ -2271,12 +2300,14 @@ function buildRoom() {
       vid.addEventListener('timeupdate', () => {
         if (vid.currentTime >= 3) vid.currentTime = 0;   // loop first 3s
       });
-      videoStarters.push(() => {
+      cell._videoUrl = pos.video;   // which project a click on this cell opens
+      cell._startVideo = () => {
         vid.src = pos.video;
         const play = () => { const p = vid.play(); if (p && p.catch) p.catch(() => {}); };
         vid.addEventListener('canplay', play, { once: true });
         play();
-      });
+      };
+      videoStarters.push(cell._startVideo);
       cell.appendChild(vid);
     } else {
       // ── Image cell ──
@@ -2294,7 +2325,10 @@ function buildRoom() {
       commit(cell, initUrl);
       const imgA = document.createElement('img');
       imgA.className = 'img-a';
-      imgA.src = thumb(initUrl, isLarge);
+      // Phones: the src is held back until cullOffscreen() has
+      // measured which cells can actually be seen (see below).
+      if (isMobileMQ.matches) imgA.dataset.src = thumb(initUrl, isLarge);
+      else imgA.src = thumb(initUrl, isLarge);
       imgA.alt = '';
       // ALL cells load eagerly: loading="lazy" inside a 3D-transformed
       // scene is unreliable (browsers mis-judge the projected viewport
@@ -2347,23 +2381,30 @@ function buildRoom() {
       // abandoned and the old picture kept.
       const begin = () => {
         IMG_ORI[newUrl] = classifyOri(newImg.naturalWidth, newImg.naturalHeight);
+        // For click-through: the arriving picture, and when its fade began.
+        cell._pendingUrl = newUrl;
+        cell._pendingAt  = performance.now();
         // Crossfade in over whatever's there — picture or video.
+        // The outgoing pair is captured NOW: when a frame is late
+        // (janky load, background tab) the rAF below can run after
+        // the timeout has already promoted newImg to .img-a — a fresh
+        // query there found the NEW picture and faded it out, leaving
+        // an empty beige cell.
+        const oldImg = cell.querySelector('img.img-a');
+        const oldVid = cell.querySelector('video');
         requestAnimationFrame(() => {
           newImg.style.opacity = '1';
-          const oldImg = cell.querySelector('img.img-a');
           if (oldImg) oldImg.style.opacity = '0';
-          const oldVid = cell.querySelector('video');
           if (oldVid) oldVid.style.opacity = '0';
         });
         setTimeout(() => {
-          const oldImg = cell.querySelector('img.img-a');
           if (oldImg) oldImg.remove();
-          const oldVid = cell.querySelector('video');
           if (oldVid) { try { oldVid.pause(); } catch (e) {} oldVid.remove(); }
           cell.classList.remove('wcell--video');
           newImg.className = 'img-a';
           newImg.style.opacity = '';
           commit(cell, newUrl);
+          cell._pendingUrl = null;
           swapping = false;
         }, SWAP_MS);
       };
@@ -2372,6 +2413,7 @@ function buildRoom() {
         newImg.addEventListener('load', begin, { once: true });
         newImg.addEventListener('error', () => {
           newImg.remove();
+          cell._pendingUrl = null;
           swapping = false;
         }, { once: true });
       }
@@ -2458,6 +2500,64 @@ function buildRoom() {
     scene.appendChild(wallEl);
   });
 
+  // ── Phones: only load what can be seen ──
+  // The phone box is wider and deeper than the screen, so many of
+  // its cells project outside the viewport and were downloading
+  // thumbnails (and mp4s) nobody saw. Measure every cell once, here,
+  // while the loader still covers the room:
+  //   • on screen            → load now, first in line
+  //   • just off the edges   → load once the on-screen ones are in
+  //     (the tilt and the ambient drift can bring these into view)
+  //   • out of reach         → white space; the picture goes back to
+  //     the pool
+  (function cullOffscreen(){
+    if (!isMobileMQ.matches) return;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const mx = vw * 0.3, my = vh * 0.2;
+    const later = [];
+    let waiting = 0, flushed = false;
+    const flush = () => {
+      if (flushed) return;
+      flushed = true;
+      later.forEach(im => { im.src = im.dataset.src; });
+    };
+    const settle = () => { if (--waiting <= 0) flush(); };
+    scene.querySelectorAll('.wcell:not(.wcell--empty)').forEach(cell => {
+      const r = cell.getBoundingClientRect();
+      const near = r.width && r.right > -mx && r.left < vw + mx &&
+                   r.bottom > -my && r.top < vh + my;
+      const im = cell.querySelector('img.img-a');
+      if (near) {
+        if (im && im.dataset.src) {
+          const onScreen = r.right > 0 && r.left < vw && r.bottom > 0 && r.top < vh;
+          if (onScreen) {
+            waiting++;
+            im.addEventListener('load',  settle, { once: true });
+            im.addEventListener('error', settle, { once: true });
+            im.setAttribute('fetchpriority', 'high');
+            im.src = im.dataset.src;
+          } else {
+            im.setAttribute('fetchpriority', 'low');
+            later.push(im);
+          }
+        }
+        return;
+      }
+      const url = cellUrl.get(cell);
+      if (url) { liveUrls.delete(url); bump(projectOf(url), -1); cellUrl.delete(cell); }
+      if (cell._startVideo) {
+        const i = videoStarters.indexOf(cell._startVideo);
+        if (i >= 0) videoStarters.splice(i, 1);
+      }
+      cell.innerHTML = '';
+      cell._swap = cell._startVideo = cell._videoUrl = null;
+      cell.classList.remove('wcell--video');
+      cell.classList.add('wcell--empty');
+    });
+    if (!waiting) flush();
+    setTimeout(flush, 5000);   // safety: a stalled thumb never strands the rest
+  })();
+
   // ── Front-wall hover — bullet-proof geometric detection ──
   // Native 3D hit-testing intermittently fails to deliver mouseenter
   // to the un-rotated back wall (it gets occluded by sibling walls in
@@ -2501,7 +2601,8 @@ function buildRoom() {
       // solid grey box. Errors reveal anyway so no cell is stranded.
       const show = c => {
         const im = c.querySelector('img.img-a');
-        if (im && !im.complete) {
+        // (an img whose src is still held back reports complete — wait for it too)
+        if (im && (!im.complete || !im.getAttribute('src'))) {
           im.addEventListener('load',  () => c.classList.add('in'), { once: true });
           im.addEventListener('error', () => c.classList.add('in'), { once: true });
         } else {
@@ -2517,6 +2618,11 @@ function buildRoom() {
       setTimeout(() => {
         videoStarters.forEach((start, i) => setTimeout(start, i * 500));
       }, 1400);
+      // The entry cue arrives last, once there is a room to enter.
+      setTimeout(() => {
+        const cue = document.getElementById('room-enter');
+        if (cue) cue.classList.add('in');
+      }, 1300);
     }));
   };
 
@@ -2534,17 +2640,27 @@ function buildRoom() {
   });
 
   let tStartX = null, tStartY = null;
+  let tDX = 0, tDY = 0, tInRoom = false;
   document.addEventListener('touchstart', e => {
     if (!e.touches[0]) return;
     tStartX = e.touches[0].clientX; tStartY = e.touches[0].clientY;
+    tDX = tDY = 0;
+    tInRoom = !!(e.target.closest && e.target.closest('#room'));
   }, { passive: true });
   document.addEventListener('touchmove', e => {
     if (tStartX === null || !e.touches[0]) return;
     lastMove = performance.now();
     const dx = e.touches[0].clientX - tStartX;
     const dy = e.touches[0].clientY - tStartY;
+    tDX = dx; tDY = dy;
     mTgtY = (dx / window.innerWidth)  * 18;
     mTgtX = -(dy / window.innerHeight) * 14;
+  }, { passive: true });
+  // A swipe up is how a phone asks for "the rest of the page" — it
+  // still tilts the room while the finger is down, then enters.
+  document.addEventListener('touchend', () => {
+    if (tInRoom && tDY < -70 && Math.abs(tDY) > Math.abs(tDX) * 1.4) enter();
+    tStartX = tStartY = null; tInRoom = false;
   }, { passive: true });
 
   // Always write the SAME 3-function transform (rotateX rotateY
@@ -2599,7 +2715,87 @@ function buildRoom() {
   const room = document.getElementById('room');
   const landing = document.getElementById('landing');
   let entering = false;
-  room.addEventListener('click', () => {
+
+  // ── A picture opens its project; white space enters the work page ──
+  // Folder of the picture on show → that project's page.
+  const PROJECT_PAGE = {
+    Project01_Ambiance_AutumnShoot:       'project-ambiance-autumn.html',
+    Project03_Ambiance_ChristmasCampaign: 'project-ambiance-xmas.html',
+    Project04_Ambiance_Emozee:            'project-ambiance-emozee.html',
+    Project05_Ambiance_HUE:               'project-ambiance-hue.html',
+    Project06_Ambiance_SpringShoot:       'project-ambiance-spring.html',
+    Project07_Ambiance_SummerShoot:       'project-ambiance-summer.html',
+    Project09_Ambiance_WinterShoot:       'project-ambiance-winter.html',
+    Project11_Blubay_Shoot:               'project-peachpuff-summer.html',
+    Project14_Eloria_Launch:              'project-eloria-launch.html',
+    Project15_PinchMoi_TheGarden:         'project-pinch-moi-garden.html',
+    Project17_Plastik_Asteri:             'project-plastik-asteri.html',
+    Project18_Plastik_Roadster:           'project-plastik-roadster.html',
+    Project19_Ambiance_BeirutLiving:      'project-ambiance-beirut-living.html',
+    Project20_Sayidaty_RichWife:          'project-sayidaty-rich-wife.html',
+    Project21_Nara_InYourSkin:            'project-nara-in-your-skin.html',
+  };
+  // The picture cell under a pointer. Native hit-testing first, then
+  // the same geometric back-wall test the hover uses (see above).
+  function cellAt(e){
+    const t = e.target.closest && e.target.closest('.wcell');
+    if (t && !t.classList.contains('wcell--empty')) return t;
+    for (let i = 0; i < backCells.length; i++){
+      if (!backCells[i]._swap) continue;
+      const r = backCells[i].getBoundingClientRect();
+      if (r.width && e.clientX >= r.left && e.clientX < r.right &&
+          e.clientY >= r.top && e.clientY < r.bottom) return backCells[i];
+    }
+    return null;
+  }
+  // `incoming`: once a crossfade is past its midpoint the arriving
+  // picture is the one the visitor is looking at, so it wins over the
+  // one fading out. Before that, a quick click still means the old one.
+  function shownUrl(cell, incoming){
+    const arriving = incoming && cell._pendingUrl &&
+      performance.now() - cell._pendingAt > 280 ? cell._pendingUrl : null;
+    return arriving || cellUrl.get(cell) ||
+           (cell.classList.contains('wcell--video') ? cell._videoUrl : null);
+  }
+  // A tap fires an emulated mouseenter (→ hover-swap) BEFORE its
+  // click. Note what the finger landed on at pointerdown so a tap
+  // opens the picture that was tapped, not the one swapping in.
+  let downType = 'mouse', downUrl = null;
+  room.addEventListener('pointerdown', e => {
+    downType = e.pointerType || 'mouse';
+    const c = cellAt(e);
+    downUrl = c ? shownUrl(c, false) : null;
+  }, true);
+
+  room.addEventListener('click', e => {
+    if (entering) return;
+    if (!(e.target.closest && e.target.closest('#room-enter'))) {
+      const c = cellAt(e);
+      const url = downType === 'mouse' ? (c && shownUrl(c, true)) : downUrl;
+      const page = url && PROJECT_PAGE[projectOf(url)];
+      if (page) {
+        // Back from the project lands on the work page, not the intro.
+        sessionStorage.setItem('azzi_entered', '1');
+        window.location.href = page;
+        return;
+      }
+    }
+    enter();
+  });
+  // The wheel and the keyboard enter too — the room is a threshold,
+  // not a wall. Keys are left alone while a link or button has focus
+  // (the cue is a real button, so Enter on it already clicks).
+  room.addEventListener('wheel', e => { if (e.deltaY > 8) enter(); }, { passive: true });
+  document.addEventListener('keydown', e => {
+    if (entering || document.body.classList.contains('entered') ||
+        document.body.classList.contains('ov-open')) return;
+    if (!['Enter', ' ', 'ArrowDown', 'PageDown'].includes(e.key)) return;
+    if (e.target.closest && e.target.closest('a,button,input,textarea,select')) return;
+    e.preventDefault();
+    enter();
+  });
+
+  function enter(){
     if (entering) return;
     entering = true;
     sessionStorage.setItem('azzi_entered', '1');
@@ -2625,7 +2821,7 @@ function buildRoom() {
       room.style.display = 'none';
       document.body.style.overflow = '';
     }, 1500);
-  });
+  }
 }
 
 // ══ HAMBURGER ════════════════════════════════════════════
