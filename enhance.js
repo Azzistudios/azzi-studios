@@ -175,7 +175,7 @@
           <textarea id="${id}-msg" name="message" rows="4" required></textarea></label>
         <label class="enq__hp" aria-hidden="true">Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label>
         <button type="submit" class="enq__send">Send</button>
-        <p class="enq__note" role="status" aria-live="polite">We reply within one working day. Your details go to our CRM (HubSpot) so we can answer. <a href="/privacy">Privacy</a></p>
+        <p class="enq__note" role="status" aria-live="polite">We reply within one working day.</p>
       </form>`;
     const form = slot.querySelector('form');
     const note = form.querySelector('.enq__note');
