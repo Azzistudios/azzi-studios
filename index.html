@@ -127,8 +127,6 @@
 <!-- Preload the asteri hero #1 (largest contentful paint after the
      loader) and a couple of the early mosaic thumbnails so they
      paint at the same instant the loader fades out. -->
-<link rel="preload" as="image" href="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp" fetchpriority="low">
-<link rel="preload" as="image" href="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp" fetchpriority="low">
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -1584,8 +1582,8 @@ fbq('track', 'PageView');
       <a href="project-plastik-asteri.html" class="gal-cell gal-cell--hero">
         <div class="asteri-window" id="asteriHero">
           <div class="asteri-track">
-            <img class="asteri-slide is-on" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp" alt="Asteri Beauty Summer 2025 campaign — beauty product still life with sun-bleached palette, by Azzi Studios" loading="eager" fetchpriority="high">
-            <img class="asteri-slide" src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp" alt="Asteri Beauty Summer 2025 campaign — editorial composition with warm tones" loading="eager">
+            <img class="asteri-slide is-on" data-src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_01.webp" alt="Asteri Beauty Summer 2025 campaign — beauty product still life with sun-bleached palette, by Azzi Studios" loading="eager">
+            <img class="asteri-slide" data-src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_02.webp" alt="Asteri Beauty Summer 2025 campaign — editorial composition with warm tones" loading="eager">
             <img class="asteri-slide" data-src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_03.webp" alt="Asteri Beauty Summer 2025 campaign — product detail shot" loading="lazy">
             <img class="asteri-slide" data-src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_04.webp" alt="Asteri Beauty Summer 2025 campaign — lifestyle composition" loading="lazy">
             <img class="asteri-slide" data-src="images/Project17_Plastik_Asteri/AZZISTUDIOS_PlastikStudios_AsteriBeautySummer_2025_05.webp" alt="Asteri Beauty Summer 2025 campaign — close-up with summer styling" loading="lazy">
@@ -2627,6 +2625,14 @@ function buildRoom() {
       setTimeout(() => {
         videoStarters.forEach((start, i) => setTimeout(start, i * 500));
       }, 1400);
+      // The work page's pictures start now, behind the room, so they
+      // are there by the time the visitor enters — but no longer in
+      // the mosaic's way. (Videos still wait for the entry itself.)
+      setTimeout(() => {
+        document.querySelectorAll('#gallery img[data-src]').forEach(im => {
+          if (!im.getAttribute('src')) im.src = im.dataset.src;
+        });
+      }, 3500);
       // The entry cue arrives last, once there is a room to enter.
       setTimeout(() => {
         const cue = document.getElementById('room-enter');
@@ -3473,7 +3479,23 @@ function whenEntered(fn){
   // every following block builds its own reel from the next project.
   gallery.querySelectorAll('.gal-row:not(.gal-row--hero)').forEach(r => r.remove());
 
-  const add   = el => gallery.insertBefore(el, listMode);
+  // While the 3D room is still in front, the work page sits hidden
+  // under it — and its pictures were downloading at t=0, competing
+  // with the mosaic for the same connection (PageSpeed: ~4 MB of
+  // images before the first real paint on a phone). So every picture
+  // a row is built with is parked on data-src here, in the same task
+  // it was created in (no request has gone out yet), and hydrated by
+  // __startLandingVideos — on entry, or a few seconds after the room
+  // has revealed, whichever comes first.
+  const park = el => {
+    if (document.body.classList.contains('entered')) return el;
+    el.querySelectorAll('img[src]').forEach(im => {
+      im.dataset.src = im.getAttribute('src');
+      im.removeAttribute('src');
+    });
+    return el;
+  };
+  const add   = el => gallery.insertBefore(park(el), listMode);
   const thumb = u  =>
     /^https?:\/\//.test(u) ? u :
     u.endsWith('.webp')    ? u :
