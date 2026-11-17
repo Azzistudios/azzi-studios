@@ -38,6 +38,12 @@ contradicted the identity. None of it applies.
 
 ## Adding or removing a project
 
+Each project page ships its own title and description in the HTML (client first,
+only Azzi's real role, about 60 and 160 characters). The page script no longer
+overwrites the title. Old `/project?id=<id>` links redirect to `/project-<id>` in
+`vercel.json`: add a pair for every new project. `vercel.json` sends
+`X-Robots-Tag: index` on every path, so a noindex page also needs a header override there.
+
 A project lives in several places. Miss one and a link breaks.
 
 1. `project-<id>.html` — copy a recent one. Change the title, descriptions,
