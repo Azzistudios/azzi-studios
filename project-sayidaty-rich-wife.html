@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Sayidaty — The Rich Wife · Azzi Studios</title>
-<meta name="description" content="Sayidaty — The Rich Wife. A murder-mystery fashion editorial for Sayidaty, set design by Azzi Studios. Featured in Sayidaty. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Sayidaty, The Rich Wife — Editorial Set Design | Azzi Studios</title>
+<meta name="description" content="Set design by Azzi Studios for The Rich Wife, a murder-mystery fashion editorial published in Sayidaty: a crime scene in red velvet, gilt frames and acid green.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-sayidaty-rich-wife">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-sayidaty-rich-wife">
-<meta property="og:title" content="Sayidaty — The Rich Wife · Azzi Studios">
-<meta property="og:description" content="Sayidaty — The Rich Wife. A murder-mystery fashion editorial for Sayidaty, set design by Azzi Studios. Featured in Sayidaty. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Sayidaty, The Rich Wife — Editorial Set Design | Azzi Studios">
+<meta property="og:description" content="Set design by Azzi Studios for The Rich Wife, a murder-mystery fashion editorial published in Sayidaty: a crime scene in red velvet, gilt frames and acid green.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/sayidaty-rich-wife.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sayidaty — The Rich Wife · Azzi Studios">
-<meta name="twitter:description" content="Sayidaty — The Rich Wife. A murder-mystery fashion editorial for Sayidaty, set design by Azzi Studios. Featured in Sayidaty. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Sayidaty, The Rich Wife — Editorial Set Design | Azzi Studios">
+<meta name="twitter:description" content="Set design by Azzi Studios for The Rich Wife, a murder-mystery fashion editorial published in Sayidaty: a crime scene in red velvet, gilt frames and acid green.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/sayidaty-rich-wife.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1412,7 +1412,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

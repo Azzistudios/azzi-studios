@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Eloria — Launch Campaign · Azzi Studios</title>
-<meta name="description" content="Eloria — Launch Campaign. Creative direction, art direction &amp; set design. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Eloria Launch Campaign — Creative Direction | Azzi Studios</title>
+<meta name="description" content="Launch campaign for Eloria&#x27;s first collection of minimalist backpacks: the gym, the office and the city. Creative direction, art direction and set design by Azzi Studios.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-eloria-launch">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-eloria-launch">
-<meta property="og:title" content="Eloria — Launch Campaign · Azzi Studios">
-<meta property="og:description" content="Eloria — Launch Campaign. Creative direction, art direction &amp; set design. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Eloria Launch Campaign — Creative Direction | Azzi Studios">
+<meta property="og:description" content="Launch campaign for Eloria&#x27;s first collection of minimalist backpacks: the gym, the office and the city. Creative direction, art direction and set design by Azzi Studios.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/eloria-launch.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Eloria — Launch Campaign · Azzi Studios">
-<meta name="twitter:description" content="Eloria — Launch Campaign. Creative direction, art direction &amp; set design. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Eloria Launch Campaign — Creative Direction | Azzi Studios">
+<meta name="twitter:description" content="Launch campaign for Eloria&#x27;s first collection of minimalist backpacks: the gym, the office and the city. Creative direction, art direction and set design by Azzi Studios.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/eloria-launch.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1355,7 +1355,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

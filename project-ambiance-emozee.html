@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Ambiance — Emozee Campaign · Azzi Studios</title>
-<meta name="description" content="Ambiance — Emozee Campaign. Campaign production &amp; brand direction. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Ambiance Emozee — Campaign Direction | Azzi Studios</title>
+<meta name="description" content="Campaign for Ambiance&#x27;s Emozee collection of lacquered spheres, in stills and film. Creative and brand direction by Azzi Studios, a Beirut creative studio.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-ambiance-emozee">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-ambiance-emozee">
-<meta property="og:title" content="Ambiance — Emozee Campaign · Azzi Studios">
-<meta property="og:description" content="Ambiance — Emozee Campaign. Campaign production &amp; brand direction. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Ambiance Emozee — Campaign Direction | Azzi Studios">
+<meta property="og:description" content="Campaign for Ambiance&#x27;s Emozee collection of lacquered spheres, in stills and film. Creative and brand direction by Azzi Studios, a Beirut creative studio.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/ambiance-emozee.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ambiance — Emozee Campaign · Azzi Studios">
-<meta name="twitter:description" content="Ambiance — Emozee Campaign. Campaign production &amp; brand direction. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Ambiance Emozee — Campaign Direction | Azzi Studios">
+<meta name="twitter:description" content="Campaign for Ambiance&#x27;s Emozee collection of lacquered spheres, in stills and film. Creative and brand direction by Azzi Studios, a Beirut creative studio.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/ambiance-emozee.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1355,7 +1355,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

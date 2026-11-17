@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Ambiance — Beirut Living · Azzi Studios</title>
-<meta name="description" content="Ambiance — Beirut Living. Set design &amp; creative direction — a fair stand of sculptural glossy spheres and branded modular displays. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Ambiance at Beirut Living — Fair Stand Design | Azzi Studios</title>
+<meta name="description" content="Stand design for Ambiance at the Beirut Living design fair: one white field of podiums and plinths, so the Emozee spheres carry all the colour. By Azzi Studios.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-ambiance-beirut-living">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-ambiance-beirut-living">
-<meta property="og:title" content="Ambiance — Beirut Living · Azzi Studios">
-<meta property="og:description" content="Ambiance — Beirut Living. Set design &amp; creative direction — a fair stand of sculptural glossy spheres and branded modular displays. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Ambiance at Beirut Living — Fair Stand Design | Azzi Studios">
+<meta property="og:description" content="Stand design for Ambiance at the Beirut Living design fair: one white field of podiums and plinths, so the Emozee spheres carry all the colour. By Azzi Studios.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/ambiance-beirut-living-b.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ambiance — Beirut Living · Azzi Studios">
-<meta name="twitter:description" content="Ambiance — Beirut Living. Set design &amp; creative direction — a fair stand of sculptural glossy spheres and branded modular displays. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Ambiance at Beirut Living — Fair Stand Design | Azzi Studios">
+<meta name="twitter:description" content="Stand design for Ambiance at the Beirut Living design fair: one white field of podiums and plinths, so the Emozee spheres carry all the colour. By Azzi Studios.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/ambiance-beirut-living-b.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1369,7 +1369,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

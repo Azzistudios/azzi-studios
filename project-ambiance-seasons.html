@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Ambiance — Four Seasons · Azzi Studios</title>
-<meta name="description" content="Ambiance — Four Seasons. Spring, summer, autumn and winter: one seasonal engagement, art directed and built by Azzi Studios, a Beirut-based creative studio.">
+<title>Ambiance Four Seasons — Art Direction &amp; Sets | Azzi Studios</title>
+<meta name="description" content="Four seasonal shoots for Ambiance, the Beirut house of design objects: a new set for spring, summer, autumn and winter. Art direction and set design by Azzi Studios.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-ambiance-seasons">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-ambiance-seasons">
-<meta property="og:title" content="Ambiance — Four Seasons · Azzi Studios">
-<meta property="og:description" content="Ambiance — Four Seasons. Spring, summer, autumn and winter: one seasonal engagement, art directed and built by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Ambiance Four Seasons — Art Direction &amp; Sets | Azzi Studios">
+<meta property="og:description" content="Four seasonal shoots for Ambiance, the Beirut house of design objects: a new set for spring, summer, autumn and winter. Art direction and set design by Azzi Studios.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/ambiance-summer.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ambiance — Four Seasons · Azzi Studios">
-<meta name="twitter:description" content="Ambiance — Four Seasons. Spring, summer, autumn and winter: one seasonal engagement, art directed and built by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Ambiance Four Seasons — Art Direction &amp; Sets | Azzi Studios">
+<meta name="twitter:description" content="Four seasonal shoots for Ambiance, the Beirut house of design objects: a new set for spring, summer, autumn and winter. Art direction and set design by Azzi Studios.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/ambiance-summer.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1355,7 +1355,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

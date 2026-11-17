@@ -88,7 +88,7 @@
        Google Images. -->
   <url>
     <loc>https://azzistudios.com/project-plastik-asteri</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/plastik-asteri.jpg</image:loc>
@@ -98,7 +98,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-plastik-roadster</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/plastik-roadster.jpg</image:loc>
@@ -108,7 +108,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-eloria-launch</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/eloria-launch.jpg</image:loc>
@@ -118,7 +118,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-peachpuff-summer</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/peachpuff-summer.jpg</image:loc>
@@ -128,7 +128,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-ambiance-xmas</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-xmas.jpg</image:loc>
@@ -138,7 +138,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-ambiance-seasons</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-summer.jpg</image:loc>
@@ -148,7 +148,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-ambiance-emozee</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-emozee.jpg</image:loc>
@@ -158,7 +158,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-sayidaty-rich-wife</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/sayidaty-rich-wife.jpg</image:loc>
@@ -168,7 +168,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-nara-in-your-skin</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/nara-in-your-skin-c.jpg</image:loc>
@@ -178,7 +178,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-nara-social-media</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/nara-social-media.jpg</image:loc>
@@ -188,7 +188,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-ambiance-beirut-living</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/ambiance-beirut-living-b.jpg</image:loc>
@@ -198,7 +198,7 @@
   </url>
   <url>
     <loc>https://azzistudios.com/project-pinch-moi-garden</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://azzistudios.com/brand_assets/og/pinch-moi-garden.jpg</image:loc>
@@ -207,18 +207,6 @@
     </image:image>
   </url>
 
-  <url>
-    <loc>https://azzistudios.com/privacy</loc>
-    <lastmod>2026-11-10</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
 
-  <url>
-    <loc>https://azzistudios.com/terms</loc>
-    <lastmod>2026-10-31</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
 
 </urlset>

@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Peachpuff Agency — Summer Shoot · Azzi Studios</title>
-<meta name="description" content="Peachpuff Agency — Summer Shoot. Set design &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Peachpuff Summer Shoot — Set Design &amp; Props | Azzi Studios</title>
+<meta name="description" content="Set design and props for Peachpuff Agency&#x27;s summer shoot at the opening of Blubay Beach: sets built against sand, water and summer light. By Azzi Studios, Beirut.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-peachpuff-summer">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-peachpuff-summer">
-<meta property="og:title" content="Peachpuff Agency — Summer Shoot · Azzi Studios">
-<meta property="og:description" content="Peachpuff Agency — Summer Shoot. Set design &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Peachpuff Summer Shoot — Set Design &amp; Props | Azzi Studios">
+<meta property="og:description" content="Set design and props for Peachpuff Agency&#x27;s summer shoot at the opening of Blubay Beach: sets built against sand, water and summer light. By Azzi Studios, Beirut.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/peachpuff-summer.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Peachpuff Agency — Summer Shoot · Azzi Studios">
-<meta name="twitter:description" content="Peachpuff Agency — Summer Shoot. Set design &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Peachpuff Summer Shoot — Set Design &amp; Props | Azzi Studios">
+<meta name="twitter:description" content="Set design and props for Peachpuff Agency&#x27;s summer shoot at the opening of Blubay Beach: sets built against sand, water and summer light. By Azzi Studios, Beirut.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/peachpuff-summer.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1355,7 +1355,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

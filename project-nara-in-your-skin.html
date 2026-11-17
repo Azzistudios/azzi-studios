@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Nara — In Your Skin · Azzi Studios</title>
-<meta name="description" content="Nara — In Your Skin. Summer 2026 campaign for the body care brand Nara and the launch of Cherry Skn: treatment, creative direction, set design and full production by Azzi Studios, shot at a villa in Aamchit. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Nara In Your Skin — Beauty Campaign Production | Azzi Studios</title>
+<meta name="description" content="Summer 2026 campaign for the body care brand Nara and the launch of Cherry Skn. Treatment, creative direction, set design and full production by Azzi Studios, a Beirut studio.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-nara-in-your-skin">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-nara-in-your-skin">
-<meta property="og:title" content="Nara — In Your Skin · Azzi Studios">
-<meta property="og:description" content="Nara — In Your Skin. Summer 2026 campaign for the body care brand Nara and the launch of Cherry Skn: treatment, creative direction, set design and full production by Azzi Studios, shot at a villa in Aamchit. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Nara In Your Skin — Beauty Campaign Production | Azzi Studios">
+<meta property="og:description" content="Summer 2026 campaign for the body care brand Nara and the launch of Cherry Skn. Treatment, creative direction, set design and full production by Azzi Studios, a Beirut studio.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/nara-in-your-skin-c.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Nara — In Your Skin · Azzi Studios">
-<meta name="twitter:description" content="Nara — In Your Skin. Summer 2026 campaign for the body care brand Nara and the launch of Cherry Skn: treatment, creative direction, set design and full production by Azzi Studios, shot at a villa in Aamchit. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Nara In Your Skin — Beauty Campaign Production | Azzi Studios">
+<meta name="twitter:description" content="Summer 2026 campaign for the body care brand Nara and the launch of Cherry Skn. Treatment, creative direction, set design and full production by Azzi Studios, a Beirut studio.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/nara-in-your-skin-c.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1469,7 +1469,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

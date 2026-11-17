@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Ambiance — Christmas Campaign · Azzi Studios</title>
-<meta name="description" content="Ambiance — Christmas Campaign. Set design, creative direction &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Ambiance Christmas Campaign — Set Design | Azzi Studios</title>
+<meta name="description" content="Christmas campaign for Ambiance: a saturated red world of full sets and dressed rooms. Set design, creative direction and props by Azzi Studios, Beirut.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-ambiance-xmas">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-ambiance-xmas">
-<meta property="og:title" content="Ambiance — Christmas Campaign · Azzi Studios">
-<meta property="og:description" content="Ambiance — Christmas Campaign. Set design, creative direction &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Ambiance Christmas Campaign — Set Design | Azzi Studios">
+<meta property="og:description" content="Christmas campaign for Ambiance: a saturated red world of full sets and dressed rooms. Set design, creative direction and props by Azzi Studios, Beirut.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/ambiance-xmas.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ambiance — Christmas Campaign · Azzi Studios">
-<meta name="twitter:description" content="Ambiance — Christmas Campaign. Set design, creative direction &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Ambiance Christmas Campaign — Set Design | Azzi Studios">
+<meta name="twitter:description" content="Christmas campaign for Ambiance: a saturated red world of full sets and dressed rooms. Set design, creative direction and props by Azzi Studios, Beirut.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/ambiance-xmas.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1355,7 +1355,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.

@@ -6,8 +6,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 
-<title>Plastik Studios — Roadster Summer · Azzi Studios</title>
-<meta name="description" content="Plastik Studios — Roadster Summer. Art direction, production design &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<title>Roadster Diner Summer — Art Direction &amp; Sets | Azzi Studios</title>
+<meta name="description" content="Roadster Diner&#x27;s summer 2025 campaign, produced by Plastik Studios. Art direction, production design and props by Azzi Studios: built sets in diner colour.">
 <meta name="author" content="Azzi Studios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://azzistudios.com/project-plastik-roadster">
@@ -24,16 +24,16 @@
 <!-- Open Graph (JS below rewrites these per project) -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://azzistudios.com/project-plastik-roadster">
-<meta property="og:title" content="Plastik Studios — Roadster Summer · Azzi Studios">
-<meta property="og:description" content="Plastik Studios — Roadster Summer. Art direction, production design &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta property="og:title" content="Roadster Diner Summer — Art Direction &amp; Sets | Azzi Studios">
+<meta property="og:description" content="Roadster Diner&#x27;s summer 2025 campaign, produced by Plastik Studios. Art direction, production design and props by Azzi Studios: built sets in diner colour.">
 <meta property="og:image" content="https://azzistudios.com/brand_assets/og/plastik-roadster.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Azzi Studios">
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Plastik Studios — Roadster Summer · Azzi Studios">
-<meta name="twitter:description" content="Plastik Studios — Roadster Summer. Art direction, production design &amp; props mastering. A project by Azzi Studios, a Beirut-based creative studio.">
+<meta name="twitter:title" content="Roadster Diner Summer — Art Direction &amp; Sets | Azzi Studios">
+<meta name="twitter:description" content="Roadster Diner&#x27;s summer 2025 campaign, produced by Plastik Studios. Art direction, production design and props by Azzi Studios: built sets in diner colour.">
 <meta name="twitter:image" content="https://azzistudios.com/brand_assets/og/plastik-roadster.jpg">
 
 <!-- Resource hints — open TCP/TLS to ImgBB + Cloudinary before
@@ -1355,7 +1355,9 @@ const PROJECTS = {
     return;
   }
 
-  document.title = `${p.client} — ${p.title} · Azzi Studios`;
+  // Static project pages ship their own title; only the bare
+  // template (project.html?id=…) builds one here.
+  if (typeof window.__PROJECT_ID__ !== 'string') document.title = `${p.client} — ${p.title} · Azzi Studios`;
 
   // Update canonical + OG + Twitter meta dynamically so social
   // previews and Google show the right project info per URL.
